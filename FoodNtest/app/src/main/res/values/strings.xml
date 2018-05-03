@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">FoodN</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_sdt">Số điện thoại</string>
+    <string name="prompt_password">Mật khẩu</string>
+    <string name="action_sign_in">Đăng nhập</string>
+    <string name="action_sign_in_short">Đăng nhập</string>
+    <string name="error_invalid_sdt">Số điện thoại không hợp lệ</string>
+    <string name="error_invalid_password">Mật khẩu quá ngắn</string>
+    <string name="error_incorrect_password">Mật khẩu sai</string>
+    <string name="error_field_required">Bắt buộc</string>
+    <string name="forgot_password">Quên mật khẩu?</string>
+    <string name="no_account">Chưa có tài khoản?</string>
+    <string name="sign_up">Đăng ký</string>
+    <string name="prompt_fullname">Họ tên</string>
+    <string name="prompt_retype">Nhập lại mật khẩu</string>
+    <string name="prompt_dob">Ngày sinh</string>
+    <string name="gender">Giới tính</string>
+    <string name="prompt_male">Nam</string>
+    <string name="prompt_female">Nữ</string>
+    <string name="input_notif">Vui lòng nhập thông tin của bạn.</string>
+    <string name="confirm_notif">Nhập mã xác nhận trong tin nhắn của bạn.</string>
+    <string name="msg_resend">Gửi lại tin nhắn.</string>
+    <string name="confirm_finish">xác nhận</string>
+    <string name="prompt_confirm">Mã xác nhận</string>
+    <string name="home_label">FoodN</string>
+</resources>
