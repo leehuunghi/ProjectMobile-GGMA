@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group >
+        <item
+            android:id="@+id/nav_TrangChu"
+            android:title="Trang chủ" />
+        <item
+            android:id="@+id/nav_YeuThich"
+            android:title="Yêu thích" />
+
+    </group>
+
+    <group  android:id="@+id/group_menu1">
+        <item
+            android:id="@+id/nav_TuyChinh"
+
+            android:title="Tùy chỉnh" />
+        <item
+            android:id="@+id/nav_ThongTin"
+
+            android:title="Thông tin ứng dụng" />
+    </group>
+
+    <group  android:id="@+id/group_menu2">
+        <item
+            android:id="@+id/nav_DangXuat"
+
+            android:title="Đăng xuất" />
+
+    </group>
+</layout>

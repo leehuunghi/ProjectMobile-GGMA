@@ -103,10 +103,7 @@ public class LoginActivity extends Activity {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            if (txtSdt.getText().toString().equals("01265991264") && txtPass.getText().toString().equals("admin")) {
-                Toast.makeText(this,
-                        "Đúng rồi đó má"
-                        , Toast.LENGTH_SHORT).show();
+            if (txtSdt.getText().toString().equals("123456") && txtPass.getText().toString().equals("123456")) {
                 Intent homeAct = new Intent(LoginActivity.this, HomeActivity.class);
                 startActivity(homeAct);
             } else {
