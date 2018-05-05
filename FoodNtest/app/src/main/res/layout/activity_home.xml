@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -32,8 +32,6 @@
         android:visibility="visible"
         android:textSize="25sp">
 
-
-
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="284dp"
@@ -48,7 +46,6 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:layout_alignTop="@+id/spinner"
             android:layout_weight="1"
             android:layout_x="60dp"
@@ -85,29 +82,8 @@
 
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/imgRoute"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="22dp"
-            android:layout_marginRight="20dp"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
-
-        <FrameLayout
-            android:id="@+id/frgSuggestion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentTop="false"
-            android:layout_marginBottom="0dp"
-            android:layout_marginRight="40dp"
-            android:layout_weight="1" />
-
     </RelativeLayout>
 
 
-</LinearLayout>
+</android.support.v4.widget.DrawerLayout>
 

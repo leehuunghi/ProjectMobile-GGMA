@@ -68,14 +68,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     View mapView;
     ProgressDialog progressDialog;
+
     Spinner spinner;
     EditText txtSpinner;
     ImageButton imgDropDown;
     ImageButton imgSearch;
-    ImageButton imgRoute;
-
-    Fragment_Suggestion fragment_suggestion;
-
 
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
@@ -88,14 +85,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     //vars
     private FusedLocationProviderClient mFusedLocationProviderClient;
-
-    @Override
-    public void onAttachFragment(Fragment fragment) {
-        super.onAttachFragment(fragment);
-        if(fragment.getClass()==Fragment_Suggestion.class) {
-            fragment_suggestion = (Fragment_Suggestion) fragment;
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,11 +113,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         //}
 
 
-        //Spinner
         spinner=(Spinner) findViewById(R.id.spinner);
         txtSpinner= findViewById(R.id.txtSpinner);
 
         imgDropDown=findViewById(R.id.imgDropDown);
+
         List<String> list = new ArrayList<>();
         list.add("Tìm kiếm theo món");
         list.add("Tìm kiếm theo loại món");
@@ -166,22 +155,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
         imgSearch=findViewById(R.id.imgSearch);
-        imgRoute =findViewById(R.id.imgRoute);
-
-        imgRoute.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        imgSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
-
-
 
     }
 
@@ -274,7 +247,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     private void getDeviceLocation() {
-
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
