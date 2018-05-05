@@ -1,9 +1,13 @@
 package com.example.admin.foodn_test;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,6 +17,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.admin.config.Configuaration;
+
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
+
 public class LoginActivity extends Activity {
 
     // UI references.
@@ -20,7 +31,6 @@ public class LoginActivity extends Activity {
     private EditText txtPass;
     private View mProgressView;
     private View mLoginFormView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +38,8 @@ public class LoginActivity extends Activity {
         // Set up the login form.
         txtSdt = findViewById(R.id.txtSdt);
         txtPass = findViewById(R.id.txtPass);
+        mLoginFormView = findViewById(R.id.login_form);
+        mProgressView = findViewById(R.id.login_progress);
         Button btnSignup = findViewById(R.id.btnSignupForm);
         btnSignup.setOnClickListener(new OnClickListener() {
             @Override
@@ -55,8 +67,7 @@ public class LoginActivity extends Activity {
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+
     }
 
 
@@ -103,14 +114,8 @@ public class LoginActivity extends Activity {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            if (txtSdt.getText().toString().equals("123456") && txtPass.getText().toString().equals("123456")) {
-                Intent homeAct = new Intent(LoginActivity.this, HomeActivity.class);
-                startActivity(homeAct);
-            } else {
-                Toast.makeText(this,
-                        "Huhu sai òi"
-                        , Toast.LENGTH_SHORT).show();
-            }
+            LoginAccount signUpAccount = new LoginAccount();
+            signUpAccount.execute();
         }
     }
 
@@ -120,5 +125,55 @@ public class LoginActivity extends Activity {
 
     private boolean isPasswordValid(String password) {
         return password.length() > 4;
+    }
+
+    class LoginAccount extends AsyncTask<String, Void, String>
+    {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                SoapObject request = new SoapObject(Configuaration.NAME_SPACE,Configuaration.METHOD_LOGIN);
+                request.addProperty(Configuaration.PARAMETER_SDT, txtSdt.getText().toString());
+                request.addProperty(Configuaration.PARAMETER_matKhau, txtPass.getText().toString());
+
+                SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+                envelope.dotNet=true;
+                envelope.setOutputSoapObject(request);
+
+                HttpTransportSE httpTransportSE= new HttpTransportSE(Configuaration.SERVER_URL);
+                httpTransportSE.call(Configuaration.SOAP_ACTION_LOGIN, envelope);
+
+                SoapObject data= (SoapObject) envelope.bodyIn;
+                if(data.hasProperty("loginResult")){
+                    if(Boolean.parseBoolean(data.getPropertyAsString("loginResult"))) {
+                        Intent homeAct = new Intent(LoginActivity.this, HomeActivity.class);
+                        startActivity(homeAct);
+                    }
+                    else{
+                        Toast.makeText(LoginActivity.this, "Đăng nhập thất bại!", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.e("Lỗi", ex.toString());
+            }
+            return null;
+        }
     }
 }
