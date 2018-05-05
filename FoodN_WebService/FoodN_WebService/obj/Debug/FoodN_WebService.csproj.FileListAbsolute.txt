@@ -1,0 +1,10 @@
+C:\Users\Windows 10\Desktop\FoodN_WebService\FoodN_WebService\bin\FoodN_WebService.dll.config
+C:\Users\Windows 10\Desktop\FoodN_WebService\FoodN_WebService\bin\FoodN_WebService.dll
+C:\Users\Windows 10\Desktop\FoodN_WebService\FoodN_WebService\bin\FoodN_WebService.pdb
+C:\Users\Windows 10\Desktop\FoodN_WebService\FoodN_WebService\obj\Debug\FoodN_WebService.dll
+C:\Users\Windows 10\Desktop\FoodN_WebService\FoodN_WebService\obj\Debug\FoodN_WebService.pdb
+D:\hoc\HK6\FoodN_WebService\FoodN_WebService\bin\FoodN_WebService.dll.config
+D:\hoc\HK6\FoodN_WebService\FoodN_WebService\bin\FoodN_WebService.dll
+D:\hoc\HK6\FoodN_WebService\FoodN_WebService\bin\FoodN_WebService.pdb
+D:\hoc\HK6\FoodN_WebService\FoodN_WebService\obj\Debug\FoodN_WebService.dll
+D:\hoc\HK6\FoodN_WebService\FoodN_WebService\obj\Debug\FoodN_WebService.pdb
