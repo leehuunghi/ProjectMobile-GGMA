@@ -13,6 +13,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Criteria;
@@ -33,14 +35,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.support.v7.widget.helper.ItemTouchHelper.SimpleCallback;
 import android.text.Layout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -73,6 +79,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import org.kobjects.base64.Base64;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
@@ -103,6 +110,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     EditText txtSpinner;
     ImageButton imgDropDown;
     ImageButton imgSearch;
+    Button btnDownRecycleView;
 
     ImageButton imgRoute;
     RelativeLayout relativeLay;
@@ -161,11 +169,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
-        RecyclerView recyclerView = findViewById(R.id.recycleView);
+        final RecyclerView recyclerView = findViewById(R.id.recycleView);
         recyclerView.setLayoutManager(layoutManager);
         adapterRecycler = new RecyclerViewAdapter(this, listStore);
         adapterRecycler.setClickListener(this);
         recyclerView.setAdapter(adapterRecycler);
+
 
         spinner=(Spinner) findViewById(R.id.spinner);
         txtSpinner= findViewById(R.id.txtSpinner);
@@ -236,8 +245,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 sendRequest();
             }
         });
-
-
     }
 
     private void sendRequest() {
@@ -488,6 +495,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
     Position pos=null;
     String tenCuaHang, diaChiCuaHang;
+
     class PositionBestNear extends AsyncTask<String, Void, String>
     {
         @Override
@@ -527,6 +535,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     so = (SoapObject) so.getProperty("CuaHang");
                     store.setTenCuaHang(so.getPropertyAsString("TenCuaHang"));
                     store.setDiaChi(so.getPropertyAsString("DiaChi"));
+                    store.setHinhAnh(StringToBitMap(so.getPropertyAsString("HinhAnh")));
                     listStore.add(store);
                 }
             }
@@ -534,6 +543,17 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             {
                 Log.e("Lỗi", ex.toString());
             }
+            return null;
+        }
+    }
+
+    private Bitmap StringToBitMap(String hinhAnh) {
+        try {
+            byte[] encodeByte = Base64.decode(hinhAnh);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch (Exception e) {
+            e.getMessage();
             return null;
         }
     }

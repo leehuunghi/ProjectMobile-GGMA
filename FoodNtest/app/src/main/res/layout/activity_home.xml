@@ -19,6 +19,15 @@
         android:layout_height="match_parent"
         android:visibility="visible">
 
+        <Button
+            android:id="@+id/btnDownRecycleView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="173dp"
+            android:background="@drawable/down" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycleView"
             android:layout_width="match_parent"

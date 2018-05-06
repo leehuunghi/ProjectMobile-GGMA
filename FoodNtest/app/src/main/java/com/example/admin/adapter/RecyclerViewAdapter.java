@@ -2,6 +2,7 @@ package com.example.admin.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Store store = mData.get(position);
         holder.txtTenCuaHang.setText(store.getTenCuaHang());
         holder.txtDiaChi.setText(store.getDiaChi());
+        holder.imgimgAvatar.setImageBitmap(store.getHinhAnh());
 
     }
 
