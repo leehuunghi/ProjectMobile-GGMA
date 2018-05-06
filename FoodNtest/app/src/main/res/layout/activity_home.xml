@@ -14,23 +14,30 @@
         android:layout_weight="1"
         tools:context="com.example.admin.foodn_test.HomeActivity" />
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:layout_weight="1"
-        android:fitsSystemWindows="true">
+        android:visibility="visible">
 
-    </android.support.design.widget.NavigationView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycleView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:orientation="horizontal"
+            android:visibility="visible">
 
+        </android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
-        android:textSize="25sp">
+        android:textSize="25sp"
+        android:visibility="visible">
 
         <Spinner
             android:id="@+id/spinner"
@@ -44,6 +51,7 @@
             android:layout_y="30dp" />
 
         <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/spinner"
@@ -80,33 +88,18 @@
                 app:srcCompat="@android:drawable/arrow_down_float" />
 
 
-
         </LinearLayout>
 
         <ImageButton
             android:id="@+id/imgRoute"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
 
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="19dp"
-            android:layout_marginEnd="22dp"
-            android:layout_marginRight="20px"
+            android:layout_above="@+id/recycleView"
+            android:layout_alignEnd="@+id/spinner"
+            android:layout_alignRight="@+id/spinner"
+            android:layout_marginBottom="42dp"
             app:srcCompat="@android:drawable/presence_busy" />
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycleView"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:visibility="visible">
-
-        </android.support.v7.widget.RecyclerView>
-
-    </RelativeLayout>
 
     </RelativeLayout>
 
@@ -149,11 +142,23 @@
             <ImageButton
                 android:id="@+id/imgFindRoute"
                 android:layout_width="59dp"
-                android:layout_height="53dp"
+                android:layout_height="59dp"
                 app:srcCompat="@android:drawable/checkbox_on_background" />
 
         </LinearLayout>
+
     </RelativeLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:layout_weight="1"
+        android:fitsSystemWindows="true">
+
+
+    </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>
 

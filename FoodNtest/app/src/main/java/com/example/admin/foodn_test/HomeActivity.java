@@ -78,6 +78,7 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import java.io.IOException;
 import java.net.ConnectException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -219,31 +220,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 relativeLay.setVisibility(View.INVISIBLE);
                 relativeLayoutFind.setVisibility(View.VISIBLE);
                 txtStart.setText("Vị trí hiện tại");
-//                if (relativeLayoutFind.isEnabled()) {
-//                    if (locationAll != null) {
-//                        double latitude, longitude;
-//                        latitude = locationAll.getLatitude();
-//                        longitude = locationAll.getLongitude();
-
-//                        Geocoder geocoder = new Geocoder(HomeActivity.this, Locale.getDefault());
-//                        if (geocoder.isPresent()) {
-//
-//                            List<Address> list = Collections.emptyList();
-//                            try {
-//                                list.addAll(geocoder.getFromLocation(latitude, longitude, 1));
-//                            } catch (IOException e) {
-//                                Log.e(TAG, "geoLocate:  IOException: " + e.getMessage());
-//                            }
-//
-//
-//                            if (!list.isEmpty()) {
-//                                Address address = list.get(0);
-//                                String defaultStart = address.getAddressLine(0);
-//                                txtStart.setText("" + 1);
-//                            }
-//                        }
-//                    }
-//                }
             }
         });
 
@@ -341,38 +317,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
             layoutParams.setMargins(0, 0, 20, 100);
         }
-
-        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-            @Override
-            public void onMapLongClick(LatLng latLng) {
-                //Reset marker when already 2
-                if (listPoints.size() == 2) {
-                    listPoints.clear();
-                    mMap.clear();
-                }
-                //Save first point select
-                listPoints.add(latLng);
-                //Create marker
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(latLng);
-
-                if (listPoints.size() == 1) {
-                    //Add first marker to the map
-                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                } else {
-                    //Add second marker to the map
-                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                }
-                mMap.addMarker(markerOptions);
-
-                if (listPoints.size() == 2) {
-                    //Create the URL to get request from first marker to second marker
-                    String url = getRequestUrl(listPoints.get(0), listPoints.get(1));
-                    TaskRequestDirections taskRequestDirections = new TaskRequestDirections();
-                    taskRequestDirections.execute(url);
-                }
-            }
-        });
     }
 
     private String getRequestUrl(LatLng origin, LatLng dest) {
@@ -391,41 +335,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         //Create url to request
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + param;
         return url;
-    }
-
-    private String requestDirection(String reqUrl) throws IOException {
-        String responseString = "";
-        InputStream inputStream = null;
-        HttpURLConnection httpURLConnection = null;
-        try{
-            URL url = new URL(reqUrl);
-            httpURLConnection = (HttpURLConnection) url.openConnection();
-            httpURLConnection.connect();
-
-            //Get the response result
-            inputStream = httpURLConnection.getInputStream();
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-            StringBuffer stringBuffer = new StringBuffer();
-            String line = "";
-            while ((line = bufferedReader.readLine()) != null) {
-                stringBuffer.append(line);
-            }
-
-            responseString = stringBuffer.toString();
-            bufferedReader.close();
-            inputStreamReader.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (inputStream != null) {
-                inputStream.close();
-            }
-            httpURLConnection.disconnect();
-        }
-        return responseString;
     }
 
 
