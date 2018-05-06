@@ -1,9 +1,7 @@
 package com.example.admin.foodn_test;
 
 import android.Manifest;
-import android.annotation.TargetApi;
-import android.app.ActionBar;
-import android.app.Activity;
+
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
@@ -15,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,11 +25,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -40,6 +42,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.admin.adapter.RecyclerViewAdapter;
+import com.example.admin.config.Configuaration;
+import com.example.admin.model.Position;
+import com.example.admin.model.Store;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -58,16 +64,25 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.PropertyInfo;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
+
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.net.ssl.SSLPeerUnverifiedException;
 
-public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, LocationSource.OnLocationChangedListener {
+public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, LocationSource.OnLocationChangedListener, RecyclerViewAdapter.ItemClickListener {
 
     private GoogleMap mMap;
     View mapView;
     ProgressDialog progressDialog;
+    RecyclerViewAdapter adapterRecycler;
+    ArrayList<Store> listStore = new ArrayList<>();
 
     Spinner spinner;
     EditText txtSpinner;
@@ -112,6 +127,15 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     //, Toast.LENGTH_SHORT).show();
         //}
 
+        // set up the RecyclerView
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+
+        RecyclerView recyclerView = findViewById(R.id.recycleView);
+        recyclerView.setLayoutManager(layoutManager);
+        adapterRecycler = new RecyclerViewAdapter(this, listStore);
+        adapterRecycler.setClickListener(this);
+        recyclerView.setAdapter(adapterRecycler);
 
         spinner=(Spinner) findViewById(R.id.spinner);
         txtSpinner= findViewById(R.id.txtSpinner);
@@ -197,6 +221,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         } else {
         }
 
+        PositionBestNear positionBestNear = new PositionBestNear();
+        positionBestNear.execute();
+
 
         if (mapView != null &&
                 mapView.findViewById(Integer.parseInt("1")) != null) {
@@ -266,14 +293,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
                                     DEFAULT_ZOOM);
 
-                        } else {
+                        }
+                        else {
                         }
                     }
 
                 });
-        Toast.makeText(this,
-                "Hết getDeviceLocation"
-                , Toast.LENGTH_SHORT).show();
             }
 
 
@@ -320,6 +345,68 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 }
             }
+        }
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        moveCamera(new LatLng(adapterRecycler.getItem(position).getListPoint().get(0).getV(), adapterRecycler.getItem(position).getListPoint().get(0).getV1()),15);
+    }
+    Position pos=null;
+    String tenCuaHang, diaChiCuaHang;
+    class PositionBestNear extends AsyncTask<String, Void, String>
+    {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            for(int i=0; i<listStore.size();i++)
+            {
+                listStore.get(i).setMarker(mMap.addMarker(new MarkerOptions().position(new LatLng(listStore.get(i).getListPoint().get(0).getV(),listStore.get(i).getListPoint().get(0).getV1())).title(listStore.get(i).getTenCuaHang()).snippet(listStore.get(i).getDiaChi())));
+            }
+
+            super.onPostExecute(s);
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                SoapObject request = new SoapObject(Configuaration.NAME_SPACE,Configuaration.METHOD_GET_LIST_POSITION);
+
+                SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+                envelope.dotNet=true;
+                envelope.setOutputSoapObject(request);
+
+                HttpTransportSE httpTransportSE= new HttpTransportSE(Configuaration.SERVER_URL);
+                httpTransportSE.call(Configuaration.SOAP_ACTION_GET_LIST_POSITION, envelope);
+
+                SoapObject listSoapObject= (SoapObject) envelope.getResponse();
+                SoapObject so = null;
+
+                for (int i = 0; i < listSoapObject.getPropertyCount(); i++) {
+                    so = (SoapObject) listSoapObject.getProperty(i);
+                    Store store = new Store();
+                    pos= new Position(Double.parseDouble(so.getPropertyAsString("HoanhDo")),Double.parseDouble(so.getPropertyAsString("TungDo")));
+                    store.getListPoint().add(pos);
+                    so = (SoapObject) so.getProperty("CuaHang");
+                    store.setTenCuaHang(so.getPropertyAsString("TenCuaHang"));
+                    store.setDiaChi(so.getPropertyAsString("DiaChi"));
+                    listStore.add(store);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.e("Lỗi", ex.toString());
+            }
+            return null;
         }
     }
 }

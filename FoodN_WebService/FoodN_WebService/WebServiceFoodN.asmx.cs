@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
@@ -17,12 +18,12 @@ namespace FoodN_WebService
     public class WebServiceFoodN : System.Web.Services.WebService
     {
 
-        private DataClassFoodNDataDataContext db = new DataClassFoodNDataDataContext();
+        private DataClassesFoodNDataContext db = new DataClassesFoodNDataContext();
 
         [WebMethod]
-        public string HelloWorld()
+        public List<ViTri> GetListPointStore()
         {
-            return "Hello World";
+            return db.ViTris.ToList();
         }
 
         [WebMethod(Description = "Kiểm tra tài khoản mật khẩu")]

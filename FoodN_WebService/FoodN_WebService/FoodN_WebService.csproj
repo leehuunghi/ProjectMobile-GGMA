@@ -58,9 +58,9 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DataClassFoodNData.dbml">
+    <Content Include="DataClassesFoodN.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>DataClassFoodNData.designer.cs</LastGenOutput>
+      <LastGenOutput>DataClassesFoodN.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
     <None Include="Web.Debug.config">
@@ -77,12 +77,13 @@
     <Content Include="WebServiceFoodN.asmx" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataClassFoodNData.designer.cs">
+    <Compile Include="DataClassesFoodN.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DataClassFoodNData.dbml</DependentUpon>
+      <DependentUpon>DataClassesFoodN.dbml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Store.cs" />
     <Compile Include="WebServiceFoodN.asmx.cs">
       <DependentUpon>WebServiceFoodN.asmx</DependentUpon>
       <SubType>Component</SubType>
@@ -92,8 +93,8 @@
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="DataClassFoodNData.dbml.layout">
-      <DependentUpon>DataClassFoodNData.dbml</DependentUpon>
+    <None Include="DataClassesFoodN.dbml.layout">
+      <DependentUpon>DataClassesFoodN.dbml</DependentUpon>
     </None>
   </ItemGroup>
   <PropertyGroup>
