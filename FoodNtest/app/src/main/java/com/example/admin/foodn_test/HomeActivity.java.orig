@@ -19,7 +19,6 @@ import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -73,17 +72,22 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+<<<<<<< HEAD
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+=======
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
+
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+>>>>>>> e974d2b324b2e455237fb3c8a70368d3dca4f88d
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -91,7 +95,11 @@ import java.util.Locale;
 
 import javax.net.ssl.SSLPeerUnverifiedException;
 
-public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, LocationSource.OnLocationChangedListener, RecyclerViewAdapter.ItemClickListener, DirectionFinderListener {
+<<<<<<< HEAD
+public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, LocationSource.OnLocationChangedListener, DirectionFinderListener {
+=======
+public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, LocationSource.OnLocationChangedListener, RecyclerViewAdapter.ItemClickListener {
+>>>>>>> e974d2b324b2e455237fb3c8a70368d3dca4f88d
 
     private GoogleMap mMap;
     View mapView;
@@ -170,6 +178,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         spinner=(Spinner) findViewById(R.id.spinner);
         txtSpinner= findViewById(R.id.txtSpinner);
 
+<<<<<<< HEAD
+=======
+        imgDropDown = findViewById(R.id.imgDropDown);
+>>>>>>> e974d2b324b2e455237fb3c8a70368d3dca4f88d
         imgDropDown=findViewById(R.id.imgDropDown);
 
         List<String> list = new ArrayList<>();
@@ -217,8 +229,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View view) {
                 relativeLay.setVisibility(View.INVISIBLE);
                 relativeLayoutFind.setVisibility(View.VISIBLE);
+<<<<<<< HEAD
                 txtStart.setText("Khoa hoc Tu Nhien");
                 txtEnd.setText("Ben Thanh");
+=======
+                txtStart.setText("Vị trí hiện tại");
+>>>>>>> e974d2b324b2e455237fb3c8a70368d3dca4f88d
             }
         });
 
@@ -316,7 +332,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
             layoutParams.setMargins(0, 0, 20, 100);
         }
+<<<<<<< HEAD
 
+
+=======
+>>>>>>> e974d2b324b2e455237fb3c8a70368d3dca4f88d
     }
 
     @Override
@@ -325,6 +345,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         progressDialog = ProgressDialog.show(this, "Please wait.",
                 "Finding direction..!", true);
 
+<<<<<<< HEAD
         if (originMarkers != null) {
             for (Marker marker : originMarkers) {
                 marker.remove();
@@ -355,6 +376,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route.startLocation, 16));
             ((TextView) findViewById(R.id.tvDuration)).setText(route.duration.text);
             ((TextView) findViewById(R.id.tvDistance)).setText(route.distance.text);
+
             originMarkers.add(mMap.addMarker(new MarkerOptions()
                     .title(route.startAddress)
                     .position(route.startLocation)));
@@ -364,15 +386,20 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             Toast.makeText(this,
                     "Vô dc success"
                     , Toast.LENGTH_SHORT).show();
+
             PolylineOptions polylineOptions = new PolylineOptions().
                     geodesic(true).
                     color(Color.BLUE).
                     width(10);
+
             for (int i = 0; i < route.points.size(); i++)
                 polylineOptions.add(route.points.get(i));
+
             polylinePaths.add(mMap.addPolyline(polylineOptions));
         }
     }
+=======
+>>>>>>> e974d2b324b2e455237fb3c8a70368d3dca4f88d
 
     private void showDialogGPS() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -418,6 +445,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         Task location = mFusedLocationProviderClient.getLastLocation();
 
+<<<<<<< HEAD
                 location.addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
@@ -434,6 +462,22 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         Toast.makeText(this,
                 "Hết getDeviceLocation"
                 , Toast.LENGTH_SHORT).show();
+=======
+        location.addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if (task.isSuccessful()) {
+                    Location currentLocation = (Location) task.getResult();
+                    locationAll = currentLocation;
+                    moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
+                            DEFAULT_ZOOM);
+                        }
+                        else {
+                }
+            }
+
+        });
+>>>>>>> e974d2b324b2e455237fb3c8a70368d3dca4f88d
     }
 
 
@@ -482,6 +526,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
     }
+<<<<<<< HEAD
+=======
+
     @Override
     public void onItemClick(View view, int position) {
         moveCamera(new LatLng(adapterRecycler.getItem(position).getListPoint().get(0).getV(), adapterRecycler.getItem(position).getListPoint().get(0).getV1()),15);
@@ -501,6 +548,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             {
                 listStore.get(i).setMarker(mMap.addMarker(new MarkerOptions().position(new LatLng(listStore.get(i).getListPoint().get(0).getV(),listStore.get(i).getListPoint().get(0).getV1())).title(listStore.get(i).getTenCuaHang()).snippet(listStore.get(i).getDiaChi())));
             }
+
             super.onPostExecute(s);
         }
 
@@ -508,17 +556,22 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         protected void onProgressUpdate(Void... values) {
             super.onProgressUpdate(values);
         }
+
         @Override
         protected String doInBackground(String... strings) {
             try {
                 SoapObject request = new SoapObject(Configuaration.NAME_SPACE,Configuaration.METHOD_GET_LIST_POSITION);
+
                 SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
                 envelope.dotNet=true;
                 envelope.setOutputSoapObject(request);
+
                 HttpTransportSE httpTransportSE= new HttpTransportSE(Configuaration.SERVER_URL);
                 httpTransportSE.call(Configuaration.SOAP_ACTION_GET_LIST_POSITION, envelope);
+
                 SoapObject listSoapObject= (SoapObject) envelope.getResponse();
                 SoapObject so = null;
+
                 for (int i = 0; i < listSoapObject.getPropertyCount(); i++) {
                     so = (SoapObject) listSoapObject.getProperty(i);
                     Store store = new Store();
@@ -537,4 +590,5 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             return null;
         }
     }
+>>>>>>> e974d2b324b2e455237fb3c8a70368d3dca4f88d
 }

@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="FoodN_DB" Class="DataClassesFoodNDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=LEHUUNGHI\SQLEXPRESS;Initial Catalog=FoodN_DB;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="FoodN_DBConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.ChiTietDichVu" Member="ChiTietDichVus">
+    <Type Name="ChiTietDichVu">
+      <Column Name="ID_DichVu" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TenDichVu" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="ChiTietDichVu_DichVu" Member="DichVus" AccessModifier="Internal" ThisKey="ID_DichVu" OtherKey="ID_DichVu" Type="DichVu" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CuaHang" Member="CuaHangs">
+    <Type Name="CuaHang">
+      <Column Name="ID_CuaHang" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TenCuaHang" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="DiaChi" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="GioMoCua" Type="System.String" DbType="Char(6)" CanBeNull="true" />
+      <Column Name="GioDongCua" Type="System.String" DbType="Char(6)" CanBeNull="true" />
+      <Column Name="HinhAnh" Type="System.Byte[]" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="SDT_CuaHang" Type="System.String" DbType="Char(12)" CanBeNull="true" />
+      <Column Name="TenNhom" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="CuaHang_DanhGia" Member="DanhGias" AccessModifier="Internal" ThisKey="ID_CuaHang" OtherKey="ID_CuaHang" Type="DanhGia" />
+      <Association Name="CuaHang_DichVu" Member="DichVus" AccessModifier="Internal" ThisKey="ID_CuaHang" OtherKey="ID_CuaHang" Type="DichVu" />
+      <Association Name="CuaHang_Menu" Member="Menus" AccessModifier="Internal" ThisKey="ID_CuaHang" OtherKey="ID_CuaHang" Type="Menu" />
+      <Association Name="CuaHang_YeuThich" Member="YeuThiches" AccessModifier="Internal" ThisKey="ID_CuaHang" OtherKey="ID_CuaHang" Type="YeuThich" />
+      <Association Name="CuaHang_ViTri" Member="ViTri" AccessModifier="Internal" ThisKey="ID_CuaHang" OtherKey="ID" Type="ViTri" Cardinality="One" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DanhGia" Member="DanhGias">
+    <Type Name="DanhGia">
+      <Column Name="ID_User" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ID_CuaHang" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="XepLoai" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="CuaHang_DanhGia" Member="CuaHang" ThisKey="ID_CuaHang" OtherKey="ID_CuaHang" Type="CuaHang" IsForeignKey="true" />
+      <Association Name="FoodN_User_DanhGia" Member="FoodN_User" ThisKey="ID_User" OtherKey="ID_User" Type="FoodN_User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DichVu" Member="DichVus">
+    <Type Name="DichVu">
+      <Column Name="ID_CuaHang" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ID_DichVu" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="CuaHang_DichVu" Member="CuaHang" ThisKey="ID_CuaHang" OtherKey="ID_CuaHang" Type="CuaHang" IsForeignKey="true" />
+      <Association Name="ChiTietDichVu_DichVu" Member="ChiTietDichVu" ThisKey="ID_DichVu" OtherKey="ID_DichVu" Type="ChiTietDichVu" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FoodN_User" Member="FoodN_Users">
+    <Type Name="FoodN_User">
+      <Column Name="ID_User" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="HoTen" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="SDT_User" Type="System.String" DbType="Char(12)" CanBeNull="true" />
+      <Column Name="NgaySinh" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="GioiTinh" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MatKhau" Type="System.String" DbType="Char(40)" CanBeNull="true" />
+      <Column Name="Avatar" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="FoodN_User_DanhGia" Member="DanhGias" AccessModifier="Internal" ThisKey="ID_User" OtherKey="ID_User" Type="DanhGia" />
+      <Association Name="FoodN_User_YeuThich" Member="YeuThiches" AccessModifier="Internal" ThisKey="ID_User" OtherKey="ID_User" Type="YeuThich" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Menu" Member="Menus">
+    <Type Name="Menu">
+      <Column Name="ID_Menu" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ID_CuaHang" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="HinhAnhMenu" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="CuaHang_Menu" Member="CuaHang" ThisKey="ID_CuaHang" OtherKey="ID_CuaHang" Type="CuaHang" IsForeignKey="true" />
+      <Association Name="MonAn_Menu" Member="MonAn" ThisKey="ID_Menu" OtherKey="ID_Menu" Type="MonAn" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MonAn" Member="MonAns">
+    <Type Name="MonAn">
+      <Column Name="ID_Menu" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TenMon" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Gia" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="HinhAnhMonAn" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Muc" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="MonAn_Menu" Member="Menus" AccessModifier="Internal" ThisKey="ID_Menu" OtherKey="ID_Menu" Type="Menu" />
+    </Type>
+  </Table>
+  <Table Name="dbo.YeuThich" Member="YeuThiches">
+    <Type Name="YeuThich">
+      <Column Name="ID_User" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ID_CuaHang" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="CuaHang_YeuThich" Member="CuaHang" ThisKey="ID_CuaHang" OtherKey="ID_CuaHang" Type="CuaHang" IsForeignKey="true" />
+      <Association Name="FoodN_User_YeuThich" Member="FoodN_User" ThisKey="ID_User" OtherKey="ID_User" Type="FoodN_User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ViTri" Member="ViTris">
+    <Type Name="ViTri">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="HoanhDo" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="TungDo" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Association Name="CuaHang_ViTri" Member="CuaHang" ThisKey="ID" OtherKey="ID_CuaHang" Type="CuaHang" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
