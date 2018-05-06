@@ -80,10 +80,67 @@
                 app:srcCompat="@android:drawable/arrow_down_float" />
 
 
+
         </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/imgRoute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="19dp"
+            android:layout_marginEnd="22dp"
+            android:layout_marginRight="20px"
+            app:srcCompat="@android:drawable/presence_busy" />
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/relativeLayouFind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/txtStart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/cardview_light_background"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="" />
+
+                <EditText
+                    android:id="@+id/txtEnd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/cardview_light_background"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/imgFindRoute"
+                android:layout_width="59dp"
+                android:layout_height="53dp"
+                app:srcCompat="@android:drawable/checkbox_on_background" />
+
+        </LinearLayout>
+    </RelativeLayout>
 
 </android.support.v4.widget.DrawerLayout>
 

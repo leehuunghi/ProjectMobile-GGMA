@@ -5,7 +5,7 @@ package com.example.admin.config;
  */
 
 public class Configuaration {
-    public static String SERVER_URL="http://192.168.88.159/foodn/WebServiceFoodN.asmx";
+    public static String SERVER_URL="http://192.168.1.8/foodn/WebServiceFoodN.asmx";
     public static String NAME_SPACE="http://tempuri.org/";
     public static String METHOD_SIGN_UP="signUp";
     public static String METHOD_LOGIN = "login";
