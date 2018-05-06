@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/FoodNtest.iml" filepath="$PROJECT_DIR$/FoodNtest.iml" />
+      <module fileurl="file://E:\CNTT\PTUDAndroid\DoAnMon2\ProjectMobile-GGMA\FoodNtest\FoodNtest.iml" filepath="E:\CNTT\PTUDAndroid\DoAnMon2\ProjectMobile-GGMA\FoodNtest\FoodNtest.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://E:\CNTT\PTUDAndroid\DoAnMon2\ProjectMobile-GGMA\FoodNtest\app\app.iml" filepath="E:\CNTT\PTUDAndroid\DoAnMon2\ProjectMobile-GGMA\FoodNtest\app\app.iml" />
     </modules>
   </component>
 </project>

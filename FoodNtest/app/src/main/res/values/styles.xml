@@ -8,5 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="titleTextColor">@color/appbarColor</item>
         <item name="subtitleTextColor">@color/appbarColor</item>
+        <item name="android:textColorSecondary">@color/appbarColor</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_black_24dp</item>
     </style>
 </resources>
