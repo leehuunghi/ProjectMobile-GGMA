@@ -1,10 +1,14 @@
 package com.example.admin.foodn_test;
 
 import android.Manifest;
+<<<<<<< HEAD
+
+=======
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
+>>>>>>> 8a2da725a70864ca9d3057696f5c8bb19df16742
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
@@ -72,6 +76,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+<<<<<<< HEAD
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
@@ -79,9 +84,18 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import java.net.ConnectException;
+=======
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+>>>>>>> 8a2da725a70864ca9d3057696f5c8bb19df16742
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -170,7 +184,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         txtSpinner = findViewById(R.id.txtSpinner);
 
         imgDropDown = findViewById(R.id.imgDropDown);
-        imgDropDown=findViewById(R.id.imgDropDown);
 
         List<String> list = new ArrayList<>();
         list.add("Tìm kiếm theo món");
@@ -472,6 +485,24 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             // for ActivityCompat#requestPermissions for more details.
         }
         Task location = mFusedLocationProviderClient.getLastLocation();
+<<<<<<< HEAD
+                location.addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (task.isSuccessful()) {
+                            Location currentLocation = (Location) task.getResult();
+                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
+                                    DEFAULT_ZOOM);
+
+                        }
+                        else {
+                        }
+                    }
+
+                });
+            }
+
+=======
 
         location.addOnCompleteListener(new OnCompleteListener() {
             @Override
@@ -481,13 +512,16 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     locationAll = currentLocation;
                     moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
                             DEFAULT_ZOOM);
-                        }
-                        else {
+                } else {
                 }
             }
 
         });
+        Toast.makeText(this,
+                "Hết getDeviceLocation"
+                , Toast.LENGTH_SHORT).show();
     }
+>>>>>>> 8a2da725a70864ca9d3057696f5c8bb19df16742
 
 
     private void moveCamera(LatLng latLng, float zoom) {
@@ -535,6 +569,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+<<<<<<< HEAD
     @Override
     public void onItemClick(View view, int position) {
         moveCamera(new LatLng(adapterRecycler.getItem(position).getListPoint().get(0).getV(), adapterRecycler.getItem(position).getListPoint().get(0).getV1()),15);
@@ -546,10 +581,24 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+=======
+    public class TaskRequestDirections extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String responseString = "";
+            try {
+                responseString = requestDirection(strings[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return  responseString;
+>>>>>>> 8a2da725a70864ca9d3057696f5c8bb19df16742
         }
 
         @Override
         protected void onPostExecute(String s) {
+<<<<<<< HEAD
             for(int i=0; i<listStore.size();i++)
             {
                 listStore.get(i).setMarker(mMap.addMarker(new MarkerOptions().position(new LatLng(listStore.get(i).getListPoint().get(0).getV(),listStore.get(i).getListPoint().get(0).getV1())).title(listStore.get(i).getTenCuaHang()).snippet(listStore.get(i).getDiaChi())));
@@ -594,6 +643,151 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Log.e("Lỗi", ex.toString());
             }
             return null;
+=======
+            super.onPostExecute(s);
+            //Parse json here
+            TaskParser taskParser = new TaskParser();
+            taskParser.execute(s);
+        }
+    }
+
+    public class TaskParser extends AsyncTask<String, Void, List<List<HashMap<String, String>>> > {
+
+        @Override
+        protected List<List<HashMap<String, String>>> doInBackground(String... strings) {
+            JSONObject jsonObject = null;
+            List<List<HashMap<String, String>>> routes = null;
+            try {
+                jsonObject = new JSONObject(strings[0]);
+                DirectionsParser directionsParser = new DirectionsParser();
+                routes = directionsParser.parse(jsonObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return routes;
+        }
+
+        @Override
+        protected void onPostExecute(List<List<HashMap<String, String>>> lists) {
+            //Get list route and display it into the map
+
+            ArrayList points = null;
+
+            PolylineOptions polylineOptions = null;
+
+            for (List<HashMap<String, String>> path : lists) {
+                points = new ArrayList();
+                polylineOptions = new PolylineOptions();
+
+                for (HashMap<String, String> point : path) {
+                    double lat = Double.parseDouble(point.get("lat"));
+                    double lon = Double.parseDouble(point.get("lon"));
+
+                    points.add(new LatLng(lat,lon));
+                }
+
+                polylineOptions.addAll(points);
+                polylineOptions.width(15);
+                polylineOptions.color(Color.BLUE);
+                polylineOptions.geodesic(true);
+            }
+
+            if (polylineOptions!=null) {
+                mMap.addPolyline(polylineOptions);
+            } else {
+                Toast.makeText(getApplicationContext(), "Direction not found!", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    }
+
+    public class DirectionsParser {
+        /**
+         * Returns a list of lists containing latitude and longitude from a JSONObject
+         */
+        public List<List<HashMap<String, String>>> parse(JSONObject jObject) {
+
+            List<List<HashMap<String, String>>> routes = new ArrayList<List<HashMap<String, String>>>();
+            JSONArray jRoutes = null;
+            JSONArray jLegs = null;
+            JSONArray jSteps = null;
+
+            try {
+
+                jRoutes = jObject.getJSONArray("routes");
+
+                // Loop for all routes
+                for (int i = 0; i < jRoutes.length(); i++) {
+                    jLegs = ((JSONObject) jRoutes.get(i)).getJSONArray("legs");
+                    List path = new ArrayList<HashMap<String, String>>();
+
+                    //Loop for all legs
+                    for (int j = 0; j < jLegs.length(); j++) {
+                        jSteps = ((JSONObject) jLegs.get(j)).getJSONArray("steps");
+
+                        //Loop for all steps
+                        for (int k = 0; k < jSteps.length(); k++) {
+                            String polyline = "";
+                            polyline = (String) ((JSONObject) ((JSONObject) jSteps.get(k)).get("polyline")).get("points");
+                            List list = decodePolyline(polyline);
+
+                            //Loop for all points
+                            for (int l = 0; l < list.size(); l++) {
+                                HashMap<String, String> hm = new HashMap<String, String>();
+                                hm.put("lat", Double.toString(((LatLng) list.get(l)).latitude));
+                                hm.put("lon", Double.toString(((LatLng) list.get(l)).longitude));
+                                path.add(hm);
+                            }
+                        }
+                        routes.add(path);
+                    }
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+            }
+
+            return routes;
+        }
+
+        /**
+         * Method to decode polyline
+         * Source : http://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java
+         */
+        private List decodePolyline(String encoded) {
+
+            List poly = new ArrayList();
+            int index = 0, len = encoded.length();
+            int lat = 0, lng = 0;
+
+            while (index < len) {
+                int b, shift = 0, result = 0;
+                do {
+                    b = encoded.charAt(index++) - 63;
+                    result |= (b & 0x1f) << shift;
+                    shift += 5;
+                } while (b >= 0x20);
+                int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+                lat += dlat;
+
+                shift = 0;
+                result = 0;
+                do {
+                    b = encoded.charAt(index++) - 63;
+                    result |= (b & 0x1f) << shift;
+                    shift += 5;
+                } while (b >= 0x20);
+                int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+                lng += dlng;
+
+                LatLng p = new LatLng((((double) lat / 1E5)),
+                        (((double) lng / 1E5)));
+                poly.add(p);
+            }
+
+            return poly;
+>>>>>>> 8a2da725a70864ca9d3057696f5c8bb19df16742
         }
     }
 }

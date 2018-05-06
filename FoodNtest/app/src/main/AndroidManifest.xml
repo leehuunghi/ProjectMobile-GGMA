@@ -74,6 +74,7 @@
             android:name=".HomeActivity"
             android:label="@string/home_label" />
         <activity android:name=".StoreDetailActivity"></activity>
+
     </application>
 
 </manifest>
