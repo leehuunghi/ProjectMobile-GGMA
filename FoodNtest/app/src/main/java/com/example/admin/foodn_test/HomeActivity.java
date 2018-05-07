@@ -81,7 +81,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.kobjects.base64.Base64;
@@ -98,16 +97,16 @@ import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 import javax.net.ssl.SSLPeerUnverifiedException;
 
-public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, LocationSource.OnLocationChangedListener, RecyclerViewAdapter.ItemClickListener, DirectionFinderListener {
+public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, LocationSource.OnLocationChangedListener, RecyclerViewAdapter.ItemClickListener {
 
     private GoogleMap mMap;
     View mapView;
@@ -115,7 +114,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     RecyclerViewAdapter adapterRecycler;
     ArrayList<Store> listStore = new ArrayList<>();
 
-    String DIRECTION_URL_API = "https://maps.googleapis.com/maps/api/directions/json?";
+    ArrayList<LatLng> listPoints;
 
     Spinner spinner;
     EditText txtSpinner;
@@ -129,14 +128,15 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     RelativeLayout relativeLayoutFind;
 
     EditText txtStart;
-    TextView txtEnd;
+    EditText txtEnd;
     ImageButton imgFindRoute;
 
-    Location locationCurrent=null;
-    Location locationDes=null;
 
     private ImageView imgMyLocation;
     private DrawerLayout mDrawerLayout;
+
+    Location locationCurrent=null;
+    Location locationDes=null;
 
     private List<Marker> originMarkers = new ArrayList<>();
     private List<Marker> destinationMarkers = new ArrayList<>();
@@ -160,12 +160,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        locationDes.setLatitude(10.5632);
-        locationDes.setLongitude(101.5632);
-
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Đang tải... Vui lòng đợi!");
         progressDialog.setCanceledOnTouchOutside(false);
+        listPoints = new ArrayList<>();
 
         if (progressDialog != null) {
             progressDialog.show();
@@ -274,7 +272,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 relativeLay.setVisibility(View.INVISIBLE);
                 relativeLayoutFind.setVisibility(View.VISIBLE);
                 txtStart.setText("Vị trí của bạn");
-                txtEnd.setText("Ben Thanh");
+                txtEnd.setText("Quán nào đó");
             }
         });
 
@@ -289,9 +287,46 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         imgFindRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getJson(locationCurrent,locationDes);
+                if (listPoints.size() > 0) {
+                    listPoints.clear();
+                    mMap.clear();
+                }
+                LatLng latLng1=new LatLng(locationCurrent.getLatitude(), locationCurrent.getLongitude());
+                //Save first point select
+                listPoints.add(latLng1);
+
+                //có địa điểm thì lưu vô locationDes rồi thay cho 2 số này
+                LatLng latLng2=new LatLng(10.777341, 106.668814);
+                listPoints.add(latLng2);
+
+                //Create marker
+                MarkerOptions markerOptionsCurrent = new MarkerOptions();
+                markerOptionsCurrent.position(latLng1);
+
+                MarkerOptions markerOptionsDes = new MarkerOptions();
+                markerOptionsDes.position(latLng2);
+
+
+                if (listPoints.size() == 1) {
+                    //Add first marker to the map
+                    markerOptionsCurrent.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                } else {
+                    //Add second marker to the map
+                    markerOptionsCurrent.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                    markerOptionsDes.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                }
+                mMap.addMarker(markerOptionsCurrent);
+                mMap.addMarker(markerOptionsDes);
+
+                if (listPoints.size() == 2) {
+                    //Create the URL to get request from first marker to second marker
+                    String url = getRequestUrl(listPoints.get(0), listPoints.get(1));
+                    TaskRequestDirections taskRequestDirections = new TaskRequestDirections();
+                    taskRequestDirections.execute(url);
+                }
             }
         });
+
         mDrawerLayout.addDrawerListener(
                 new DrawerLayout.DrawerListener() {
                     @Override
@@ -318,6 +353,132 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    public class TaskRequestDirections extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String responseString = "";
+            try {
+                responseString = requestDirection(strings[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return  responseString;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            //Parse json here
+            TaskParser taskParser = new TaskParser();
+            taskParser.execute(s);
+        }
+    }
+
+    public class TaskParser extends AsyncTask<String, Void, List<List<HashMap<String, String>>> > {
+
+        @Override
+        protected List<List<HashMap<String, String>>> doInBackground(String... strings) {
+            JSONObject jsonObject = null;
+            List<List<HashMap<String, String>>> routes = null;
+            try {
+                jsonObject = new JSONObject(strings[0]);
+                DirectionsParser directionsParser = new DirectionsParser();
+                routes = directionsParser.parse(jsonObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return routes;
+        }
+
+        @Override
+        protected void onPostExecute(List<List<HashMap<String, String>>> lists) {
+            //Get list route and display it into the map
+
+            ArrayList points = null;
+
+            PolylineOptions polylineOptions = null;
+
+            for (List<HashMap<String, String>> path : lists) {
+                points = new ArrayList();
+                polylineOptions = new PolylineOptions();
+
+                for (HashMap<String, String> point : path) {
+                    double lat = Double.parseDouble(point.get("lat"));
+                    double lon = Double.parseDouble(point.get("lon"));
+
+                    points.add(new LatLng(lat,lon));
+                }
+
+                polylineOptions.addAll(points);
+                polylineOptions.width(8);
+                polylineOptions.color(Color.RED);
+                polylineOptions.geodesic(true);
+            }
+
+            if (polylineOptions!=null) {
+                mMap.addPolyline(polylineOptions);
+            } else {
+                Toast.makeText(getApplicationContext(), "Direction not found!", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    }
+
+    private String requestDirection(String reqUrl) throws IOException {
+        String responseString = "";
+        InputStream inputStream = null;
+        HttpURLConnection httpURLConnection = null;
+        try{
+            URL url = new URL(reqUrl);
+            httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.connect();
+
+            //Get the response result
+            inputStream = httpURLConnection.getInputStream();
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            StringBuffer stringBuffer = new StringBuffer();
+            String line = "";
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuffer.append(line);
+            }
+
+            responseString = stringBuffer.toString();
+            bufferedReader.close();
+            inputStreamReader.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+            httpURLConnection.disconnect();
+        }
+        return responseString;
+    }
+
+
+    private String getRequestUrl(LatLng origin , LatLng dest) {
+        //Value of origin
+        String str_org = "origin=" + origin.latitude +","+origin.longitude;
+        //Value of destination
+        String str_dest = "destination=" + dest.latitude+","+dest.longitude;
+        //Set value enable the sensor
+        String sensor = "sensor=false";
+        //Mode for find direction
+        String mode = "mode=driving";
+        //Build the full param
+        String param = str_org +"&" + str_dest + "&" +sensor+"&" +mode;
+        //Output format
+        String output = "json";
+        //Create url to request
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + param;
+        return url;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -326,119 +487,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void getJson(Location locationCurrent, Location locationDes) {
-        String sendStr= DIRECTION_URL_API  +"origin=" + locationCurrent.getLatitude() +","+locationCurrent.getLongitude()
-                + "&destination=" + locationDes.getLatitude()+","+locationDes.getLongitude() + "&sensor=false" + "&mode=driving";
-
-      class DownloadRawData extends AsyncTask<String, Void, String> {
-
-            @Override
-            protected String doInBackground(String... params) {
-                String link = params[0];
-                try {
-                    URL url = new URL(link);
-                    InputStream is = url.openConnection().getInputStream();
-                    StringBuffer buffer = new StringBuffer();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        buffer.append(line + "\n");
-                    }
-
-                    return buffer.toString();
-
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(String res) {
-                try {
-                    parseJSon(res);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }
-
-    }
-
-    private void parseJSon(String data) throws JSONException {
-        if (data == null)
-            return;
-
-        List<Route> routes = new ArrayList<Route>();
-        JSONObject jsonData = new JSONObject(data);
-
-
-        JSONArray jsonRoutes = jsonData.getJSONArray("routes");
-        for (int i = 0; i < jsonRoutes.length(); i++) {
-            JSONObject jsonRoute = jsonRoutes.getJSONObject(i);
-            Route route = new Route();
-
-            JSONObject overview_polylineJson = jsonRoute.getJSONObject("overview_polyline");
-            JSONArray jsonLegs = jsonRoute.getJSONArray("legs");
-            JSONObject jsonLeg = jsonLegs.getJSONObject(0);
-            JSONObject jsonDistance = jsonLeg.getJSONObject("distance");
-            JSONObject jsonDuration = jsonLeg.getJSONObject("duration");
-            JSONObject jsonEndLocation = jsonLeg.getJSONObject("end_location");
-            JSONObject jsonStartLocation = jsonLeg.getJSONObject("start_location");
-
-            route.distance = new Distance(jsonDistance.getString("text"), jsonDistance.getInt("value"));
-            route.duration = new Duration(jsonDuration.getString("text"), jsonDuration.getInt("value"));
-            route.endAddress = jsonLeg.getString("end_address");
-            route.startAddress = jsonLeg.getString("start_address");
-            route.startLocation = new LatLng(jsonStartLocation.getDouble("lat"), jsonStartLocation.getDouble("lng"));
-            route.endLocation = new LatLng(jsonEndLocation.getDouble("lat"), jsonEndLocation.getDouble("lng"));
-            route.points = decodePolyLine(overview_polylineJson.getString("points"));
-
-            routes.add(route);
-        }
-        this.onDirectionFinderSuccess(routes);
-    }
-
-    private List<LatLng> decodePolyLine(String poly) {
-        int len = poly.length();
-        int index = 0;
-        List<LatLng> decoded = new ArrayList<LatLng>();
-        int lat = 0;
-        int lng = 0;
-
-        while (index < len) {
-            int b;
-            int shift = 0;
-            int result = 0;
-            do {
-                b = poly.charAt(index++) - 63;
-                result |= (b & 0x1f) << shift;
-                shift += 5;
-            } while (b >= 0x20);
-            int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-            lat += dlat;
-
-            shift = 0;
-            result = 0;
-            do {
-                b = poly.charAt(index++) - 63;
-                result |= (b & 0x1f) << shift;
-                shift += 5;
-            } while (b >= 0x20);
-            int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-            lng += dlng;
-
-            decoded.add(new LatLng(
-                    lat / 100000d, lng / 100000d
-            ));
-        }
-        return decoded;
     }
 
     @Override
@@ -499,60 +547,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    @Override
-    public void onDirectionFinderStart() {
-
-        progressDialog = ProgressDialog.show(this, "Please wait.",
-                "Finding direction..!", true);
-
-        if (originMarkers != null) {
-            for (Marker marker : originMarkers) {
-                marker.remove();
-            }
-        }
-
-        if (destinationMarkers != null) {
-            for (Marker marker : destinationMarkers) {
-                marker.remove();
-            }
-        }
-
-        if (polylinePaths != null) {
-            for (Polyline polyline:polylinePaths ) {
-                polyline.remove();
-            }
-        }
-    }
-
-    @Override
-    public void onDirectionFinderSuccess(List<Route> routes) {
-        progressDialog.dismiss();
-        polylinePaths = new ArrayList<>();
-        originMarkers = new ArrayList<>();
-        destinationMarkers = new ArrayList<>();
-
-        for (Route route : routes) {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route.startLocation, 16));
-            ((TextView) findViewById(R.id.tvDuration)).setText(route.duration.text);
-            ((TextView) findViewById(R.id.tvDistance)).setText(route.distance.text);
-            originMarkers.add(mMap.addMarker(new MarkerOptions()
-                    .title(route.startAddress)
-                    .position(route.startLocation)));
-            destinationMarkers.add(mMap.addMarker(new MarkerOptions()
-                    .title(route.endAddress)
-                    .position(route.endLocation)));
-            Toast.makeText(this,
-                    "Vô dc success"
-                    , Toast.LENGTH_SHORT).show();
-            PolylineOptions polylineOptions = new PolylineOptions().
-                    geodesic(true).
-                    color(Color.BLUE).
-                    width(10);
-            for (int i = 0; i < route.points.size(); i++)
-                polylineOptions.add(route.points.get(i));
-            polylinePaths.add(mMap.addPolyline(polylineOptions));
-        }
-    }
 
     private void showDialogGPS() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
