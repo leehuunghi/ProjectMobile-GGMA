@@ -135,6 +135,19 @@
 
         </LinearLayout>
 
+<<<<<<< HEAD
+=======
+        <ImageButton
+            android:id="@+id/imgRoute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/recycleView"
+            android:layout_alignEnd="@+id/spinner"
+            android:layout_alignRight="@+id/spinner"
+            android:layout_marginBottom="42dp"
+            app:srcCompat="@android:drawable/presence_busy" />
+
+>>>>>>> b56cdbfb0365e4da1637244575205b9098e2dd8e
     </RelativeLayout>
 
     <RelativeLayout

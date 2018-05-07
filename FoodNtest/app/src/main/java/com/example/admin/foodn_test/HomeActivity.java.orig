@@ -13,12 +13,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -32,16 +35,25 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+<<<<<<< HEAD
+import android.support.v7.widget.Toolbar;
+=======
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.support.v7.widget.helper.ItemTouchHelper.SimpleCallback;
+>>>>>>> b56cdbfb0365e4da1637244575205b9098e2dd8e
 import android.text.Layout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -72,22 +84,18 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-<<<<<<< HEAD
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-=======
+import org.kobjects.base64.Base64;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
-
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
->>>>>>> e974d2b324b2e455237fb3c8a70368d3dca4f88d
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -95,11 +103,7 @@ import java.util.Locale;
 
 import javax.net.ssl.SSLPeerUnverifiedException;
 
-<<<<<<< HEAD
-public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, LocationSource.OnLocationChangedListener, DirectionFinderListener {
-=======
-public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, LocationSource.OnLocationChangedListener, RecyclerViewAdapter.ItemClickListener {
->>>>>>> e974d2b324b2e455237fb3c8a70368d3dca4f88d
+public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, LocationSource.OnLocationChangedListener, RecyclerViewAdapter.ItemClickListener, DirectionFinderListener {
 
     private GoogleMap mMap;
     View mapView;
@@ -111,15 +115,24 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     EditText txtSpinner;
     ImageButton imgDropDown;
     ImageButton imgSearch;
+<<<<<<< HEAD
+    ImageView mPicker;
+=======
+    Button btnDownRecycleView;
+>>>>>>> b56cdbfb0365e4da1637244575205b9098e2dd8e
 
-    ImageButton imgRoute;
+    ImageView imgRoute;
     RelativeLayout relativeLay;
     RelativeLayout relativeLayoutFind;
 
     EditText txtStart;
     EditText txtEnd;
     ImageButton imgFindRoute;
-    Geocoder geocoder;
+
+    DrawerLayout drawerLayout;
+
+    private ImageView imgMyLocation;
+    private DrawerLayout mDrawerLayout;
 
     Location locationAll=null;
     private List<Marker> originMarkers = new ArrayList<>();
@@ -152,36 +165,72 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             progressDialog.show();
         }
 
+        mPicker = (ImageView) findViewById(R.id.imgMyLocation);
         getLocationPermission();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mapView = mapFragment.getView();
+
+<<<<<<< HEAD
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+
         NavigationView navigationView = findViewById(R.id.nav_view);
-        //if (navigationView != null) {
-            //Toast.makeText(this,
-                   // "Có Nav r nha"
-                    //, Toast.LENGTH_SHORT).show();
-        //}
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+                        mDrawerLayout.closeDrawers();
+
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+
+                        return true;
+                    }
+                });
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        android.support.v7.app.ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+=======
+        drawerLayout=findViewById(R.id.layoutdrawer);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        if (navigationView != null) {
+            Toast.makeText(this,
+                    "Có Nav r nha"
+                    , Toast.LENGTH_SHORT).show();
+        }
+
+>>>>>>> b56cdbfb0365e4da1637244575205b9098e2dd8e
 
         // set up the RecyclerView
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        
+        imgMyLocation = (ImageView) findViewById(R.id.imgMyLocation);
+//        imgMyLocation.setOnClickListener(new View.OnClickListener() {
+//                                             @Override
+//                                             public void onClick(View v) {
+//                                                 getMyLocation();
+//                                             }
+//                                         });
 
-        RecyclerView recyclerView = findViewById(R.id.recycleView);
+        final RecyclerView recyclerView = findViewById(R.id.recycleView);
         recyclerView.setLayoutManager(layoutManager);
         adapterRecycler = new RecyclerViewAdapter(this, listStore);
         adapterRecycler.setClickListener(this);
         recyclerView.setAdapter(adapterRecycler);
 
+
         spinner=(Spinner) findViewById(R.id.spinner);
         txtSpinner= findViewById(R.id.txtSpinner);
 
-<<<<<<< HEAD
-=======
-        imgDropDown = findViewById(R.id.imgDropDown);
->>>>>>> e974d2b324b2e455237fb3c8a70368d3dca4f88d
         imgDropDown=findViewById(R.id.imgDropDown);
 
         List<String> list = new ArrayList<>();
@@ -229,12 +278,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View view) {
                 relativeLay.setVisibility(View.INVISIBLE);
                 relativeLayoutFind.setVisibility(View.VISIBLE);
-<<<<<<< HEAD
                 txtStart.setText("Khoa hoc Tu Nhien");
                 txtEnd.setText("Ben Thanh");
-=======
-                txtStart.setText("Vị trí hiện tại");
->>>>>>> e974d2b324b2e455237fb3c8a70368d3dca4f88d
             }
         });
 
@@ -252,8 +297,45 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 sendRequest();
             }
         });
+<<<<<<< HEAD
+
+        mDrawerLayout.addDrawerListener(
+                new DrawerLayout.DrawerListener() {
+                    @Override
+                    public void onDrawerSlide(View drawerView, float slideOffset) {
+                        // Respond when the drawer's position changes
+                    }
+
+                    @Override
+                    public void onDrawerOpened(View drawerView) {
+                        // Respond when the drawer is opened
+                    }
+
+                    @Override
+                    public void onDrawerClosed(View drawerView) {
+                        // Respond when the drawer is closed
+                    }
+
+                    @Override
+                    public void onDrawerStateChanged(int newState) {
+                        // Respond when the drawer motion state changes
+                    }
+                }
+        );
 
 
+=======
+>>>>>>> b56cdbfb0365e4da1637244575205b9098e2dd8e
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void sendRequest() {
@@ -308,12 +390,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             getDeviceLocation();
         }
 
-        if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
-
-        } else {
-        }
+//        if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+//                == PackageManager.PERMISSION_GRANTED) {
+//            mMap.setMyLocationEnabled(true);
+//
+//        } else {
+//        }
 
         PositionBestNear positionBestNear = new PositionBestNear();
         positionBestNear.execute();
@@ -332,11 +414,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
             layoutParams.setMargins(0, 0, 20, 100);
         }
-<<<<<<< HEAD
 
-
-=======
->>>>>>> e974d2b324b2e455237fb3c8a70368d3dca4f88d
     }
 
     @Override
@@ -345,7 +423,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         progressDialog = ProgressDialog.show(this, "Please wait.",
                 "Finding direction..!", true);
 
-<<<<<<< HEAD
         if (originMarkers != null) {
             for (Marker marker : originMarkers) {
                 marker.remove();
@@ -376,7 +453,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route.startLocation, 16));
             ((TextView) findViewById(R.id.tvDuration)).setText(route.duration.text);
             ((TextView) findViewById(R.id.tvDistance)).setText(route.distance.text);
-
             originMarkers.add(mMap.addMarker(new MarkerOptions()
                     .title(route.startAddress)
                     .position(route.startLocation)));
@@ -386,20 +462,15 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             Toast.makeText(this,
                     "Vô dc success"
                     , Toast.LENGTH_SHORT).show();
-
             PolylineOptions polylineOptions = new PolylineOptions().
                     geodesic(true).
                     color(Color.BLUE).
                     width(10);
-
             for (int i = 0; i < route.points.size(); i++)
                 polylineOptions.add(route.points.get(i));
-
             polylinePaths.add(mMap.addPolyline(polylineOptions));
         }
     }
-=======
->>>>>>> e974d2b324b2e455237fb3c8a70368d3dca4f88d
 
     private void showDialogGPS() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -445,7 +516,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         Task location = mFusedLocationProviderClient.getLastLocation();
 
-<<<<<<< HEAD
                 location.addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
@@ -462,22 +532,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         Toast.makeText(this,
                 "Hết getDeviceLocation"
                 , Toast.LENGTH_SHORT).show();
-=======
-        location.addOnCompleteListener(new OnCompleteListener() {
-            @Override
-            public void onComplete(@NonNull Task task) {
-                if (task.isSuccessful()) {
-                    Location currentLocation = (Location) task.getResult();
-                    locationAll = currentLocation;
-                    moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
-                            DEFAULT_ZOOM);
-                        }
-                        else {
-                }
-            }
-
-        });
->>>>>>> e974d2b324b2e455237fb3c8a70368d3dca4f88d
     }
 
 
@@ -526,15 +580,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
     }
-<<<<<<< HEAD
-=======
-
     @Override
     public void onItemClick(View view, int position) {
         moveCamera(new LatLng(adapterRecycler.getItem(position).getListPoint().get(0).getV(), adapterRecycler.getItem(position).getListPoint().get(0).getV1()),15);
     }
     Position pos=null;
     String tenCuaHang, diaChiCuaHang;
+
     class PositionBestNear extends AsyncTask<String, Void, String>
     {
         @Override
@@ -548,7 +600,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             {
                 listStore.get(i).setMarker(mMap.addMarker(new MarkerOptions().position(new LatLng(listStore.get(i).getListPoint().get(0).getV(),listStore.get(i).getListPoint().get(0).getV1())).title(listStore.get(i).getTenCuaHang()).snippet(listStore.get(i).getDiaChi())));
             }
-
             super.onPostExecute(s);
         }
 
@@ -556,22 +607,17 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         protected void onProgressUpdate(Void... values) {
             super.onProgressUpdate(values);
         }
-
         @Override
         protected String doInBackground(String... strings) {
             try {
                 SoapObject request = new SoapObject(Configuaration.NAME_SPACE,Configuaration.METHOD_GET_LIST_POSITION);
-
                 SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
                 envelope.dotNet=true;
                 envelope.setOutputSoapObject(request);
-
                 HttpTransportSE httpTransportSE= new HttpTransportSE(Configuaration.SERVER_URL);
                 httpTransportSE.call(Configuaration.SOAP_ACTION_GET_LIST_POSITION, envelope);
-
                 SoapObject listSoapObject= (SoapObject) envelope.getResponse();
                 SoapObject so = null;
-
                 for (int i = 0; i < listSoapObject.getPropertyCount(); i++) {
                     so = (SoapObject) listSoapObject.getProperty(i);
                     Store store = new Store();
@@ -580,6 +626,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     so = (SoapObject) so.getProperty("CuaHang");
                     store.setTenCuaHang(so.getPropertyAsString("TenCuaHang"));
                     store.setDiaChi(so.getPropertyAsString("DiaChi"));
+                    store.setHinhAnh(StringToBitMap(so.getPropertyAsString("HinhAnh")));
                     listStore.add(store);
                 }
             }
@@ -590,5 +637,15 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             return null;
         }
     }
->>>>>>> e974d2b324b2e455237fb3c8a70368d3dca4f88d
+
+    private Bitmap StringToBitMap(String hinhAnh) {
+        try {
+            byte[] encodeByte = Base64.decode(hinhAnh);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch (Exception e) {
+            e.getMessage();
+            return null;
+        }
+    }
 }
