@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="horizontal"
-    android:id="@+id/layoutdrawer">
+    tools:context=".HomeActivity">
 
     <fragment
         android:id="@+id/map"
@@ -135,6 +135,18 @@
 
         </LinearLayout>
 
+<<<<<<< HEAD
+        <ImageButton
+            android:id="@+id/imgRoute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/spinner"
+            android:layout_alignRight="@+id/spinner"
+            android:layout_marginBottom="42dp"
+            app:srcCompat="@android:drawable/presence_busy" />
+
+=======
+>>>>>>> f833bffc09c0a220cd9c2d74156faf8dd2a4ea17
     </RelativeLayout>
 
     <RelativeLayout
