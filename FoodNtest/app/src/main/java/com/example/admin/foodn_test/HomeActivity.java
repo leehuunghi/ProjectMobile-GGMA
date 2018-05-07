@@ -79,17 +79,24 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.kobjects.base64.Base64;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -106,6 +113,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     RecyclerViewAdapter adapterRecycler;
     ArrayList<Store> listStore = new ArrayList<>();
 
+    String DIRECTION_URL_API = "https://maps.googleapis.com/maps/api/directions/json?";
+
     Spinner spinner;
     EditText txtSpinner;
     ImageButton imgDropDown;
@@ -117,12 +126,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     RelativeLayout relativeLayoutFind;
 
     EditText txtStart;
-    EditText txtEnd;
+    TextView txtEnd;
     ImageButton imgFindRoute;
 
-    DrawerLayout drawerLayout;
+    Location locationCurrent=null;
+    Location locationDes=null;
 
-    Location locationAll=null;
     private List<Marker> originMarkers = new ArrayList<>();
     private List<Marker> destinationMarkers = new ArrayList<>();
     private List<Polyline> polylinePaths = new ArrayList<>();
@@ -145,6 +154,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        locationDes.setLatitude(10.5632);
+        locationDes.setLongitude(101.5632);
+
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Đang tải... Vui lòng đợi!");
         progressDialog.setCanceledOnTouchOutside(false);
@@ -160,13 +172,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
         mapView = mapFragment.getView();
 
-        drawerLayout=findViewById(R.id.layoutdrawer);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        if (navigationView != null) {
-            Toast.makeText(this,
-                    "Có Nav r nha"
-                    , Toast.LENGTH_SHORT).show();
-        }
 
 
         // set up the RecyclerView
@@ -230,7 +235,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View view) {
                 relativeLay.setVisibility(View.INVISIBLE);
                 relativeLayoutFind.setVisibility(View.VISIBLE);
-                txtStart.setText("Khoa hoc Tu Nhien");
+                txtStart.setText("Vị trí của bạn");
                 txtEnd.setText("Ben Thanh");
             }
         });
@@ -246,31 +251,123 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         imgFindRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendRequest();
+                getJson(locationCurrent,locationDes);
             }
         });
     }
 
-    private void sendRequest() {
-        String origin = txtStart.getText().toString();
-        String destination = txtEnd.getText().toString();
+    private void getJson(Location locationCurrent, Location locationDes) {
+        String sendStr= DIRECTION_URL_API  +"origin=" + locationCurrent.getLatitude() +","+locationCurrent.getLongitude()
+                + "&destination=" + locationDes.getLatitude()+","+locationDes.getLongitude() + "&sensor=false" + "&mode=driving";
 
-        if (origin.isEmpty()) {
-            Toast.makeText(this, "Please enter origin address!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (destination.isEmpty()) {
-            Toast.makeText(this, "Please enter destination address!", Toast.LENGTH_SHORT).show();
-            return;
+      class DownloadRawData extends AsyncTask<String, Void, String> {
+
+            @Override
+            protected String doInBackground(String... params) {
+                String link = params[0];
+                try {
+                    URL url = new URL(link);
+                    InputStream is = url.openConnection().getInputStream();
+                    StringBuffer buffer = new StringBuffer();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        buffer.append(line + "\n");
+                    }
+
+                    return buffer.toString();
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(String res) {
+                try {
+                    parseJSon(res);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
         }
 
-        try {
-            new DirectionFinder(this, origin, destination).execute();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
     }
 
+    private void parseJSon(String data) throws JSONException {
+        if (data == null)
+            return;
+
+        List<Route> routes = new ArrayList<Route>();
+        JSONObject jsonData = new JSONObject(data);
+
+
+        JSONArray jsonRoutes = jsonData.getJSONArray("routes");
+        for (int i = 0; i < jsonRoutes.length(); i++) {
+            JSONObject jsonRoute = jsonRoutes.getJSONObject(i);
+            Route route = new Route();
+
+            JSONObject overview_polylineJson = jsonRoute.getJSONObject("overview_polyline");
+            JSONArray jsonLegs = jsonRoute.getJSONArray("legs");
+            JSONObject jsonLeg = jsonLegs.getJSONObject(0);
+            JSONObject jsonDistance = jsonLeg.getJSONObject("distance");
+            JSONObject jsonDuration = jsonLeg.getJSONObject("duration");
+            JSONObject jsonEndLocation = jsonLeg.getJSONObject("end_location");
+            JSONObject jsonStartLocation = jsonLeg.getJSONObject("start_location");
+
+            route.distance = new Distance(jsonDistance.getString("text"), jsonDistance.getInt("value"));
+            route.duration = new Duration(jsonDuration.getString("text"), jsonDuration.getInt("value"));
+            route.endAddress = jsonLeg.getString("end_address");
+            route.startAddress = jsonLeg.getString("start_address");
+            route.startLocation = new LatLng(jsonStartLocation.getDouble("lat"), jsonStartLocation.getDouble("lng"));
+            route.endLocation = new LatLng(jsonEndLocation.getDouble("lat"), jsonEndLocation.getDouble("lng"));
+            route.points = decodePolyLine(overview_polylineJson.getString("points"));
+
+            routes.add(route);
+        }
+        this.onDirectionFinderSuccess(routes);
+    }
+
+    private List<LatLng> decodePolyLine(String poly) {
+        int len = poly.length();
+        int index = 0;
+        List<LatLng> decoded = new ArrayList<LatLng>();
+        int lat = 0;
+        int lng = 0;
+
+        while (index < len) {
+            int b;
+            int shift = 0;
+            int result = 0;
+            do {
+                b = poly.charAt(index++) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lat += dlat;
+
+            shift = 0;
+            result = 0;
+            do {
+                b = poly.charAt(index++) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lng += dlng;
+
+            decoded.add(new LatLng(
+                    lat / 100000d, lng / 100000d
+            ));
+        }
+        return decoded;
+    }
 
     @Override
     public void onMapReady(final GoogleMap googleMap) {
@@ -434,7 +531,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
                             Location currentLocation = (Location) task.getResult();
-                            locationAll=currentLocation;
+                            locationCurrent=currentLocation;
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
                                     DEFAULT_ZOOM);
                         } else {
