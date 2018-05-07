@@ -137,7 +137,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/relativeLayouFind"
+        android:id="@+id/relativeLayoutFind"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="?attr/actionBarSize"
@@ -274,6 +274,21 @@
             android:foregroundGravity="center_vertical"
             android:tint="#ffffff"
             app:srcCompat="@drawable/ic_navigation_black_24dp" />
+
+        <ImageButton
+            android:id="@+id/imgSearchBack"
+            android:layout_width="59dp"
+            android:layout_height="59dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="45dp"
+            android:layout_weight="2"
+            android:adjustViewBounds="true"
+            android:background="@drawable/btn_crntlocation"
+            android:elevation="5dp"
+            android:foregroundGravity="center_vertical"
+            android:tint="#ffffff"
+            app:srcCompat="@drawable/ic_search_black_24dp" />
 
     </RelativeLayout>
 
