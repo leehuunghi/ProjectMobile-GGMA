@@ -27,7 +27,11 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="173dp"
+<<<<<<< HEAD
             android:background="@drawable/ic_keyboard_arrow_down_black_24dp" />
+=======
+            />
+>>>>>>> 4dc961c276d6eaae4753714980477f2e59c0a200
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycleView"
