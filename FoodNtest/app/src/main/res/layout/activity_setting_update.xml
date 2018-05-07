@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/textView14"
@@ -22,8 +22,8 @@
             android:textColor="@android:color/background_dark"
             android:textSize="16sp" />
 
-        <EditText
-            android:id="@+id/txtUBanKinh"
+        <TextView
+            android:id="@+id/textView5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/textView12"
@@ -44,10 +44,10 @@
             android:layout_weight="1"
             android:text="Chế độ xem"
             android:textColor="@android:color/background_dark"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
-        <EditText
-            android:id="@+id/txtUCheDoXem"
+        <TextView
+            android:id="@+id/textView6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -61,6 +61,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="25dp"
-        android:text="Cập nhật" />
+        android:background="@drawable/mybuttonsignup"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:text="Cập nhật"
+        android:textColor="@color/colorPrimary" />
 
 </LinearLayout>
