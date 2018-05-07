@@ -33,6 +33,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Layout;
 import android.util.Log;
 import android.view.Menu;
@@ -43,6 +44,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -103,8 +105,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     EditText txtSpinner;
     ImageButton imgDropDown;
     ImageButton imgSearch;
+    ImageView mPicker;
 
-    ImageButton imgRoute;
+    ImageView imgRoute;
     RelativeLayout relativeLay;
     RelativeLayout relativeLayoutFind;
 
@@ -112,6 +115,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     EditText txtEnd;
     ImageButton imgFindRoute;
     Geocoder geocoder;
+
+    private ImageView imgMyLocation;
+    private DrawerLayout mDrawerLayout;
 
     Location locationAll=null;
     private List<Marker> originMarkers = new ArrayList<>();
@@ -144,22 +150,50 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             progressDialog.show();
         }
 
+        mPicker = (ImageView) findViewById(R.id.imgMyLocation);
         getLocationPermission();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mapView = mapFragment.getView();
+
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+
         NavigationView navigationView = findViewById(R.id.nav_view);
-        //if (navigationView != null) {
-            //Toast.makeText(this,
-                   // "Có Nav r nha"
-                    //, Toast.LENGTH_SHORT).show();
-        //}
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+                        mDrawerLayout.closeDrawers();
+
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+
+                        return true;
+                    }
+                });
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        android.support.v7.app.ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
 
         // set up the RecyclerView
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        
+        imgMyLocation = (ImageView) findViewById(R.id.imgMyLocation);
+//        imgMyLocation.setOnClickListener(new View.OnClickListener() {
+//                                             @Override
+//                                             public void onClick(View v) {
+//                                                 getMyLocation();
+//                                             }
+//                                         });
 
         RecyclerView recyclerView = findViewById(R.id.recycleView);
         recyclerView.setLayoutManager(layoutManager);
@@ -237,7 +271,41 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+        mDrawerLayout.addDrawerListener(
+                new DrawerLayout.DrawerListener() {
+                    @Override
+                    public void onDrawerSlide(View drawerView, float slideOffset) {
+                        // Respond when the drawer's position changes
+                    }
 
+                    @Override
+                    public void onDrawerOpened(View drawerView) {
+                        // Respond when the drawer is opened
+                    }
+
+                    @Override
+                    public void onDrawerClosed(View drawerView) {
+                        // Respond when the drawer is closed
+                    }
+
+                    @Override
+                    public void onDrawerStateChanged(int newState) {
+                        // Respond when the drawer motion state changes
+                    }
+                }
+        );
+
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void sendRequest() {
@@ -292,12 +360,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             getDeviceLocation();
         }
 
-        if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
-
-        } else {
-        }
+//        if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+//                == PackageManager.PERMISSION_GRANTED) {
+//            mMap.setMyLocationEnabled(true);
+//
+//        } else {
+//        }
 
         PositionBestNear positionBestNear = new PositionBestNear();
         positionBestNear.execute();

@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.admin.model.Store;
+
 public class SplashScreen extends Activity {
 
     @Override
@@ -33,7 +35,7 @@ public class SplashScreen extends Activity {
                 finally
                 {
                     SplashScreen.this.finish();
-                    Intent loginAct = new Intent(SplashScreen.this, StoreDetailActivity.class);
+                    Intent loginAct = new Intent(SplashScreen.this, HomeActivity.class);
                     startActivity(loginAct);
                 }
             }
