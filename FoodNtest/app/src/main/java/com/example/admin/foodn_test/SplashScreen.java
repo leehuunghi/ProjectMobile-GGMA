@@ -33,7 +33,7 @@ public class SplashScreen extends Activity {
                 finally
                 {
                     SplashScreen.this.finish();
-                    Intent loginAct = new Intent(SplashScreen.this, StoreDetailActivity.class);
+                    Intent loginAct = new Intent(SplashScreen.this, InfoAccount.class);
                     startActivity(loginAct);
                 }
             }
