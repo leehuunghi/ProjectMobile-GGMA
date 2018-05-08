@@ -111,7 +111,7 @@ import java.util.Locale;
 
 import javax.net.ssl.SSLPeerUnverifiedException;
 
-public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, LocationSource.OnLocationChangedListener, RecyclerViewAdapter.ItemClickListener, RecyclerViewAdapter.ClickButtonChiDuong {
+public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, LocationSource.OnLocationChangedListener, RecyclerViewAdapter.ItemClickListener, RecyclerViewAdapter.ClickButtonChiDuong, NavigationView.OnNavigationItemSelectedListener {
 
     private GoogleMap mMap;
     View mapView;
@@ -204,11 +204,35 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
                 });
 
+        if (navigationView != null) {
+            navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) this);
+        }
+        View headerview = navigationView.getHeaderView(0);
+        TextView accName = (TextView) headerview.findViewById(R.id.accName);
+        accName.setText("Tên tài khoản");
+        ImageView accAva = headerview.findViewById(R.id.accAva);
+        accAva.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent a = new Intent(HomeActivity.this, InfoAccount.class);
+                startActivity(a);
+            }
+        });
+        accName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent a = new Intent(HomeActivity.this, InfoAccount.class);
+                startActivity(a);
+            }
+        });
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         android.support.v7.app.ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+
+
 
         txtSpinner= findViewById(R.id.txtSpinner);
         recyclerView = findViewById(R.id.recycleView);
@@ -249,14 +273,38 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         });
 
+        mDrawerLayout.addDrawerListener(
+                new DrawerLayout.DrawerListener() {
+                    @Override
+                    public void onDrawerSlide(View drawerView, float slideOffset) {
+                        // Respond when the drawer's position changes
+                    }
+
+                    @Override
+                    public void onDrawerOpened(View drawerView) {
+                        // Respond when the drawer is opened
+                    }
+
+                    @Override
+                    public void onDrawerClosed(View drawerView) {
+                        // Respond when the drawer is closed
+                    }
+
+                    @Override
+                    public void onDrawerStateChanged(int newState) {
+                        // Respond when the drawer motion state changes
+                    }
+                }
+        );
+
         spinner=(Spinner) findViewById(R.id.spinner);
 
         imgDropDown=findViewById(R.id.imgDropDown);
 
         List<String> list = new ArrayList<>();
+        list.add("Tìm kiếm theo quán ăn");
         list.add("Tìm kiếm theo món");
         list.add("Tìm kiếm theo loại món");
-        list.add("Tìm kiếm theo quán ăn");
         list.add("Tìm kiếm theo địa chỉ");
 
         final ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item,list);
@@ -338,10 +386,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 if (listPoints.size() == 1) {
                     //Add first marker to the map
-                    markerOptionsCurrent.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                    markerOptionsCurrent.icon(BitmapDescriptorFactory.fromResource(R.drawable.start_marker));
                 } else {
                     //Add second marker to the map
-                    markerOptionsCurrent.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                    markerOptionsCurrent.icon(BitmapDescriptorFactory.fromResource(R.drawable.start_marker));
                     markerOptionsDes.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                 }
                 mMap.addMarker(markerOptionsCurrent);
@@ -381,6 +429,32 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
         );
 
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+
+            case R.id.nav_TrangChu:
+                Intent a = new Intent(this, HomeActivity.class);
+                startActivity(a);
+                break;
+            case R.id.nav_YeuThich:
+                Intent b = new Intent(this, FavoriteActivity.class);
+                startActivity(b);
+                break;
+            case R.id.nav_TuyChinh:
+                Intent c = new Intent(this, SettingUpdate.class);
+                startActivity(c);
+                break;
+            case R.id.nav_DangXuat:
+                Intent e = new Intent(this, LoginActivity.class);
+                startActivity(e);
+                this.finish();
+                break;
+        }
+        return false;
     }
 
     @Override
@@ -473,7 +547,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 polylineOptions.addAll(points);
                 polylineOptions.width(8);
-                polylineOptions.color(Color.rgb(255, 62, 0));
+                polylineOptions.color(Color.rgb(66, 132, 243));
                 polylineOptions.geodesic(true);
             }
 
@@ -569,11 +643,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         boolean enabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-        synchronized (this) {
             if (!enabled) {
                 showDialogGPS();
             }
-        }
 
         enabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 

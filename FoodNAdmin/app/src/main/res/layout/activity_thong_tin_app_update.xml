@@ -4,17 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="30dp"
-    android:orientation="vertical"
-    tools:context=".Setting">
+    tools:context=".ThongTinAppUpdate"
+    android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/sugRad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_margin="15dp"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView14"
+            android:id="@+id/sugRadtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -22,45 +23,55 @@
             android:textColor="@android:color/background_dark"
             android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/txtBanKinh"
+        <EditText
+            android:id="@+id/sugRadResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:text="" />
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC" />
+
     <LinearLayout
+        android:id="@+id/viewMode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+        android:layout_margin="15dp"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/viewModeTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Chế độ xem"
             android:textColor="@android:color/background_dark"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/txtCheDoXem"
+        <EditText
+            android:id="@+id/viewModeResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:text="" />
 
     </LinearLayout>
 
     <Button
-        android:id="@+id/btnChinhSuaSetting"
+        android:id="@+id/btnCapNhatSetting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="25dp"
-        android:text="Chỉnh sửa" />
+        android:background="@drawable/mybuttonsignup"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:text="Cập nhật"
+        android:textColor="@color/colorPrimary" />
 
 </LinearLayout>
