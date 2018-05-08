@@ -253,9 +253,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         imgDropDown=findViewById(R.id.imgDropDown);
 
         List<String> list = new ArrayList<>();
+        list.add("Tìm kiếm theo quán ăn");
         list.add("Tìm kiếm theo món");
         list.add("Tìm kiếm theo loại món");
-        list.add("Tìm kiếm theo quán ăn");
         list.add("Tìm kiếm theo địa chỉ");
 
         final ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item,list);
@@ -568,11 +568,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         boolean enabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-        synchronized (this) {
             if (!enabled) {
                 showDialogGPS();
             }
-        }
 
         enabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
