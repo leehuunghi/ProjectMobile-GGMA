@@ -1,0 +1,79 @@
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="horizontal">
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        tools:context="com.example.admin.foodn_test.HomeActivity" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:gravity="center_horizontal"
+        android:textSize="25sp"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/txtTimDiaChi"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:layout_x="60dp"
+            android:layout_y="30dp"
+            android:background="@drawable/search_layout"
+            android:elevation="5dp"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <ImageButton
+                android:id="@+id/imgSearch"
+                android:layout_width="45dp"
+                android:layout_height="43dp"
+                android:layout_alignLeft="@+id/txtSpinner"
+                android:layout_alignTop="@+id/txtSpinner"
+                android:layout_weight="1"
+                android:background="@null"
+                app:srcCompat="@drawable/ic_search_black_24dp" />
+
+            <EditText
+                android:id="@+id/txtSpinner"
+                android:layout_width="240dp"
+                android:layout_height="43dp"
+                android:layout_alignTop="@+id/spinner"
+                android:layout_centerHorizontal="true"
+                android:layout_weight="1"
+                android:background="@android:color/background_light"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Tìm kiếm theo địa chỉ"
+                android:textSize="16sp" />
+
+            <ImageButton
+                android:id="@+id/imgDropDown"
+                android:layout_width="wrap_content"
+                android:layout_height="43dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@null"
+                app:srcCompat="@drawable/ic_expand_more_black_24dp" />
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</android.support.v4.widget.DrawerLayout>
+

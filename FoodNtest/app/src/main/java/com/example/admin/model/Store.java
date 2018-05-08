@@ -11,6 +11,15 @@ import java.util.ArrayList;
  */
 
 public class Store {
+    public Integer getID() {
+        return ID;
+    }
+
+    public void setID(Integer ID) {
+        this.ID = ID;
+    }
+
+    private Integer ID;
     private String tenCuaHang;
     private String diaChi;
     private String gioMoCua;

@@ -2,12 +2,12 @@ package com.example.admin.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.admin.foodn_test.R;
 import com.example.admin.model.Store;
@@ -25,6 +25,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
+    public ClickButtonChiDuong getmClickButtonChiDuong() {
+        return mClickButtonChiDuong;
+    }
+
+    public void setmClickButtonChiDuong(ClickButtonChiDuong mClickButtonChiDuong) {
+        this.mClickButtonChiDuong = mClickButtonChiDuong;
+    }
+
+    private ClickButtonChiDuong mClickButtonChiDuong;
+
+    ImageView chiDuong, viTri;
+
+
     // data is passed into the constructor
      public RecyclerViewAdapter(Context context, ArrayList<Store> data) {
         this.mInflater = LayoutInflater.from(context);
@@ -40,11 +53,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     // binds the data to the TextView in each row
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         Store store = mData.get(position);
         holder.txtTenCuaHang.setText(store.getTenCuaHang());
         holder.txtDiaChi.setText(store.getDiaChi());
         holder.imgimgAvatar.setImageBitmap(store.getHinhAnh());
+        holder.btnChiDuong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mClickButtonChiDuong!=null) mClickButtonChiDuong.onClickButtonChiDuong(holder,position);
+            }
+        });
 
     }
 
@@ -60,23 +79,31 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView txtTenCuaHang;
         ImageView imgimgAvatar;
         TextView txtDiaChi;
+        ImageView btnViTri;
+        ImageView btnChiDuong;
         ViewHolder(View itemView) {
             super(itemView);
             txtTenCuaHang = itemView.findViewById(R.id.txtTenCuaHang);
             imgimgAvatar = itemView.findViewById(R.id.imgAvatar);
             txtDiaChi=itemView.findViewById(R.id.txtDiaChi);
+            btnViTri = itemView.findViewById(R.id.btnViTri);
+            btnChiDuong=itemView.findViewById(R.id.btnChiDuong);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+            if  (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
     }
 
     // convenience method for getting data at click position
     public Store getItem(int id) {
         return mData.get(id);
+    }
+
+    public View getIDBtnChiDuong(){
+         return chiDuong;
     }
 
     // allows clicks events to be caught
@@ -87,5 +114,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
         void onItemClick(View view, int position);
+    }
+    public  interface ClickButtonChiDuong{
+        void onClickButtonChiDuong(ViewHolder view, int position);
     }
 }

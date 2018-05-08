@@ -1,5 +1,8 @@
 package com.example.admin.foodn_test;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -8,18 +11,36 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+
+import com.example.admin.config.Configuaration;
+import com.example.admin.model.Position;
+import com.example.admin.model.Store;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.kobjects.base64.Base64;
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class StoreDetailActivity extends AppCompatActivity {
+    OneFragment oneFragment;
+    TwoFragment twoFragment;
+    Store store = new Store();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_detail);
-
+        Bundle bundle = getIntent().getExtras();
+        Integer ID = bundle.getInt("ID");
+        setInfo(ID);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Quán ăn A");
@@ -31,6 +52,40 @@ public class StoreDetailActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    private void setInfo(int ID) {
+        try {
+            SoapObject request = new SoapObject(Configuaration.NAME_SPACE,Configuaration.METHOD_GET_STORE_BY_ID);
+            request.addProperty(Configuaration.PARAMETER_ID, ID);
+
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+            envelope.dotNet=true;
+            envelope.setOutputSoapObject(request);
+            HttpTransportSE httpTransportSE= new HttpTransportSE(Configuaration.SERVER_URL);
+            httpTransportSE.call(Configuaration.SOAP_ACTION_GET_STORE_BY_ID, envelope);
+            SoapObject so= (SoapObject) envelope.getResponse();
+            so = (SoapObject) so.getProperty("CuaHang");
+            store.setID(Integer.parseInt(so.getPropertyAsString("ID")));
+            store.setTenCuaHang(so.getPropertyAsString("TenCuaHang"));
+            store.setDiaChi(so.getPropertyAsString("DiaChi"));
+            store.setHinhAnh(StringToBitMap(so.getPropertyAsString("HinhAnh")));
+        }
+        catch (Exception ex)
+        {
+            Log.e("Lỗi", ex.toString());
+        }
+    }
+
+    private Bitmap StringToBitMap(String hinhAnh) {
+        try {
+            byte[] encodeByte = Base64.decode(hinhAnh);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch (Exception e) {
+            e.getMessage();
+            return null;
+        }
     }
 
     @Override
@@ -45,8 +100,10 @@ public class StoreDetailActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new OneFragment(), "THÔNG TIN");
-        adapter.addFragment(new TwoFragment(), "MENU");
+        oneFragment = new OneFragment();
+        twoFragment = new TwoFragment();
+        adapter.addFragment(oneFragment, "THÔNG TIN");
+        adapter.addFragment(twoFragment, "MENU");
         viewPager.setAdapter(adapter);
     }
 
@@ -77,5 +134,6 @@ public class StoreDetailActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+
     }
 }

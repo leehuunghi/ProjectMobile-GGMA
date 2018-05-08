@@ -3,32 +3,64 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="300dp"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:background="@color/cardview_light_background"
-    android:orientation="vertical"
     android:elevation="3dp"
+    android:orientation="vertical"
     app:cardCornerRadius="15dp">
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/imgAvatar"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:saveEnabled="false"
+            android:id="@+id/btnViTri"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/btnViTri"
+            android:layout_gravity="bottom|right"
+            android:background="@drawable/btn_crntlocation"
+            android:elevation="5dp"
             android:scaleType="fitXY"
-            android:scrollbarAlwaysDrawHorizontalTrack="false"
-            app:srcCompat="@android:drawable/btn_star" />
+            android:src="@drawable/position"
+            android:tint="#ffffff" />
 
-        <TextView
-            android:id="@+id/txtTenCuaHang"
+        <ImageView
+            android:id="@+id/btnChiDuong"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/btnViTri"
+            android:layout_gravity="bottom|right"
+            android:background="@drawable/btn_crntlocation"
+            android:elevation="5dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_navigation_black_24dp"
+            android:tint="#ffffff" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imgAvatar"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:saveEnabled="false"
+                android:scaleType="fitXY"
+                android:scrollbarAlwaysDrawHorizontalTrack="false"
+                app:srcCompat="@android:drawable/btn_star" />
+
+            <TextView
+                android:id="@+id/txtTenCuaHang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
@@ -37,14 +69,15 @@
             android:textColor="#000000"
             android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/txtDiaChi"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            <TextView
+                android:id="@+id/txtDiaChi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
-            android:text="TextView" />
+                android:text="TextView" />
 
-    </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
 
 </android.support.v7.widget.CardView>
