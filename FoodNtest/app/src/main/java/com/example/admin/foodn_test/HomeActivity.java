@@ -125,7 +125,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     EditText txtSpinner;
     ImageButton imgDropDown;
     ImageButton imgSearch;
-    ImageView mPicker;
 
     RelativeLayout relativeLay;
     RelativeLayout relativeLayoutFind;
@@ -176,7 +175,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             progressDialog.show();
         }
 
-        mPicker = (ImageView) findViewById(R.id.imgMyLocation);
         getLocationPermission();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -266,9 +264,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         imgMyLocation.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Log.d(TAG,"onClick: clicked gps icon ");
             getDeviceLocation();
-
         }
         });
 
@@ -663,12 +659,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         PositionBestNear positionBestNear = new PositionBestNear();
         positionBestNear.execute();
 
-//        if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
-//                == PackageManager.PERMISSION_GRANTED) {
-//            mMap.setMyLocationEnabled(true);
-//
-//        } else {
-//        }
+        if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+
+        } else {
+        }
 
 
 
@@ -684,7 +680,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             // position on right bottom
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-            layoutParams.setMargins(0, 0, 20, 100);
+            layoutParams.setMargins(0, 0, 200, 100);
         }
 
     }
