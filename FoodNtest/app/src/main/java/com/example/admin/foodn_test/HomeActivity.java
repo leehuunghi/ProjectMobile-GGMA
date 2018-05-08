@@ -529,6 +529,17 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             getDeviceLocation();
         }
 
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        RecyclerView recyclerView = findViewById(R.id.recycleView);
+        recyclerView.setLayoutManager(layoutManager);
+        adapterRecycler = new RecyclerViewAdapter(this, listStore);
+        adapterRecycler.setClickListener(this);
+        adapterRecycler.setmClickButtonChiDuong(this);
+        recyclerView.setAdapter(adapterRecycler);
+        PositionBestNear positionBestNear = new PositionBestNear();
+        positionBestNear.execute();
+
 //        if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
 //                == PackageManager.PERMISSION_GRANTED) {
 //            mMap.setMyLocationEnabled(true);
@@ -553,22 +564,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             layoutParams.setMargins(0, 0, 20, 100);
         }
 
-    }
-
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        // set up the RecyclerView
-        LinearLayoutManager layoutManager
-                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        RecyclerView recyclerView = findViewById(R.id.recycleView);
-        recyclerView.setLayoutManager(layoutManager);
-        adapterRecycler = new RecyclerViewAdapter(this, listStore);
-        adapterRecycler.setClickListener(this);
-        adapterRecycler.setmClickButtonChiDuong(this);
-        recyclerView.setAdapter(adapterRecycler);
-        PositionBestNear positionBestNear = new PositionBestNear();
-        positionBestNear.execute();
     }
 
     private void showDialogGPS() {

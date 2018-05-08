@@ -5,11 +5,28 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.zip.Inflater;
 
-public class OneFragment extends Fragment {
+public class OneFragment extends Fragment implements FragmentCallBack {
+    public TextView getTxtAddess() {
+        return txtAddess;
+    }
+
+    public void setTxtAddess(String txtAddess) {
+        this.txtAddess.setText(txtAddess);
+    }
+
+    public TextView getTxtPrice() {
+        return txtPrice;
+    }
+
+    public void setTxtPrice(String txtPrice) {
+        this.txtPrice.setText(txtPrice);
+    }
+
     TextView txtAddess, txtPrice;
     public OneFragment() {
         // Required empty public constructor
@@ -24,6 +41,14 @@ public class OneFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_one, container, false);
+        RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.fragment_one, container, false);
+        txtAddess = layout.findViewById(R.id.address);
+        txtPrice= layout.findViewById(R.id.price);
+        return layout;
+    }
+
+    @Override
+    public void MsgFromMain(String msg) {
+
     }
 }
