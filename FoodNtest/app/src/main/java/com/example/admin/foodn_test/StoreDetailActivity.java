@@ -33,17 +33,51 @@ public class StoreDetailActivity extends AppCompatActivity {
     OneFragment oneFragment;
     TwoFragment twoFragment;
     Store store = new Store();
+    int ID;
+    class GetInfo extends AsyncTask<String, Void, String>{
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            getSupportActionBar().setTitle(store.getTenCuaHang());
+            oneFragment.setTxtAddess(store.getDiaChi());
+
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                SoapObject request = new SoapObject(Configuaration.NAME_SPACE,Configuaration.METHOD_GET_STORE_BY_ID);
+                request.addProperty(Configuaration.PARAMETER_ID, ID);
+
+                SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+                envelope.dotNet=true;
+                envelope.setOutputSoapObject(request);
+                HttpTransportSE httpTransportSE= new HttpTransportSE(Configuaration.SERVER_URL);
+                httpTransportSE.call(Configuaration.SOAP_ACTION_GET_STORE_BY_ID, envelope);
+                SoapObject so= (SoapObject) envelope.getResponse();
+                so = (SoapObject) so.getProperty("CuaHang");
+                store.setID(Integer.parseInt(so.getPropertyAsString("ID_CuaHang")));
+                store.setTenCuaHang(so.getPropertyAsString("TenCuaHang"));
+                store.setDiaChi(so.getPropertyAsString("DiaChi"));
+                store.setHinhAnh(StringToBitMap(so.getPropertyAsString("HinhAnh")));
+            }
+            catch (Exception ex)
+            {
+                Log.e("Lỗi", ex.toString());
+            }
+            return null;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_detail);
         Bundle bundle = getIntent().getExtras();
-        Integer ID = bundle.getInt("ID");
-        setInfo(ID);
+        ID = bundle.getInt("ID");
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Quán ăn A");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -52,29 +86,8 @@ public class StoreDetailActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-    }
-
-    private void setInfo(int ID) {
-        try {
-            SoapObject request = new SoapObject(Configuaration.NAME_SPACE,Configuaration.METHOD_GET_STORE_BY_ID);
-            request.addProperty(Configuaration.PARAMETER_ID, ID);
-
-            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-            envelope.dotNet=true;
-            envelope.setOutputSoapObject(request);
-            HttpTransportSE httpTransportSE= new HttpTransportSE(Configuaration.SERVER_URL);
-            httpTransportSE.call(Configuaration.SOAP_ACTION_GET_STORE_BY_ID, envelope);
-            SoapObject so= (SoapObject) envelope.getResponse();
-            so = (SoapObject) so.getProperty("CuaHang");
-            store.setID(Integer.parseInt(so.getPropertyAsString("ID")));
-            store.setTenCuaHang(so.getPropertyAsString("TenCuaHang"));
-            store.setDiaChi(so.getPropertyAsString("DiaChi"));
-            store.setHinhAnh(StringToBitMap(so.getPropertyAsString("HinhAnh")));
-        }
-        catch (Exception ex)
-        {
-            Log.e("Lỗi", ex.toString());
-        }
+        GetInfo getInfo = new GetInfo();
+        getInfo.execute();
     }
 
     private Bitmap StringToBitMap(String hinhAnh) {

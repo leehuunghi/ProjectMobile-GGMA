@@ -55,8 +55,25 @@ public class YourStore extends AppCompatActivity implements
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         // set item as selected to persist highlight
                         menuItem.setChecked(true);
-                        // close drawer when item is tapped
                         mDrawerLayout.closeDrawers();
+                        // close drawer when item is tapped
+                        int id = menuItem.getItemId();
+                        switch (id) {
+                            case R.id.navQuanCuaBan:
+                                Intent a = new Intent(YourStore.this, YourStore.class);
+                                startActivity(a);
+                                break;
+                            case R.id.nav_ThongTin:
+                                Intent d = new Intent(YourStore.this, ThongTinApp.class);
+                                startActivity(d);
+                                break;
+                            case R.id.nav_DangXuat:
+                                Intent e = new Intent(YourStore.this, LoginActivity.class);
+                                startActivity(e);
+                                break;
+                        }
+
+
 
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
@@ -191,21 +208,6 @@ public class YourStore extends AppCompatActivity implements
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.navQuanCuaBan:
-                Intent a = new Intent(this, YourStore.class);
-                startActivity(a);
-                break;
-            case R.id.nav_ThongTin:
-                Intent d = new Intent(this, Setting.class);
-                startActivity(d);
-                break;
-            case R.id.nav_DangXuat:
-                Intent e = new Intent(this, LoginActivity.class);
-                startActivity(e);
-                break;
-        }
-        return false;
+        return true;
     }
 }
