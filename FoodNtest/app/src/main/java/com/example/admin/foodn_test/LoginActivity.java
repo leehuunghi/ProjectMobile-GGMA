@@ -89,6 +89,18 @@ public class LoginActivity extends Activity {
                 .show();
     }
 
+    private void showLoginAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+        builder.setMessage(getString(R.string.login_wrong));
+
+        String positiveText = getString(android.R.string.ok);
+        builder.setPositiveButton(positiveText,null);
+
+        AlertDialog dialog = builder.create();
+        // display dialog
+        dialog.show();
+    }
+
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
@@ -183,7 +195,7 @@ public class LoginActivity extends Activity {
                         startActivity(homeAct);
                     }
                     else{
-                        Toast.makeText(LoginActivity.this, "Đăng nhập thất bại!", Toast.LENGTH_LONG).show();
+                        showLoginAlert();
                     }
                 }
             }
