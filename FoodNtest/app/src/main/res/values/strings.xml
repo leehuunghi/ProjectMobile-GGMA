@@ -29,4 +29,18 @@
     <string name="detail_tab_info">Thông tin</string>
     <string name="detail_tab_menu">Menu</string>
     <string name="rate_call">Hãy đánh giá quán ăn này!</string>
+    <string name="btn_edit">Chỉnh sửa</string>
+    <string name="info_phone">Số điện thoại</string>
+    <string name="info_name">Họ tên</string>
+    <string name="info_pass">Mật khẩu</string>
+    <string name="info_dob">Ngày sinh</string>
+    <string name="info_gender">Giới tính</string>
+    <string name="btn_finish">Cập nhật</string>
+    <string name="suggested_radius">Bán kính gợi ý</string>
+    <string name="view_mode">Chế độ xem</string>
+    <string name="sug_rad_sug">5 km</string>
+    <string name="view_mode_sug">Thường</string>
+    <string name="leave">Bạn muốn thoát ứng dụng?</string>
+
+    <!-- Strings related to Settings -->
 </resources>

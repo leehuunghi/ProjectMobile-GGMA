@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -72,17 +73,26 @@
         <activity
             android:name=".HomeActivity"
             android:label="@string/home_label"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".StoreDetailActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".DATABASE" />
         <activity android:name=".CustomBaseAdapter" />
-        <activity android:name=".InfoAccount" />
-        <activity android:name=".InfoUpdate" />
+        <activity
+            android:name=".InfoAccount"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".InfoUpdate"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".Setting" />
-        <activity android:name=".SettingUpdate"></activity>
+        <activity android:name=".SettingUpdate" />
+        <activity
+            android:name=".FavoriteActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".DATABASE_FAV" />
+        <activity android:name=".CustomFavAdapter" />
     </application>
 
 </manifest>

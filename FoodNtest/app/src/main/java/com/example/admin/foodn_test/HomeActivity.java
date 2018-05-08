@@ -128,7 +128,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     RelativeLayout relativeLayoutFind;
 
     EditText txtStart;
-    EditText txtEnd;
+    TextView txtEnd;
     ImageButton imgFindRoute;
     ImageButton imgSearchBack;
 
@@ -281,6 +281,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         imgFindRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                imgFindRoute.setVisibility(View.INVISIBLE);
                 imgSearchBack.setVisibility(View.VISIBLE);
                 if (listPoints.size() > 0) {
                     listPoints.clear();

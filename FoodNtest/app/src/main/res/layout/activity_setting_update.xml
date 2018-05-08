@@ -4,54 +4,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="30dp"
+    android:layout_margin="0dp"
     android:orientation="vertical"
     tools:context=".SettingUpdate">
 
     <LinearLayout
+        android:id="@+id/sugRad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_margin="15dp"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView14"
+            android:id="@+id/sugRadtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Bán kính gợi ý"
+            android:text="@string/suggested_radius"
             android:textColor="@android:color/background_dark"
             android:textSize="16sp" />
 
         <EditText
-            android:id="@+id/txtUBanKinh"
+            android:id="@+id/sugRadResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:text="@string/sug_rad_sug" />
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC" />
+
     <LinearLayout
+        android:id="@+id/viewMode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+        android:layout_margin="15dp"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/viewModeTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Chế độ xem"
+            android:text="@string/view_mode"
             android:textColor="@android:color/background_dark"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <EditText
-            android:id="@+id/txtUCheDoXem"
+            android:id="@+id/viewModeResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:text="@string/view_mode_sug" />
 
     </LinearLayout>
 
@@ -61,6 +69,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="25dp"
-        android:text="Cập nhật" />
+        android:background="@drawable/mybuttonsignup"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:text="Cập nhật"
+        android:textColor="@color/colorPrimary" />
 
 </LinearLayout>
