@@ -64,7 +64,7 @@ public class YourStore extends AppCompatActivity implements
                                 startActivity(a);
                                 break;
                             case R.id.nav_ThongTin:
-                                Intent d = new Intent(YourStore.this, ThongTinApp.class);
+                                Intent d = new Intent(YourStore.this, ThongTinAppUpdate.class);
                                 startActivity(d);
                                 break;
                             case R.id.nav_DangXuat:
@@ -85,6 +85,7 @@ public class YourStore extends AppCompatActivity implements
 
         android.support.v7.app.ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Cửa hàng của bạn");
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
 
         mDrawerLayout.addDrawerListener(
@@ -111,27 +112,6 @@ public class YourStore extends AppCompatActivity implements
                     }
                 }
         );
-
-
-        View headerview = navigationView.getHeaderView(0);
-        TextView accName = (TextView) headerview.findViewById(R.id.accName);
-        accName.setText("Tên tài khoản");
-        ImageView accAva = headerview.findViewById(R.id.accAva);
-        accAva.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent a = new Intent(YourStore.this, InfoAccount.class);
-                startActivity(a);
-            }
-        });
-        accName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent a = new Intent(YourStore.this, InfoAccount.class);
-                startActivity(a);
-            }
-        });
-
 
         imgThemCuaHang.setOnClickListener(new View.OnClickListener() {
             @Override

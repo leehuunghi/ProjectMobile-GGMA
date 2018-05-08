@@ -93,26 +93,6 @@ public class AddingFood extends AppCompatActivity implements
                     }
                 }
         );
-
-
-        View headerview = navigationView.getHeaderView(0);
-        TextView accName = (TextView) headerview.findViewById(R.id.accName);
-        accName.setText("Tên tài khoản");
-        ImageView accAva = headerview.findViewById(R.id.accAva);
-        accAva.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent a = new Intent(AddingFood.this, InfoAccount.class);
-                startActivity(a);
-            }
-        });
-        accName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent a = new Intent(AddingFood.this, InfoAccount.class);
-                startActivity(a);
-            }
-        });
     }
 
     @Override

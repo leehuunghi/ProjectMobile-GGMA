@@ -26,9 +26,10 @@
             android:layout_alignParentEnd="true"
             android:layout_marginBottom="27dp"
             android:layout_marginEnd="22dp"
-            android:tint="@color/colorPrimary"
             android:background="@drawable/btn_crntlocation"
+            android:elevation="5dp"
             android:src="@drawable/ic_add_black_24dp"
+            android:tint="@color/colorPrimary"
             android:visibility="visible" />
 
     </RelativeLayout>
