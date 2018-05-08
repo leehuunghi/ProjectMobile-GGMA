@@ -106,7 +106,7 @@ import java.util.Locale;
 
 import javax.net.ssl.SSLPeerUnverifiedException;
 
-public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, LocationSource.OnLocationChangedListener, RecyclerViewAdapter.ItemClickListener {
+public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, LocationSource.OnLocationChangedListener, RecyclerViewAdapter.ItemClickListener, RecyclerViewAdapter.ClickButtonChiDuong {
 
     private GoogleMap mMap;
     View mapView;
@@ -115,6 +115,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     ArrayList<Store> listStore = new ArrayList<>();
 
     ArrayList<LatLng> listPoints;
+    LatLng currentLatLng;
 
     Spinner spinner;
     EditText txtSpinner;
@@ -123,7 +124,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     ImageView mPicker;
     Button btnDownRecycleView;
 
-    ImageView imgRoute;
     RelativeLayout relativeLay;
     RelativeLayout relativeLayoutFind;
 
@@ -203,9 +203,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
 
-        // set up the RecyclerView
-        LinearLayoutManager layoutManager
-                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+
         
         imgMyLocation = (ImageView) findViewById(R.id.imgMyLocation);
 //        imgMyLocation.setOnClickListener(new View.OnClickListener() {
@@ -214,12 +212,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 //                                                 getMyLocation();
 //                                             }
 //                                         });
-
-        RecyclerView recyclerView = findViewById(R.id.recycleView);
-        recyclerView.setLayoutManager(layoutManager);
-        adapterRecycler = new RecyclerViewAdapter(this, listStore);
-        adapterRecycler.setClickListener(this);
-        recyclerView.setAdapter(adapterRecycler);
 
 
         spinner=(Spinner) findViewById(R.id.spinner);
@@ -264,19 +256,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
         imgSearch=findViewById(R.id.imgSearch);
-        imgRoute=findViewById(R.id.imgRoute);
         relativeLay= (RelativeLayout) findViewById(R.id.relativeLayout);
-
-        imgRoute.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                relativeLay.setVisibility(View.INVISIBLE);
-                relativeLayoutFind.setVisibility(View.VISIBLE);
-                imgRoute.setVisibility(View.INVISIBLE);
-                txtStart.setText("Vị trí của bạn");
-                txtEnd.setText("Quán nào đó");
-            }
-        });
 
         relativeLayoutFind=findViewById(R.id.relativeLayoutFind);
         relativeLayoutFind.setVisibility(View.INVISIBLE);
@@ -288,7 +268,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         imgFindRoute=findViewById(R.id.imgFindRoute);
 
         imgSearchBack=findViewById(R.id.imgSearchBack);
-        imgSearchBack.setVisibility(View.INVISIBLE);
 
         imgSearchBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -312,15 +291,14 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 listPoints.add(latLng1);
 
                 //có địa điểm thì lưu vô locationDes rồi thay cho 2 số này
-                LatLng latLng2=new LatLng(10.773787, 106.659362);
-                listPoints.add(latLng2);
+                listPoints.add(currentLatLng);
 
                 //Create marker
                 MarkerOptions markerOptionsCurrent = new MarkerOptions();
                 markerOptionsCurrent.position(latLng1);
 
                 MarkerOptions markerOptionsDes = new MarkerOptions();
-                markerOptionsDes.position(latLng2);
+                markerOptionsDes.position(currentLatLng);
 
 
                 if (listPoints.size() == 1) {
@@ -339,7 +317,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     String url = getRequestUrl(listPoints.get(0), listPoints.get(1));
                     TaskRequestDirections taskRequestDirections = new TaskRequestDirections();
                     taskRequestDirections.execute(url);
-                    moveCamera(latLng2,16);
+                    moveCamera(currentLatLng,14);
                 }
             }
         });
@@ -368,6 +346,19 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
         );
 
+    }
+
+    @Override
+    public void onClickButtonChiDuong(RecyclerViewAdapter.ViewHolder view, int position) {
+        relativeLayoutFind.setVisibility(View.VISIBLE);
+        imgFindRoute.setVisibility(View.VISIBLE);
+        imgSearchBack.setVisibility(View.INVISIBLE);
+        relativeLay.setVisibility(View.INVISIBLE);
+        currentLatLng = new LatLng(adapterRecycler.getItem(position).getListPoint().get(0).getV(), adapterRecycler.getItem(position).getListPoint().get(0).getV1());
+        mMap.clear();
+        mMap.addMarker(new MarkerOptions().position(currentLatLng).title(adapterRecycler.getItem(position).getTenCuaHang()).snippet(adapterRecycler.getItem(position).getDiaChi()));
+        txtEnd.setText(adapterRecycler.getItem(position).getTenCuaHang().toString());
+        moveCamera(currentLatLng,15);
     }
 
     public class TaskRequestDirections extends AsyncTask<String, Void, String> {
@@ -544,8 +535,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 //        } else {
 //        }
 
-        PositionBestNear positionBestNear = new PositionBestNear();
-        positionBestNear.execute();
+
 
 
 
@@ -564,6 +554,21 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        // set up the RecyclerView
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        RecyclerView recyclerView = findViewById(R.id.recycleView);
+        recyclerView.setLayoutManager(layoutManager);
+        adapterRecycler = new RecyclerViewAdapter(this, listStore);
+        adapterRecycler.setClickListener(this);
+        adapterRecycler.setmClickButtonChiDuong(this);
+        recyclerView.setAdapter(adapterRecycler);
+        PositionBestNear positionBestNear = new PositionBestNear();
+        positionBestNear.execute();
+    }
 
     private void showDialogGPS() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -672,7 +677,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
     @Override
     public void onItemClick(View view, int position) {
-        moveCamera(new LatLng(adapterRecycler.getItem(position).getListPoint().get(0).getV(), adapterRecycler.getItem(position).getListPoint().get(0).getV1()),15);
+        Bundle bundle = new Bundle();
+        bundle.putInt("ID",adapterRecycler.getItem(position).getID());
+        Intent intentDetail = new Intent(HomeActivity.this, StoreDetailActivity.class);
+        intentDetail.putExtras(bundle);
+        startActivity(intentDetail);
     }
     Position pos=null;
     String tenCuaHang, diaChiCuaHang;
@@ -714,6 +723,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     pos= new Position(Double.parseDouble(so.getPropertyAsString("HoanhDo")),Double.parseDouble(so.getPropertyAsString("TungDo")));
                     store.getListPoint().add(pos);
                     so = (SoapObject) so.getProperty("CuaHang");
+                    store.setID(Integer.parseInt(so.getPropertyAsString("ID_CuaHang")));
                     store.setTenCuaHang(so.getPropertyAsString("TenCuaHang"));
                     store.setDiaChi(so.getPropertyAsString("DiaChi"));
                     store.setHinhAnh(StringToBitMap(so.getPropertyAsString("HinhAnh")));
