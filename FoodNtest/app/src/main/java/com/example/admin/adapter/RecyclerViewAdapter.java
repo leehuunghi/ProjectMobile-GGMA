@@ -86,7 +86,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             txtTenCuaHang = itemView.findViewById(R.id.txtTenCuaHang);
             imgimgAvatar = itemView.findViewById(R.id.imgAvatar);
             txtDiaChi=itemView.findViewById(R.id.txtDiaChi);
-            btnViTri = itemView.findViewById(R.id.btnViTri);
             btnChiDuong=itemView.findViewById(R.id.btnChiDuong);
             itemView.setOnClickListener(this);
         }

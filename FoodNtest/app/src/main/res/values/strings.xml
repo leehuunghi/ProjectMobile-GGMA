@@ -41,6 +41,8 @@
     <string name="sug_rad_sug">5 km</string>
     <string name="view_mode_sug">Thường</string>
     <string name="leave">Bạn muốn thoát ứng dụng?</string>
+    <string name="login_wrong">Tên tài khoản hoặc mật khẩu không đúng.</string>
+    <string name="crnt_location">Vị trí hiện tại</string>
 
     <!-- Strings related to Settings -->
 </resources>

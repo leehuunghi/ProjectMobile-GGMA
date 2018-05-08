@@ -20,13 +20,14 @@
         android:layout_height="match_parent"
         android:visibility="visible">
 
-        <Button
-            android:id="@+id/btnDownRecycleView"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="173dp" />
+        <!--<Button-->
+            <!--android:id="@+id/btnDownRecycleView"-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_marginBottom="173dp"-->
+            <!--android:background="@drawable/ic_keyboard_arrow_down_black_24dp" />-->
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycleView"
@@ -100,14 +101,14 @@
             android:padding="5dp">
 
             <ImageButton
-                android:id="@+id/imgSearch"
-                android:layout_width="45dp"
+                android:id="@+id/imgDropDown"
+                android:layout_width="wrap_content"
                 android:layout_height="43dp"
-                android:layout_alignLeft="@+id/txtSpinner"
-                android:layout_alignTop="@+id/txtSpinner"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:background="@null"
-                app:srcCompat="@drawable/ic_search_black_24dp" />
+                app:srcCompat="@drawable/ic_expand_more_black_24dp" />
 
             <EditText
                 android:id="@+id/txtSpinner"
@@ -122,13 +123,14 @@
                 android:textSize="16sp" />
 
             <ImageButton
-                android:id="@+id/imgDropDown"
-                android:layout_width="wrap_content"
+                android:id="@+id/imgSearch"
+                android:layout_width="45dp"
                 android:layout_height="43dp"
-                android:layout_marginRight="5dp"
+                android:layout_alignLeft="@+id/txtSpinner"
+                android:layout_alignTop="@+id/txtSpinner"
                 android:layout_weight="1"
                 android:background="@null"
-                app:srcCompat="@drawable/ic_expand_more_black_24dp" />
+                app:srcCompat="@drawable/ic_search_black_24dp" />
 
 
         </LinearLayout>
@@ -185,12 +187,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
+                        android:layout_marginRight="25dp"
                         android:layout_weight="1"
                         android:background="@color/cardview_light_background"
                         android:ems="10"
                         android:inputType="textPersonName"
-                        android:text=""
-                        android:textSize="16sp" />
+                        android:text="@string/crnt_location"
+                        android:textColor="#555555"
+                        android:textSize="16sp"
+                        android:textStyle="italic" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -238,6 +243,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
+                        android:layout_marginRight="25dp"
                         android:layout_weight="1"
                         android:background="@color/cardview_light_background"
                         android:ems="10"
@@ -316,7 +322,7 @@
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:layout_gravity="bottom|right"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="190dp"
             android:layout_marginRight="5dp"
             android:background="@drawable/btn_crntlocation"
             android:elevation="5dp"

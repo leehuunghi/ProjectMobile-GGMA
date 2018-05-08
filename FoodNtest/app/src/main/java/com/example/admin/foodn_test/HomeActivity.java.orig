@@ -617,6 +617,24 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        // set up the RecyclerView
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        adapterRecycler = new RecyclerViewAdapter(this, listStore);
+        adapterRecycler.setClickListener(this);
+        adapterRecycler.setmClickButtonChiDuong(this);
+        recyclerView.setAdapter(adapterRecycler);
+        PositionBestNear positionBestNear = new PositionBestNear();
+        positionBestNear.execute();
+    }
+
+>>>>>>> bf120ef0e0b91121ff69c01b1ac74c2dfd547547
     private void showDialogGPS() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
