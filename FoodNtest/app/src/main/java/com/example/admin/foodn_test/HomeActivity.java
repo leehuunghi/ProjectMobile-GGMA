@@ -38,12 +38,16 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.support.v7.widget.helper.ItemTouchHelper.SimpleCallback;
+
+//import com.google.android.gms.location.places.ui.PlacePicker;
 import android.text.Layout;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -122,7 +126,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     ImageButton imgDropDown;
     ImageButton imgSearch;
     ImageView mPicker;
-    Button btnDownRecycleView;
 
     RelativeLayout relativeLay;
     RelativeLayout relativeLayoutFind;
@@ -131,6 +134,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     TextView txtEnd;
     ImageButton imgFindRoute;
     ImageButton imgSearchBack;
+    RecyclerView recyclerView;
 
 
     private ImageView imgMyLocation;
@@ -151,6 +155,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     static final float DEFAULT_ZOOM = 15f;
+
+    private static final int PLACE_PICKER_REQUEST = 1;
 
     //vars
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -203,19 +209,46 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
 
-
+        txtSpinner= findViewById(R.id.txtSpinner);
+        recyclerView = findViewById(R.id.recycleView);
         
         imgMyLocation = (ImageView) findViewById(R.id.imgMyLocation);
-//        imgMyLocation.setOnClickListener(new View.OnClickListener() {
-//                                             @Override
-//                                             public void onClick(View v) {
-//                                                 getMyLocation();
-//                                             }
-//                                         });
 
+        txtSpinner.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    imgMyLocation.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                }else{
+                    imgMyLocation.setVisibility(View.INVISIBLE);
+                    recyclerView.setVisibility(View.INVISIBLE);
+                }
+
+            }
+        });
+
+        txtSpinner.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId== EditorInfo.IME_ACTION_DONE){
+                    //Clear focus here from edittext
+                    txtSpinner.clearFocus();
+                }
+                return false;
+            }
+        });
+
+        imgMyLocation.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Log.d(TAG,"onClick: clicked gps icon ");
+            getDeviceLocation();
+
+        }
+        });
 
         spinner=(Spinner) findViewById(R.id.spinner);
-        txtSpinner= findViewById(R.id.txtSpinner);
 
         imgDropDown=findViewById(R.id.imgDropDown);
 
@@ -304,10 +337,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 if (listPoints.size() == 1) {
                     //Add first marker to the map
-                    markerOptionsCurrent.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                    markerOptionsCurrent.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
                 } else {
                     //Add second marker to the map
-                    markerOptionsCurrent.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                    markerOptionsCurrent.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
                     markerOptionsDes.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                 }
                 mMap.addMarker(markerOptionsCurrent);
@@ -347,6 +380,24 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
         );
 
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        new android.support.v7.app.AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setMessage(R.string.leave)
+                .setPositiveButton("Có", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+
+                })
+                .setNegativeButton("Không", null)
+                .show();
     }
 
     @Override
@@ -421,7 +472,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 polylineOptions.addAll(points);
                 polylineOptions.width(8);
-                polylineOptions.color(Color.RED);
+                polylineOptions.color(Color.rgb(255, 62, 0));
                 polylineOptions.geodesic(true);
             }
 
@@ -561,7 +612,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         // set up the RecyclerView
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        RecyclerView recyclerView = findViewById(R.id.recycleView);
         recyclerView.setLayoutManager(layoutManager);
         adapterRecycler = new RecyclerViewAdapter(this, listStore);
         adapterRecycler.setClickListener(this);
@@ -750,3 +800,4 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 }
+

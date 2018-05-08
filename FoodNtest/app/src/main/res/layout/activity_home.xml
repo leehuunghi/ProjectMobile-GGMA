@@ -105,6 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="43dp"
                 android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:background="@null"
                 app:srcCompat="@drawable/ic_expand_more_black_24dp" />
@@ -186,12 +187,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
+                        android:layout_marginRight="25dp"
                         android:layout_weight="1"
                         android:background="@color/cardview_light_background"
                         android:ems="10"
                         android:inputType="textPersonName"
-                        android:text=""
-                        android:textSize="16sp" />
+                        android:text="@string/crnt_location"
+                        android:textColor="#555555"
+                        android:textSize="16sp"
+                        android:textStyle="italic" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -239,6 +243,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
+                        android:layout_marginRight="25dp"
                         android:layout_weight="1"
                         android:background="@color/cardview_light_background"
                         android:ems="10"
@@ -317,7 +322,7 @@
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:layout_gravity="bottom|right"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="190dp"
             android:layout_marginRight="5dp"
             android:background="@drawable/btn_crntlocation"
             android:elevation="5dp"

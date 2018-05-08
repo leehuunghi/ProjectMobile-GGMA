@@ -95,10 +95,9 @@ public class LoginActivity extends Activity {
 
         String positiveText = getString(android.R.string.ok);
         builder.setPositiveButton(positiveText,null);
-
-        AlertDialog dialog = builder.create();
-        // display dialog
-        dialog.show();
+    AlertDialog dialog = builder.create();
+    // display dialog
+    dialog.show();
     }
 
     /**
@@ -159,6 +158,7 @@ public class LoginActivity extends Activity {
 
     class LoginAccount extends AsyncTask<String, Void, String>
     {
+        boolean flagLogin = false;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -167,6 +167,8 @@ public class LoginActivity extends Activity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            if(!flagLogin) showLoginAlert();
+            else LoginActivity.this.finish();
         }
 
         @Override
@@ -191,11 +193,12 @@ public class LoginActivity extends Activity {
                 SoapObject data= (SoapObject) envelope.bodyIn;
                 if(data.hasProperty("loginResult")){
                     if(Boolean.parseBoolean(data.getPropertyAsString("loginResult"))) {
+                        flagLogin = true;
                         Intent homeAct = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(homeAct);
                     }
                     else{
-                        showLoginAlert();
+
                     }
                 }
             }
