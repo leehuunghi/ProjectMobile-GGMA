@@ -1,6 +1,7 @@
 package com.example.admin.foodn_test;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -10,9 +11,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-public class InfoAccount extends AppCompatActivity {
+public class InfoAccount extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     TextView txtSDT, txtHoTen, txtMatKhau, txtNgaySinh, txtGioiTinh;
     Button btnChinhSua;
@@ -44,6 +46,28 @@ public class InfoAccount extends AppCompatActivity {
                         return true;
                     }
                 });
+
+        if (navigationView != null) {
+            navigationView.setNavigationItemSelectedListener(this);
+        }
+        View headerview = navigationView.getHeaderView(0);
+        TextView accName = (TextView) headerview.findViewById(R.id.accName);
+        accName.setText("Tên tài khoản");
+        ImageView accAva = headerview.findViewById(R.id.accAva);
+        accAva.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent a = new Intent(InfoAccount.this, InfoAccount.class);
+                startActivity(a);
+            }
+        });
+        accName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent a = new Intent(InfoAccount.this, InfoAccount.class);
+                startActivity(a);
+            }
+        });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -91,7 +115,7 @@ public class InfoAccount extends AppCompatActivity {
         btnChinhSua.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent infUpdate=new Intent(InfoAccount.this, InfoUpdate.class);
+                Intent infUpdate = new Intent(InfoAccount.this, InfoUpdate.class);
                 startActivity(infUpdate);
             }
         });
@@ -100,9 +124,35 @@ public class InfoAccount extends AppCompatActivity {
     private void addControls() {
         txtSDT = findViewById(R.id.txtSDT);
         txtHoTen = findViewById(R.id.txtHoTen);
-        txtMatKhau=findViewById(R.id.txtMatKhau);
-        txtNgaySinh=findViewById(R.id.txtNgaySinh);
-        txtGioiTinh=findViewById(R.id.txtGioiTinh);
-        btnChinhSua=findViewById(R.id.btnChinhSua);
+        txtMatKhau = findViewById(R.id.txtMatKhau);
+        txtNgaySinh = findViewById(R.id.txtNgaySinh);
+        txtGioiTinh = findViewById(R.id.txtGioiTinh);
+        btnChinhSua = findViewById(R.id.btnChinhSua);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+
+            case R.id.nav_TrangChu:
+                Intent a = new Intent(this, HomeActivity.class);
+                startActivity(a);
+                break;
+            case R.id.nav_YeuThich:
+                Intent b = new Intent(this, FavoriteActivity.class);
+                startActivity(b);
+                break;
+            case R.id.nav_TuyChinh:
+                Intent c = new Intent(this, SettingUpdate.class);
+                startActivity(c);
+                break;
+            case R.id.nav_DangXuat:
+                Intent e = new Intent(this, LoginActivity.class);
+                startActivity(e);
+                this.finish();
+                break;
+        }
+        return false;
     }
 }

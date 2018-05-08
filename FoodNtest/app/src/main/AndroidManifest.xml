@@ -87,7 +87,8 @@
             android:name=".InfoUpdate"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".Setting" />
-        <activity android:name=".SettingUpdate" />
+        <activity android:name=".SettingUpdate"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".FavoriteActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
