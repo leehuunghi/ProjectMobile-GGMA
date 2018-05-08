@@ -51,6 +51,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -122,10 +123,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     LatLng currentLatLng;
 
     Spinner spinner;
-    EditText txtSpinner;
+    AutoCompleteTextView txtSpinner;
     ImageButton imgDropDown;
     ImageButton imgSearch;
-    ImageView mPicker;
 
     RelativeLayout relativeLay;
     RelativeLayout relativeLayoutFind;
@@ -176,7 +176,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             progressDialog.show();
         }
 
-        mPicker = (ImageView) findViewById(R.id.imgMyLocation);
         getLocationPermission();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -266,9 +265,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         imgMyLocation.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Log.d(TAG,"onClick: clicked gps icon ");
             getDeviceLocation();
-
         }
         });
 
@@ -301,9 +298,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         imgDropDown=findViewById(R.id.imgDropDown);
 
         List<String> list = new ArrayList<>();
+        list.add("Tìm kiếm theo quán ăn");
         list.add("Tìm kiếm theo món");
         list.add("Tìm kiếm theo loại món");
-        list.add("Tìm kiếm theo quán ăn");
         list.add("Tìm kiếm theo địa chỉ");
 
         final ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item,list);
@@ -642,11 +639,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         boolean enabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-        synchronized (this) {
             if (!enabled) {
                 showDialogGPS();
             }
-        }
 
         enabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
@@ -665,12 +660,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         PositionBestNear positionBestNear = new PositionBestNear();
         positionBestNear.execute();
 
-//        if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
-//                == PackageManager.PERMISSION_GRANTED) {
-//            mMap.setMyLocationEnabled(true);
-//
-//        } else {
-//        }
+        if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+
+        } else {
+        }
 
 
 
@@ -686,7 +681,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             // position on right bottom
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-            layoutParams.setMargins(0, 0, 20, 100);
+            layoutParams.setMargins(0, 0, 200, 100);
         }
 
     }

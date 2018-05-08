@@ -110,7 +110,7 @@
                 android:background="@null"
                 app:srcCompat="@drawable/ic_expand_more_black_24dp" />
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/txtSpinner"
                 android:layout_width="240dp"
                 android:layout_height="43dp"
@@ -120,6 +120,7 @@
                 android:background="@android:color/background_light"
                 android:ems="10"
                 android:inputType="textPersonName"
+                android:completionThreshold="3"
                 android:textSize="16sp" />
 
             <ImageButton
