@@ -24,12 +24,21 @@
             android:textColor="@android:color/background_dark"
             android:textSize="16sp" />
 
+<<<<<<< HEAD
         <EditText
+            android:id="@+id/txtUBanKinh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="" />
+=======
+        <TextView
             android:id="@+id/sugRadResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/sug_rad_sug" />
+>>>>>>> e64d319c486ead579c46e1b4c06009b717c88c41
 
     </LinearLayout>
 
@@ -54,8 +63,13 @@
             android:textColor="@android:color/background_dark"
             android:textSize="16sp" />
 
+<<<<<<< HEAD
         <EditText
+            android:id="@+id/txtUCheDoXem"
+=======
+        <TextView
             android:id="@+id/viewModeResult"
+>>>>>>> e64d319c486ead579c46e1b4c06009b717c88c41
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

@@ -139,13 +139,10 @@ public class FavoriteActivity extends AppCompatActivity implements
                 Intent c = new Intent(this, SettingUpdate.class);
                 startActivity(c);
                 break;
-            case R.id.nav_ThongTin:
-                Intent d = new Intent(this, HomeActivity.class);
-                startActivity(d);
-                break;
             case R.id.nav_DangXuat:
                 Intent e = new Intent(this, LoginActivity.class);
                 startActivity(e);
+                this.finish();
                 break;
         }
         return false;
