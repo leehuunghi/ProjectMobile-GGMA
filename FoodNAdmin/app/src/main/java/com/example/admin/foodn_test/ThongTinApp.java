@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class Setting extends AppCompatActivity {
+public class ThongTinApp extends AppCompatActivity {
 
     TextView txtBanKinh, txtCheDoXem;
     Button btnChinhSuaSetting;
@@ -15,7 +15,8 @@ public class Setting extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting);
+        setContentView(R.layout.activity_thong_tin_app);
+
         addControls();
         addEvents();
     }
@@ -24,7 +25,7 @@ public class Setting extends AppCompatActivity {
         btnChinhSuaSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent updateSetting=new Intent(Setting.this,SettingUpdate.class);
+                Intent updateSetting=new Intent(ThongTinApp.this,ThongTinAppUpdate.class);
                 startActivity(updateSetting);
             }
         });

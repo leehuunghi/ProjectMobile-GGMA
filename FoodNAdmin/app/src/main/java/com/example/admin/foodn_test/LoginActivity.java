@@ -107,13 +107,13 @@ public class LoginActivity extends Activity {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-           if (txtSdt.getText().toString()=="123456" && txtPass.getText().toString()=="123456")
-           {
-               Intent yourStore =new Intent(LoginActivity.this,YourStore.class);
-               startActivity(yourStore);
-           }
-        }
 
+        }
+        if (sdt.equals("123456") && password.equals("123456"))
+        {
+            Intent yourStore =new Intent(LoginActivity.this,YourStore.class);
+            startActivity(yourStore);
+        }
     }
 
     private boolean isNumberValid(String txtSdt) {

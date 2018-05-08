@@ -157,12 +157,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
-
-
         txtSpinner= findViewById(R.id.txtSpinner);
 
         imgDropDown=findViewById(R.id.imgDropDown);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         android.support.v7.app.ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);

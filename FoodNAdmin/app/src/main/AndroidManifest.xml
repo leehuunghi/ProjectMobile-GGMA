@@ -69,6 +69,8 @@
         <activity android:name=".AddingStore" />
         <activity android:name=".ManageMenu" />
         <activity android:name=".AddingFood" />
+        <activity android:name=".ThongTinApp" />
+        <activity android:name=".ThongTinAppUpdate"></activity>
     </application>
 
 </manifest>

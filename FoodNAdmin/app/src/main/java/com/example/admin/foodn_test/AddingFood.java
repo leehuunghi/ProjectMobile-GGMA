@@ -38,6 +38,23 @@ public class AddingFood extends AppCompatActivity implements
                         // set item as selected to persist highlight
                         menuItem.setChecked(true);
                         // close drawer when item is tapped
+                        int id = menuItem.getItemId();
+                        switch (id) {
+                            case R.id.navQuanCuaBan:
+                                Intent a = new Intent(AddingFood.this, YourStore.class);
+                                startActivity(a);
+                                break;
+                            case R.id.nav_ThongTin:
+                                Intent d = new Intent(AddingFood.this, ThongTinApp.class);
+                                startActivity(d);
+                                break;
+                            case R.id.nav_DangXuat:
+                                Intent e = new Intent(AddingFood.this, LoginActivity.class);
+                                startActivity(e);
+                                break;
+                        }
+
+
                         mDrawerLayout.closeDrawers();
 
                         // Add code here to update the UI based on the item selected
@@ -110,21 +127,7 @@ public class AddingFood extends AppCompatActivity implements
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.navQuanCuaBan:
-                Intent a = new Intent(this, YourStore.class);
-                startActivity(a);
-                break;
-            case R.id.nav_ThongTin:
-                Intent d = new Intent(this, Setting.class);
-                startActivity(d);
-                break;
-            case R.id.nav_DangXuat:
-                Intent e = new Intent(this, LoginActivity.class);
-                startActivity(e);
-                break;
-        }
+
         return false;
     }
 }
