@@ -51,6 +51,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -122,7 +123,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     LatLng currentLatLng;
 
     Spinner spinner;
-    EditText txtSpinner;
+    AutoCompleteTextView txtSpinner;
     ImageButton imgDropDown;
     ImageButton imgSearch;
 
