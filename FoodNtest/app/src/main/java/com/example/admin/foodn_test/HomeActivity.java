@@ -663,6 +663,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
         } else {
         }
