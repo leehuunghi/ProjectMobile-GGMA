@@ -166,7 +166,7 @@ public class YourStore extends AppCompatActivity implements
                 int id = menuItem.getItemId();
                 switch (id) {
                     case R.id.menuXemTruoc:
-                        Intent a = new Intent(YourStore.this, YourStore.class);
+                        Intent a = new Intent(YourStore.this, DetailStore.class);
                         startActivity(a);
                         break;
                     case R.id.menuXoa:
