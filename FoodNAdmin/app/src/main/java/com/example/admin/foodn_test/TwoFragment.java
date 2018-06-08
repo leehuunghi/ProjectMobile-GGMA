@@ -16,7 +16,7 @@ public class TwoFragment extends Fragment {
     DATABASE database_records;
     private List sections = new ArrayList();
     private static int TYPE_SECTION_HEADER = 1;
-    StoreDetailActivity storeDetailActivity;
+    DetailStore storeDetailActivity;
 
     public TwoFragment() {
         // Required empty public constructor
@@ -25,7 +25,7 @@ public class TwoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        storeDetailActivity = (StoreDetailActivity) getActivity();
+        storeDetailActivity = (DetailStore) getActivity();
     }
 
     @Override

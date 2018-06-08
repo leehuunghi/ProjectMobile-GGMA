@@ -57,10 +57,6 @@
             android:name=".HomeActivity"
             android:label="@string/home_label"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".StoreDetailActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".DATABASE" />
         <activity android:name=".CustomBaseAdapter" />
         <activity android:name=".InfoAccount" />
@@ -70,7 +66,9 @@
         <activity android:name=".ManageMenu" />
         <activity android:name=".AddingFood" />
         <activity android:name=".ThongTinApp" />
-        <activity android:name=".ThongTinAppUpdate"></activity>
+        <activity android:name=".ThongTinAppUpdate" />
+        <activity android:name="com.example.admin.DetailStore" />
+        <activity android:name=".DetailStore"></activity>
     </application>
 
 </manifest>

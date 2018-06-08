@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -13,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 public class ManageMenu extends AppCompatActivity {
@@ -27,14 +30,14 @@ public class ManageMenu extends AppCompatActivity {
             R.drawable.menu_thumbnail, R.drawable.menu_thumbnail,
             R.drawable.menu_thumbnail};
 
+    Integer[] tuyChonMon={R.drawable.ic_home_black_24dp};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_menu);
 
-        lvMonAn= (ListView) findViewById(R.id.lvMonAn);
-
-        imgThemMonAn=findViewById(R.id.imgThemMonAn);
+        addControls();
 
         imgThemMonAn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,10 +58,20 @@ public class ManageMenu extends AppCompatActivity {
                 this,
                 R.layout.list_mon_an,
                 tenMon,giaMon,
-                thumbnails);
+                thumbnails, tuyChonMon);
         // bind intrinsic ListView to custom adapter
         lvMonAn.setAdapter(adapter);
+
+        android.support.v7.app.ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Quản lý menu");
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
     }//onCreate
+
+    private void addControls() {
+        lvMonAn= (ListView) findViewById(R.id.lvMonAn);
+        imgThemMonAn=findViewById(R.id.imgThemMonAn);
+    }
     // react to user's selection of a row
 
 
@@ -67,16 +80,18 @@ public class ManageMenu extends AppCompatActivity {
         String[] tenMon;
         String[] giaMon;
         Integer[] thumbnails;
+        Integer[] tuyChonMon;
 
         public CustomIconLabelAdapter(Context context, int layoutToBeInflated,
                                       String[] tenMon,
                                       String[] giaMon,
-                                      Integer[] thumbnails) {
+                                      Integer[] thumbnails, Integer[] tuyChonMon) {
             super(context, R.layout.list_mon_an, tenMon);
             this.context = context;
             this.thumbnails = thumbnails;
             this.tenMon = tenMon;
             this.giaMon=giaMon;
+            this.tuyChonMon=tuyChonMon;
         }
 
 
@@ -87,10 +102,44 @@ public class ManageMenu extends AppCompatActivity {
             TextView tenMonan = (TextView) row.findViewById(R.id.txtTenMonAn);
             TextView giaMonan = (TextView) row.findViewById(R.id.txtGiaMonAn);
             ImageView imgMonan = (ImageView) row.findViewById(R.id.imgHinhMonAn);
+            ImageView imgTuyChonMon=(ImageView) row.findViewById(R.id.imgTuyChonMon);
             tenMonan.setText(tenMon[position]);
             giaMonan.setText(giaMon[position]);
             imgMonan.setImageResource(thumbnails[position]);
+            imgTuyChonMon.setImageResource(tuyChonMon[0]);
+
+            imgTuyChonMon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showMenu(view);
+                }
+            });
             return (row);
         }
+    }
+
+    public void showMenu(View v)
+    {
+        PopupMenu popup = new PopupMenu(ManageMenu.this,v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.manage_menu, popup.getMenu());
+        popup.show();
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                switch (id) {
+                    case R.id.menuXoaMon:
+                        Intent d = new Intent(ManageMenu.this, ThongTinAppUpdate.class);
+                        startActivity(d);
+                        break;
+                    case R.id.menuChinhSuaMon:
+                        Intent e = new Intent(ManageMenu.this, LoginActivity.class);
+                        startActivity(e);
+                        break;
+                }
+                return true;
+            }
+        });
     }
 }
