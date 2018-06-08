@@ -123,7 +123,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     LatLng currentLatLng;
 
     Spinner spinner;
-    AutoCompleteTextView txtSpinner;
+    EditText txtSpinner;
     ImageButton imgDropDown;
     ImageButton imgSearch;
 
