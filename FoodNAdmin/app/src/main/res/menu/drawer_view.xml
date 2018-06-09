@@ -3,8 +3,6 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/navQuanCuaBan"
-            android:checkable="false"
-            android:checked="true"
             android:icon="@drawable/ic_home_black_24dp"
             android:title="Quán của bạn" />
     </group>
@@ -12,8 +10,6 @@
     <group  android:checkableBehavior="single" android:id="@+id/group_menu1">
         <item
             android:id="@+id/nav_ThongTin"
-            android:checkable="false"
-            android:checked="false"
             android:icon="@drawable/ic_info_black_24dp"
             android:title="Thông tin ứng dụng" />
     </group>
@@ -21,8 +17,6 @@
     <group  android:checkableBehavior="single" android:id="@+id/group_menu2">
         <item
             android:id="@+id/nav_DangXuat"
-            android:checkable="false"
-            android:checked="false"
             android:icon="@drawable/ic_power_settings_new_black_24dp"
             android:title="Đăng xuất" />
 

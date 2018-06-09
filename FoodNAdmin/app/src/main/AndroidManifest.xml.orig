@@ -70,11 +70,16 @@
         <activity android:name=".ManageMenu" />
         <activity android:name=".AddingFood" />
         <activity android:name=".ThongTinApp" />
-        <activity android:name=".ThongTinAppUpdate"></activity>
+<<<<<<< HEAD
+        <activity android:name=".ThongTinAppUpdate" />
+        <activity android:name="com.example.admin.DetailStore" />
         <activity android:name=".DetailStore" />
         <activity android:name=".UpdateStore" />
         <activity android:name=".UpdateFood" />
         <activity android:name=".ThreeFragment"></activity>
+=======
+        <activity android:name=".ThongTinAppUpdate"></activity>
+>>>>>>> 60698658ee27ca65915df1f8c8fd1fb30d1ebdf2
     </application>
 
 </manifest>

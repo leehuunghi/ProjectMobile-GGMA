@@ -13,7 +13,14 @@ import java.util.List;
 
 public class TwoFragment extends Fragment {
 
+<<<<<<< HEAD
+    DetailStore storeDetailActivity;
+=======
+    DATABASE database_records;
+    private List sections = new ArrayList();
+    private static int TYPE_SECTION_HEADER = 1;
     StoreDetailActivity storeDetailActivity;
+>>>>>>> 60698658ee27ca65915df1f8c8fd1fb30d1ebdf2
 
     public TwoFragment() {
         // Required empty public constructor

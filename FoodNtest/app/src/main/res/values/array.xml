@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<array name="radius">
-    <item>5 km</item>
-    <item>10 km</item>
-    <item>15 km</item>
-</array>
-<array name="view_mode">
-    <item>Thường</item>
-    <item>Vệ tinh</item>
-</array>
+    <array name="radius">
+        <item>5 km</item>
+        <item>10 km</item>
+        <item>15 km</item>
+    </array>
+    <array name="view_mode">
+        <item>Thường</item>
+        <item>Vệ tinh</item>
+    </array>
 </resources>

@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".YourStore"
     android:orientation="vertical"
-    android:id="@+id/drawer_layout"
-    android:focusable="true">
+    android:id="@+id/drawer_layout">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,7 +16,7 @@
         <ListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
-            android:layout_height="508dp" />
+            android:layout_height="match_parent" />
 
         <ImageButton
             android:id="@+id/imgThemCuaHang"
@@ -47,5 +46,4 @@
         app:itemIconTint="@color/drawer_item"
         app:itemTextColor="@color/drawer_item"
         app:itemBackground="@android:color/transparent"/>
-
 </android.support.v4.widget.DrawerLayout>

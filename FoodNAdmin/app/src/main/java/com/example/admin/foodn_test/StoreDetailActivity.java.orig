@@ -1,13 +1,16 @@
 package com.example.admin.foodn_test;
 
+<<<<<<< HEAD:FoodNAdmin/app/src/main/java/com/example/admin/foodn_test/DetailStore.java
 import android.content.Intent;
+=======
+import android.os.Bundle;
+>>>>>>> 60698658ee27ca65915df1f8c8fd1fb30d1ebdf2:FoodNAdmin/app/src/main/java/com/example/admin/foodn_test/StoreDetailActivity.java
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -15,12 +18,14 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DetailStore extends AppCompatActivity {
+public class StoreDetailActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_store);
+        setContentView(R.layout.activity_store_detail);
 
+<<<<<<< HEAD:FoodNAdmin/app/src/main/java/com/example/admin/foodn_test/DetailStore.java
         Intent intent=getIntent();
         Bundle packageFromCaller= intent.getBundleExtra("myPackage");
         String temp= packageFromCaller.getString("Ten");
@@ -28,6 +33,13 @@ public class DetailStore extends AppCompatActivity {
         android.support.v7.app.ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+=======
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Quán ăn A");
+>>>>>>> 60698658ee27ca65915df1f8c8fd1fb30d1ebdf2:FoodNAdmin/app/src/main/java/com/example/admin/foodn_test/StoreDetailActivity.java
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -47,12 +59,19 @@ public class DetailStore extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
+<<<<<<< HEAD:FoodNAdmin/app/src/main/java/com/example/admin/foodn_test/DetailStore.java
             DetailStore.ViewPagerAdapter adapter = new DetailStore.ViewPagerAdapter(getSupportFragmentManager());
             adapter.addFragment(new OneFragment(), "THÔNG TIN CHUNG");
             adapter.addFragment(new TwoFragment(), "MENU");
             adapter.addFragment(new ThreeFragment(), "BÌNH LUẬN");
             viewPager.setAdapter(adapter);
 
+=======
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new OneFragment(), "THÔNG TIN");
+        adapter.addFragment(new TwoFragment(), "MENU");
+        viewPager.setAdapter(adapter);
+>>>>>>> 60698658ee27ca65915df1f8c8fd1fb30d1ebdf2:FoodNAdmin/app/src/main/java/com/example/admin/foodn_test/StoreDetailActivity.java
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

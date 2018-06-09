@@ -16,7 +16,7 @@ public class CustomBaseAdapter extends BaseAdapter {
     Context context;
     int layoutToBeInflated;
     List<DATABASE.DbRecord> dbList;
-    public CustomBaseAdapter(DetailStore context, List<DATABASE.DbRecord>
+    public CustomBaseAdapter(StoreDetailActivity context, List<DATABASE.DbRecord>
             databaseList, int resource) {
         this.context = context;
         this.dbList = databaseList;

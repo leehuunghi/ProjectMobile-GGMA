@@ -10,31 +10,22 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ActionMenuView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class YourStore extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
 
     ListView lvList;
     ImageButton imgThemCuaHang;
-    NavigationView navigationView;
-    ImageView imgTuyChon;
 
     String[] tenQuan = { "Quán-1", "Quán-2", "Quán-3", "Quán-4", "Quán-5"};
     String[] diaChi = { "Địa chỉ", "Địa chỉ", "Địa chỉ", "Địa chỉ", "Địa chỉ"};
@@ -43,20 +34,26 @@ public class YourStore extends AppCompatActivity implements
             R.drawable.menu_thumbnail, R.drawable.menu_thumbnail,
             R.drawable.menu_thumbnail};
 
-    Integer[] tuyChon={R.drawable.ic_home_black_24dp};
-
     private DrawerLayout mDrawerLayout;
 
+<<<<<<< HEAD
     String Ten="";
 
 
+=======
+>>>>>>> 60698658ee27ca65915df1f8c8fd1fb30d1ebdf2
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_your_store);
 
-        addControls();
+        lvList = (ListView) findViewById(R.id.listView);
 
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+
+        imgThemCuaHang = findViewById(R.id.imgThemCuaHang);
+
+        NavigationView navigationView = findViewById(R.id.nav_view1);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -132,14 +129,16 @@ public class YourStore extends AppCompatActivity implements
         lvList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+<<<<<<< HEAD
                 Ten=tenQuan[i];
             }
         });
+
         CustomIconLabelAdapter adapter = new CustomIconLabelAdapter(
                 this,
                 R.layout.list_store,
                 tenQuan,diaChi,
-                thumbnails);
+                thumbnails,tuyChon);
         // bind intrinsic ListView to custom adapter
         lvList.setAdapter(adapter);
 
@@ -221,6 +220,18 @@ public class YourStore extends AppCompatActivity implements
         mDrawerLayout = findViewById(R.id.drawer_layout);
         imgThemCuaHang = findViewById(R.id.imgThemCuaHang);
         navigationView = findViewById(R.id.nav_view1);
+=======
+
+            }
+        });
+        CustomIconLabelAdapter adapter = new CustomIconLabelAdapter(
+                this,
+                R.layout.list_store,
+                tenQuan,diaChi,giaTien,
+                thumbnails);
+        // bind intrinsic ListView to custom adapter
+        lvList.setAdapter(adapter);
+>>>>>>> 60698658ee27ca65915df1f8c8fd1fb30d1ebdf2
     }
 
     @Override
@@ -239,18 +250,21 @@ public class YourStore extends AppCompatActivity implements
         String[] tenQuan;
         String[] diaChi;
         Integer[] thumbnails;
-        Integer[] tuyChon;
 
         public CustomIconLabelAdapter(Context context, int layoutToBeInflated,
                                       String[] tenQuan,
                                               String[] diaChi,
+<<<<<<< HEAD
                                               Integer[] thumbnails, Integer[] tuyChon) {
+=======
+                                              String[] giaTien,
+                                              Integer[] thumbnails) {
+>>>>>>> 60698658ee27ca65915df1f8c8fd1fb30d1ebdf2
             super(context, R.layout.list_store, tenQuan);
             this.context = context;
             this.thumbnails = thumbnails;
             this.tenQuan = tenQuan;
             this.diaChi=diaChi;
-            this.tuyChon=tuyChon;
         }
 
 
@@ -261,18 +275,9 @@ public class YourStore extends AppCompatActivity implements
             TextView tenQuanAn = (TextView) row.findViewById(R.id.txtTenQuan);
             TextView diaChiQuan = (TextView) row.findViewById(R.id.txtDiaChi);
             ImageView imgQuanAn = (ImageView) row.findViewById(R.id.imgQuan);
-            imgTuyChon= (ImageView) row.findViewById(R.id.imgTuyChon);
             tenQuanAn.setText(tenQuan[position]);
             diaChiQuan.setText(diaChi[position]);
             imgQuanAn.setImageResource(thumbnails[position]);
-            imgTuyChon.setImageResource(tuyChon[0]);
-
-            imgTuyChon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    showMenu(view);
-                }
-            });
             return (row);
         }
     }
