@@ -123,9 +123,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     LatLng currentLatLng;
 
     Spinner spinner;
-    AutoCompleteTextView txtSpinner;
-    ImageButton imgDropDown;
+    TextView txtSpinner;
+//    ImageButton imgDropDown;
     ImageButton imgSearch;
+    EditText txtSearch;
 
     RelativeLayout relativeLay;
     RelativeLayout relativeLayoutFind;
@@ -232,7 +233,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
-        txtSpinner= findViewById(R.id.txtSpinner);
+        txtSpinner = findViewById(R.id.txtSpinner);
+        txtSearch = findViewById(R.id.txtSearch);
         recyclerView = findViewById(R.id.recycleView);
         
         imgMyLocation = (ImageView) findViewById(R.id.imgMyLocation);
@@ -295,13 +297,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         spinner=(Spinner) findViewById(R.id.spinner);
 
-        imgDropDown=findViewById(R.id.imgDropDown);
+//        imgDropDown=findViewById(R.id.imgDropDown);
 
         List<String> list = new ArrayList<>();
-        list.add("Tìm kiếm theo quán ăn");
-        list.add("Tìm kiếm theo món");
-        list.add("Tìm kiếm theo loại món");
-        list.add("Tìm kiếm theo địa chỉ");
+        list.add("Quán ăn");
+        list.add("Món");
+        list.add("Loại món");
+        list.add("Địa chỉ");
 
         final ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item,list);
         adapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
@@ -310,28 +312,31 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String temp=spinner.getSelectedItem().toString();
+                String temp = spinner.getSelectedItem().toString();
                 txtSpinner.setText(temp);
-                txtSpinner.setSelection(txtSpinner.length());
+                String temp2 = temp.toLowerCase();
+                String hint = "Tìm kiếm theo " + temp2;
+                txtSearch.setHint(hint);
+//                txtSpinner.setSelection(txtSpinner.length());
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
 
-        imgDropDown.setOnClickListener(new View.OnClickListener() {
+        txtSpinner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 spinner.performClick();
             }
         });
 
-        txtSpinner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                spinner.setVisibility(View.INVISIBLE);
-            }
-        });
+//        txtSpinner.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                spinner.setVisibility(View.INVISIBLE);
+//            }
+//        });
 
         imgSearch=findViewById(R.id.imgSearch);
         relativeLay= (RelativeLayout) findViewById(R.id.relativeLayout);
