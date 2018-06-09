@@ -5,17 +5,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class TwoFragment extends Fragment {
+
+
+public class BlankFragment extends Fragment {
 
     DetailStore storeDetailActivity;
 
-    public TwoFragment() {
+    public BlankFragment() {
         // Required empty public constructor
     }
 
@@ -27,10 +29,10 @@ public class TwoFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.fragment_two, container, false);
-        ListView listview = (ListView) layout.findViewById(R.id.lvMenu);
-        List database = new DATABASE().dbList;
-        CustomBaseAdapter adapter = new CustomBaseAdapter(storeDetailActivity, database, R.layout.list_gui_row);
+        RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.fragment_three, container, false);
+        ListView listview = (ListView) layout.findViewById(R.id.lvComment);
+        List database = new DATABASEcomment().dbList;
+        CustomBaseAdapter adapter = new CustomBaseAdapter(storeDetailActivity, database, R.layout.list_comment);
         listview.setAdapter(adapter);
 
         return layout;
