@@ -83,6 +83,13 @@
         android:ems="10"
         android:inputType="textPersonName" />
 
+        <Button
+            android:id="@+id/btnThemMon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Thêm" />
+
     </LinearLayout>
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view1"

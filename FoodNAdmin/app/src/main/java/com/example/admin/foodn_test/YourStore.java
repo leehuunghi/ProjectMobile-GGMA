@@ -1,7 +1,9 @@
 package com.example.admin.foodn_test;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -138,19 +140,41 @@ public class YourStore extends AppCompatActivity implements
         // bind intrinsic ListView to custom adapter
         lvList.setAdapter(adapter);
 
-//        lvList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                imgTuyChon.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//
-//                        showMenu(view);
-//                    }
-//                });
-//        }
-//        });
+    }
 
+    public void showDialogDeleteStore() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(YourStore.this);
+        builder.setTitle(R.string.delete_store);
+
+        //list of items
+        final String[] items = getResources().getStringArray(R.array.delete_store);
+        builder.setSingleChoiceItems(items, 0,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+        String positiveText = getString(android.R.string.ok);
+        builder.setPositiveButton(positiveText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+        String negativeText = getString(android.R.string.cancel);
+        builder.setNegativeButton(negativeText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // negative button logic
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        // display dialog
+        dialog.show();
     }
 
 
@@ -170,8 +194,7 @@ public class YourStore extends AppCompatActivity implements
                         startActivity(a);
                         break;
                     case R.id.menuXoa:
-                        Intent d = new Intent(YourStore.this, ThongTinAppUpdate.class);
-                        startActivity(d);
+                        showDialogDeleteStore();
                         break;
                     case R.id.menuChinhSua:
                         Intent e = new Intent(YourStore.this, LoginActivity.class);
