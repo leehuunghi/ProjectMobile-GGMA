@@ -32,6 +32,7 @@ import java.util.List;
 public class StoreDetailActivity extends AppCompatActivity {
     OneFragment oneFragment;
     TwoFragment twoFragment;
+    ThreeFragment threeFragment;
     Store store = new Store();
     int ID;
     class GetInfo extends AsyncTask<String, Void, String>{
@@ -115,8 +116,10 @@ public class StoreDetailActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         oneFragment = new OneFragment();
         twoFragment = new TwoFragment();
+        threeFragment = new ThreeFragment();
         adapter.addFragment(oneFragment, "THÔNG TIN");
         adapter.addFragment(twoFragment, "MENU");
+        adapter.addFragment(threeFragment, "BÌNH LUẬN");
         viewPager.setAdapter(adapter);
     }
 

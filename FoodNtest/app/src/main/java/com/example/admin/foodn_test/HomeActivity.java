@@ -133,10 +133,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     EditText txtStart;
     TextView txtEnd;
-    ImageButton imgFindRoute;
+//    ImageButton imgFindRoute;
     ImageButton imgSearchBack;
     RecyclerView recyclerView;
-
 
     private ImageView imgMyLocation;
     private DrawerLayout mDrawerLayout;
@@ -154,6 +153,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
+    static final String WRITE_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
     static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     static final float DEFAULT_ZOOM = 15f;
 
@@ -236,10 +236,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         txtSpinner = findViewById(R.id.txtSpinner);
         txtSearch = findViewById(R.id.txtSearch);
         recyclerView = findViewById(R.id.recycleView);
+        recyclerView.setVisibility(View.VISIBLE);
         
         imgMyLocation = (ImageView) findViewById(R.id.imgMyLocation);
 
-        txtSpinner.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        txtSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
@@ -253,12 +254,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        txtSpinner.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        txtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if(actionId== EditorInfo.IME_ACTION_DONE){
                     //Clear focus here from edittext
-                    txtSpinner.clearFocus();
+                    txtSearch.clearFocus();
                 }
                 return false;
             }
@@ -331,12 +332,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-//        txtSpinner.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                spinner.setVisibility(View.INVISIBLE);
-//            }
-//        });
+        txtSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spinner.setVisibility(View.INVISIBLE);
+            }
+        });
 
         imgSearch=findViewById(R.id.imgSearch);
         relativeLay= (RelativeLayout) findViewById(R.id.relativeLayout);
@@ -348,7 +349,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         txtStart = findViewById(R.id.txtStart);
         txtEnd=findViewById(R.id.txtEnd);
 
-        imgFindRoute=findViewById(R.id.imgFindRoute);
+//        imgFindRoute=findViewById(R.id.imgFindRoute);
 
         imgSearchBack=findViewById(R.id.imgSearchBack);
 
@@ -361,50 +362,50 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        imgFindRoute.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                imgFindRoute.setVisibility(View.INVISIBLE);
-                imgSearchBack.setVisibility(View.VISIBLE);
-                if (listPoints.size() > 0) {
-                    listPoints.clear();
-                    mMap.clear();
-                }
-                LatLng latLng1=new LatLng(locationCurrent.getLatitude(), locationCurrent.getLongitude());
-                //Save first point select
-                listPoints.add(latLng1);
-
-                //có địa điểm thì lưu vô locationDes rồi thay cho 2 số này
-                listPoints.add(currentLatLng);
-
-                //Create marker
-                MarkerOptions markerOptionsCurrent = new MarkerOptions();
-                markerOptionsCurrent.position(latLng1);
-
-                MarkerOptions markerOptionsDes = new MarkerOptions();
-                markerOptionsDes.position(currentLatLng);
-
-
-                if (listPoints.size() == 1) {
-                    //Add first marker to the map
-                    markerOptionsCurrent.icon(BitmapDescriptorFactory.fromResource(R.drawable.start_marker));
-                } else {
-                    //Add second marker to the map
-                    markerOptionsCurrent.icon(BitmapDescriptorFactory.fromResource(R.drawable.start_marker));
-                    markerOptionsDes.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                }
-                mMap.addMarker(markerOptionsCurrent);
-                mMap.addMarker(markerOptionsDes);
-
-                if (listPoints.size() == 2) {
-                    //Create the URL to get request from first marker to second marker
-                    String url = getRequestUrl(listPoints.get(0), listPoints.get(1));
-                    TaskRequestDirections taskRequestDirections = new TaskRequestDirections();
-                    taskRequestDirections.execute(url);
-                    moveCamera(currentLatLng,14);
-                }
-            }
-        });
+//        imgFindRoute.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                imgFindRoute.setVisibility(View.INVISIBLE);
+//                imgSearchBack.setVisibility(View.VISIBLE);
+//                if (listPoints.size() > 0) {
+//                    listPoints.clear();
+//                    mMap.clear();
+//                }
+//                LatLng latLng1=new LatLng(locationCurrent.getLatitude(), locationCurrent.getLongitude());
+//                //Save first point select
+//                listPoints.add(latLng1);
+//
+//                //có địa điểm thì lưu vô locationDes rồi thay cho 2 số này
+//                listPoints.add(currentLatLng);
+//
+//                //Create marker
+//                MarkerOptions markerOptionsCurrent = new MarkerOptions();
+//                markerOptionsCurrent.position(latLng1);
+//
+//                MarkerOptions markerOptionsDes = new MarkerOptions();
+//                markerOptionsDes.position(currentLatLng);
+//
+//
+//                if (listPoints.size() == 1) {
+//                    //Add first marker to the map
+//                    markerOptionsCurrent.icon(BitmapDescriptorFactory.fromResource(R.drawable.start_marker));
+//                } else {
+//                    //Add second marker to the map
+//                    markerOptionsCurrent.icon(BitmapDescriptorFactory.fromResource(R.drawable.start_marker));
+//                    markerOptionsDes.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+//                }
+//                mMap.addMarker(markerOptionsCurrent);
+//                mMap.addMarker(markerOptionsDes);
+//
+//                if (listPoints.size() == 2) {
+//                    //Create the URL to get request from first marker to second marker
+//                    String url = getRequestUrl(listPoints.get(0), listPoints.get(1));
+//                    TaskRequestDirections taskRequestDirections = new TaskRequestDirections();
+//                    taskRequestDirections.execute(url);
+//                    moveCamera(currentLatLng,14);
+//                }
+//            }
+//        });
 
         mDrawerLayout.addDrawerListener(
                 new DrawerLayout.DrawerListener() {
@@ -479,14 +480,51 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onClickButtonChiDuong(RecyclerViewAdapter.ViewHolder view, int position) {
         relativeLayoutFind.setVisibility(View.VISIBLE);
-        imgFindRoute.setVisibility(View.VISIBLE);
-        imgSearchBack.setVisibility(View.INVISIBLE);
+//        imgFindRoute.setVisibility(View.VISIBLE);
+        imgSearchBack.setVisibility(View.VISIBLE);
         relativeLay.setVisibility(View.INVISIBLE);
         currentLatLng = new LatLng(adapterRecycler.getItem(position).getListPoint().get(0).getV(), adapterRecycler.getItem(position).getListPoint().get(0).getV1());
         mMap.clear();
         mMap.addMarker(new MarkerOptions().position(currentLatLng).title(adapterRecycler.getItem(position).getTenCuaHang()).snippet(adapterRecycler.getItem(position).getDiaChi()));
         txtEnd.setText(adapterRecycler.getItem(position).getTenCuaHang().toString());
         moveCamera(currentLatLng,15);
+                if (listPoints.size() > 0) {
+                    listPoints.clear();
+                    mMap.clear();
+                }
+                LatLng latLng1=new LatLng(locationCurrent.getLatitude(), locationCurrent.getLongitude());
+                //Save first point select
+                listPoints.add(latLng1);
+
+                //có địa điểm thì lưu vô locationDes rồi thay cho 2 số này
+                listPoints.add(currentLatLng);
+
+                //Create marker
+                MarkerOptions markerOptionsCurrent = new MarkerOptions();
+                markerOptionsCurrent.position(latLng1);
+
+                MarkerOptions markerOptionsDes = new MarkerOptions();
+                markerOptionsDes.position(currentLatLng);
+
+
+                if (listPoints.size() == 1) {
+                    //Add first marker to the map
+                    markerOptionsCurrent.icon(BitmapDescriptorFactory.fromResource(R.drawable.start_marker));
+                } else {
+                    //Add second marker to the map
+                    markerOptionsCurrent.icon(BitmapDescriptorFactory.fromResource(R.drawable.start_marker));
+                    markerOptionsDes.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                }
+                mMap.addMarker(markerOptionsCurrent);
+                mMap.addMarker(markerOptionsDes);
+
+                if (listPoints.size() == 2) {
+                    //Create the URL to get request from first marker to second marker
+                    String url = getRequestUrl(listPoints.get(0), listPoints.get(1));
+                    TaskRequestDirections taskRequestDirections = new TaskRequestDirections();
+                    taskRequestDirections.execute(url);
+                    moveCamera(currentLatLng,14);
+                }
     }
 
     public class TaskRequestDirections extends AsyncTask<String, Void, String> {

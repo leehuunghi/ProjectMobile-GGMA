@@ -17,29 +17,64 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:visibility="visible">
 
         <!--<Button-->
-            <!--android:id="@+id/btnDownRecycleView"-->
-            <!--android:layout_width="30dp"-->
-            <!--android:layout_height="30dp"-->
-            <!--android:layout_alignParentBottom="true"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--android:layout_marginBottom="173dp"-->
-            <!--android:background="@drawable/ic_keyboard_arrow_down_black_24dp" />-->
+        <!--android:id="@+id/btnDownRecycleView"-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginBottom="173dp"-->
+        <!--android:background="@drawable/ic_keyboard_arrow_down_black_24dp" />-->
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycleView"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:orientation="horizontal"
-            android:visibility="visible">
+            android:gravity="bottom|right"
+            android:orientation="vertical">
 
-        </android.support.v7.widget.RecyclerView>
+            <!--<ImageButton-->
+            <!--android:id="@+id/imgRoute"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+
+            <!--android:layout_above="@+id/recycleView"-->
+            <!--android:layout_alignEnd="@+id/spinner"-->
+            <!--android:layout_alignRight="@+id/spinner"-->
+            <!--android:layout_marginBottom="42dp"-->
+            <!--android:layout_weight="1"-->
+            <!--app:srcCompat="@android:drawable/presence_busy" />-->
+
+            <ImageView
+                android:id="@+id/imgMyLocation"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/btn_crntlocation"
+                android:elevation="3dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_my_location_black_24dp"
+                android:tint="#ff3e00" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycleView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+
     </RelativeLayout>
 
     <LinearLayout
@@ -75,7 +110,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="23dp"
+            android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
@@ -83,9 +118,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="50dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="0dp"
                 android:layout_weight="1"
                 android:background="@drawable/nav_bg"
                 android:elevation="5dp"
@@ -119,7 +154,7 @@
                         android:background="@color/cardview_light_background"
                         android:ems="10"
                         android:inputType="textPersonName"
-                        android:text="@string/crnt_location"
+                        android:hint="@string/crnt_location"
                         android:textColor="#555555"
                         android:textSize="16sp"
                         android:textStyle="italic" />
@@ -136,13 +171,14 @@
                         android:id="@+id/imageView2"
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="12dp"
                         android:layout_weight="1"
                         android:tint="#cccccc"
                         app:srcCompat="@drawable/ic_more_vert_black_24dp" />
 
                     <View
-                        android:layout_width="210dp"
+                        android:layout_width="220dp"
                         android:layout_height="1.5dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="25dp"
@@ -165,7 +201,7 @@
                         android:tint="#cccccc"
                         app:srcCompat="@drawable/ic_location_on_black_24dp" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/txtEnd"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -193,30 +229,15 @@
         </LinearLayout>
 
         <ImageButton
-            android:id="@+id/imgFindRoute"
-            android:layout_width="59dp"
-            android:layout_height="59dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="45dp"
-            android:layout_weight="2"
-            android:adjustViewBounds="true"
-            android:background="@drawable/btn_crntlocation"
-            android:elevation="5dp"
-            android:foregroundGravity="center_vertical"
-            android:tint="#ffffff"
-            app:srcCompat="@drawable/ic_navigation_black_24dp" />
-
-        <ImageButton
             android:id="@+id/imgSearchBack"
             android:layout_width="59dp"
             android:layout_height="59dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="45dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="25dp"
             android:layout_weight="2"
             android:adjustViewBounds="true"
-            android:background="@drawable/btn_crntlocation"
+            android:background="@drawable/btn_searchback"
             android:elevation="5dp"
             android:foregroundGravity="center_vertical"
             android:tint="#ffffff"
@@ -228,7 +249,7 @@
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="32dp"
         android:gravity="center_horizontal"
         android:textSize="25sp"
         android:visibility="visible">
@@ -238,7 +259,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/spinner"
-            android:layout_marginLeft="0dp"
             android:layout_weight="1"
             android:layout_x="60dp"
             android:layout_y="30dp"
@@ -246,7 +266,7 @@
             android:elevation="5dp"
             android:orientation="horizontal"
             android:paddingBottom="5dp"
-            android:paddingLeft="20dp"
+            android:paddingLeft="15dp"
             android:paddingRight="5dp"
             android:paddingTop="5dp">
 
@@ -257,7 +277,7 @@
                 android:layout_alignTop="@+id/spinner"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="0dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginRight="20dp"
                 android:layout_weight="1"
                 android:background="@drawable/search_cat_btn"
@@ -271,10 +291,9 @@
 
             <EditText
                 android:id="@+id/txtSearch"
-                android:layout_width="160dp"
+                android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="0dp"
                 android:layout_weight="1"
                 android:background="@color/cardview_light_background"
                 android:ems="10"
@@ -309,40 +328,6 @@
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:layout_marginRight="15dp"
-        android:gravity="bottom|right"
-        android:orientation="vertical">
-
-        <!--<ImageButton-->
-        <!--android:id="@+id/imgRoute"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-
-        <!--android:layout_above="@+id/recycleView"-->
-        <!--android:layout_alignEnd="@+id/spinner"-->
-        <!--android:layout_alignRight="@+id/spinner"-->
-        <!--android:layout_marginBottom="42dp"-->
-        <!--android:layout_weight="1"-->
-        <!--app:srcCompat="@android:drawable/presence_busy" />-->
-
-        <ImageView
-            android:id="@+id/imgMyLocation"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_gravity="bottom|right"
-            android:layout_marginBottom="190dp"
-            android:layout_marginRight="5dp"
-            android:background="@drawable/btn_crntlocation"
-            android:elevation="5dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_my_location_black_24dp"
-            android:tint="#ffffff" />
-
-    </LinearLayout>
 
 
     <android.support.design.widget.NavigationView
