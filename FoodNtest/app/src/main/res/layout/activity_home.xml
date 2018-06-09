@@ -49,7 +49,7 @@
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:background="@color/colorPrimary">
 
             <android.support.v7.widget.Toolbar
@@ -65,84 +65,10 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:id="@+id/relativeLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:gravity="center_horizontal"
-        android:textSize="25sp"
-        android:visibility="visible">
-
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="330dp"
-            android:layout_height="43dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginRight="22dp"
-            android:layout_marginTop="28dp"
-            android:layout_weight="1"
-            android:layout_x="30dp"
-            android:layout_y="30dp"
-            android:background="@drawable/search_layout" />
-
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/spinner"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-            android:layout_x="60dp"
-            android:layout_y="30dp"
-            android:background="@drawable/search_layout"
-            android:elevation="5dp"
-            android:orientation="horizontal"
-            android:padding="5dp">
-
-            <ImageButton
-                android:id="@+id/imgDropDown"
-                android:layout_width="wrap_content"
-                android:layout_height="43dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:background="@null"
-                app:srcCompat="@drawable/ic_expand_more_black_24dp" />
-
-            <AutoCompleteTextView
-                android:id="@+id/txtSpinner"
-                android:layout_width="240dp"
-                android:layout_height="43dp"
-                android:layout_alignTop="@+id/spinner"
-                android:layout_centerHorizontal="true"
-                android:layout_weight="1"
-                android:background="@android:color/background_light"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:completionThreshold="3"
-                android:textSize="16sp" />
-
-            <ImageButton
-                android:id="@+id/imgSearch"
-                android:layout_width="45dp"
-                android:layout_height="43dp"
-                android:layout_alignLeft="@+id/txtSpinner"
-                android:layout_alignTop="@+id/txtSpinner"
-                android:layout_weight="1"
-                android:background="@null"
-                app:srcCompat="@drawable/ic_search_black_24dp" />
-
-
-        </LinearLayout>
-
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/relativeLayoutFind"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_marginTop="50dp"
         android:textSize="25sp"
         android:visibility="visible">
 
@@ -295,6 +221,91 @@
             android:foregroundGravity="center_vertical"
             android:tint="#ffffff"
             app:srcCompat="@drawable/ic_search_black_24dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:gravity="center_horizontal"
+        android:textSize="25sp"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/spinner"
+            android:layout_marginLeft="0dp"
+            android:layout_weight="1"
+            android:layout_x="60dp"
+            android:layout_y="30dp"
+            android:background="@drawable/search_layout"
+            android:elevation="5dp"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:id="@+id/txtSpinner"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/spinner"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="0dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/search_cat_btn"
+                android:completionThreshold="3"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:padding="7dp"
+                android:textAlignment="center"
+                android:textSize="14sp"
+                android:textStyle="normal" />
+
+            <EditText
+                android:id="@+id/txtSearch"
+                android:layout_width="160dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="0dp"
+                android:layout_weight="1"
+                android:background="@color/cardview_light_background"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textSize="16sp" />
+
+            <ImageButton
+                android:id="@+id/imgSearch"
+                android:layout_width="45dp"
+                android:layout_height="43dp"
+                android:layout_alignLeft="@+id/txtSpinner"
+                android:layout_alignTop="@+id/txtSpinner"
+                android:layout_weight="1"
+                android:background="@null"
+                app:srcCompat="@drawable/ic_search_black_24dp" />
+
+
+        </LinearLayout>
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="150dp"
+            android:layout_height="43dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="false"
+            android:layout_marginLeft="9dp"
+            android:layout_marginTop="28dp"
+            android:layout_weight="1"
+            android:layout_x="30dp"
+            android:layout_y="30dp"
+            android:background="@drawable/search_layout" />
 
     </RelativeLayout>
 
