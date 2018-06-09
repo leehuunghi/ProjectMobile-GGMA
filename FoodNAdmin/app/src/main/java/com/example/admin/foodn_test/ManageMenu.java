@@ -167,8 +167,7 @@ public class ManageMenu extends AppCompatActivity {
                 int id = menuItem.getItemId();
                 switch (id) {
                     case R.id.menuXoaMon:
-                        Intent d = new Intent(ManageMenu.this, ThongTinAppUpdate.class);
-                        startActivity(d);
+                        showDialogDeleteFood();
                         break;
                     case R.id.menuChinhSuaMon:
                         Intent e = new Intent(ManageMenu.this, UpdateFood.class);

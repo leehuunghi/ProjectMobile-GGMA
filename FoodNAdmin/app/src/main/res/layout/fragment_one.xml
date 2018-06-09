@@ -8,7 +8,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,7 +29,17 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="10dp"
                     android:paddingTop="0dp"
-                    android:text="TextView"
+                    android:text="Địa chỉ"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/sdt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="0dp"
+                    android:text="Số điện thoại"
                     android:textColor="#000000"
                     android:textSize="18sp" />
 
@@ -149,7 +161,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="35dp"
                             android:layout_marginTop="5dp"
                             android:layout_weight="1"
                             android:orientation="horizontal">
@@ -166,8 +178,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
                                 android:layout_weight="1"
-                                android:text="TextView"
-                                android:textColor="#08c704" />
+                                android:text="Thời gian hoạt động"
+                                android:textColor="#08c704"
+                                android:textSize="16sp" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -189,101 +202,6 @@
                         app:layout_constraintDimensionRatio="H,1:1" />
 
                 </LinearLayout>
-            </LinearLayout>
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_marginTop="20dp"
-                android:background="#CCCCCC" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:paddingLeft="40dp"
-                    android:paddingRight="40dp"
-                    android:paddingTop="20dp">
-
-                    <ImageView
-                        android:id="@+id/rate1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:adjustViewBounds="true"
-                        android:maxHeight="30dp"
-                        android:maxWidth="30dp"
-                        android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/rateempty" />
-
-                    <ImageView
-                        android:id="@+id/rate3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:adjustViewBounds="true"
-                        android:maxHeight="30dp"
-                        android:maxWidth="30dp"
-                        android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/rateempty" />
-
-                    <ImageView
-                        android:id="@+id/rate2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:adjustViewBounds="true"
-                        android:maxHeight="30dp"
-                        android:maxWidth="30dp"
-                        android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/rateempty" />
-
-                    <ImageView
-                        android:id="@+id/rate4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:adjustViewBounds="true"
-                        android:maxHeight="30dp"
-                        android:maxWidth="30dp"
-                        android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/rateempty" />
-
-                    <ImageView
-                        android:id="@+id/rate5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:adjustViewBounds="true"
-                        android:maxHeight="30dp"
-                        android:maxWidth="30dp"
-                        android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/rateempty" />
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:padding="10dp"
-                    android:text="@string/rate_call"
-                    android:textColor="#000000"
-                    android:textSize="16sp" />
-
             </LinearLayout>
 
         </LinearLayout>

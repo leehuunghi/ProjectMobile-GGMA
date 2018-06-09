@@ -40,7 +40,6 @@ public class YourStore extends AppCompatActivity implements
 
     String[] tenQuan = { "Quán-1", "Quán-2", "Quán-3", "Quán-4", "Quán-5"};
     String[] diaChi = { "Địa chỉ", "Địa chỉ", "Địa chỉ", "Địa chỉ", "Địa chỉ"};
-    String[] giaTien = { "Gía tiền","Gía tiền","Gía tiền","Gía tiền", "Gía tiền"};
 
     Integer[] thumbnails = { R.drawable.menu_thumbnail, R.drawable.menu_thumbnail,
             R.drawable.menu_thumbnail, R.drawable.menu_thumbnail,
@@ -49,6 +48,8 @@ public class YourStore extends AppCompatActivity implements
     Integer[] tuyChon={R.drawable.ic_home_black_24dp};
 
     private DrawerLayout mDrawerLayout;
+
+    String Ten="";
 
 
     @Override
@@ -94,7 +95,7 @@ public class YourStore extends AppCompatActivity implements
 
         android.support.v7.app.ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Cửa hàng của bạn");
+        getSupportActionBar().setTitle("Cửa hàng");
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
 
         mDrawerLayout.addDrawerListener(
@@ -130,12 +131,17 @@ public class YourStore extends AppCompatActivity implements
             }
         });
 
-
+        lvList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Ten=tenQuan[i];
+            }
+        });
 
         CustomIconLabelAdapter adapter = new CustomIconLabelAdapter(
                 this,
                 R.layout.list_store,
-                tenQuan,diaChi,giaTien,
+                tenQuan,diaChi,
                 thumbnails,tuyChon);
         // bind intrinsic ListView to custom adapter
         lvList.setAdapter(adapter);
@@ -190,7 +196,10 @@ public class YourStore extends AppCompatActivity implements
                 int id = menuItem.getItemId();
                 switch (id) {
                     case R.id.menuXemTruoc:
+                        Bundle bundle=new Bundle();
+                        bundle.putString("Ten",Ten);
                         Intent a = new Intent(YourStore.this, DetailStore.class);
+                        a.putExtra("myPackage",bundle);
                         startActivity(a);
                         break;
                     case R.id.menuXoa:
@@ -231,20 +240,17 @@ public class YourStore extends AppCompatActivity implements
         Context context;
         String[] tenQuan;
         String[] diaChi;
-        String[] giaTien;
         Integer[] thumbnails;
         Integer[] tuyChon;
 
         public CustomIconLabelAdapter(Context context, int layoutToBeInflated,
                                       String[] tenQuan,
-                                              String[] diaChi,
-                                              String[] giaTien,
-                                              Integer[] thumbnails, Integer[] tuyChon) {
+                                      String[] diaChi,
+                                      Integer[] thumbnails, Integer[] tuyChon) {
             super(context, R.layout.list_store, tenQuan);
             this.context = context;
             this.thumbnails = thumbnails;
             this.tenQuan = tenQuan;
-            this.giaTien=giaTien;
             this.diaChi=diaChi;
             this.tuyChon=tuyChon;
         }
@@ -256,12 +262,10 @@ public class YourStore extends AppCompatActivity implements
             View row = inflater.inflate(R.layout.list_store, null);
             TextView tenQuanAn = (TextView) row.findViewById(R.id.txtTenQuan);
             TextView diaChiQuan = (TextView) row.findViewById(R.id.txtDiaChi);
-            TextView giaTienTB = (TextView) row.findViewById(R.id.txtGiaTien);
             ImageView imgQuanAn = (ImageView) row.findViewById(R.id.imgQuan);
             imgTuyChon= (ImageView) row.findViewById(R.id.imgTuyChon);
             tenQuanAn.setText(tenQuan[position]);
             diaChiQuan.setText(diaChi[position]);
-            giaTienTB.setText(giaTien[position]);
             imgQuanAn.setImageResource(thumbnails[position]);
             imgTuyChon.setImageResource(tuyChon[0]);
 
