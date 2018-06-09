@@ -68,7 +68,9 @@
         <activity android:name=".ThongTinApp" />
         <activity android:name=".ThongTinAppUpdate" />
         <activity android:name="com.example.admin.DetailStore" />
-        <activity android:name=".DetailStore"></activity>
+        <activity android:name=".DetailStore" />
+        <activity android:name=".UpdateFood" />
+        <activity android:name=".UpdateStore"></activity>
     </application>
 
 </manifest>

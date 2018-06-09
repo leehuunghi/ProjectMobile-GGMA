@@ -197,7 +197,7 @@ public class YourStore extends AppCompatActivity implements
                         showDialogDeleteStore();
                         break;
                     case R.id.menuChinhSua:
-                        Intent e = new Intent(YourStore.this, LoginActivity.class);
+                        Intent e = new Intent(YourStore.this, UpdateStore.class);
                         startActivity(e);
                         break;
                     case R.id.menuQuanLy:
