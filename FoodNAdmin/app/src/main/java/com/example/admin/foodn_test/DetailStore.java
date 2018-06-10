@@ -1,5 +1,6 @@
 package com.example.admin.foodn_test;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,7 +20,13 @@ public class DetailStore extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_store);
 
-        getSupportActionBar().setTitle("Quán ăn A");
+        Intent intent=getIntent();
+        Bundle packageFromCaller= intent.getBundleExtra("myPackage");
+        String temp= packageFromCaller.getString("Ten");
+        getSupportActionBar().setTitle(temp);
+        android.support.v7.app.ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -28,22 +35,21 @@ public class DetailStore extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()){
-//            case android.R.id.home:
-//                onBackPressed();
-//                return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     private void setupViewPager(ViewPager viewPager) {
         DetailStore.ViewPagerAdapter adapter = new DetailStore.ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new OneFragment(), "THÔNG TIN CHUNG");
         adapter.addFragment(new TwoFragment(), "MENU");
-        adapter.addFragment(new TwoFragment(), "ĐÁNH GIÁ");
-        adapter.addFragment(new TwoFragment(), "BÌNH LUẬN");
+        adapter.addFragment(new ThreeFragment(), "BÌNH LUẬN");
         viewPager.setAdapter(adapter);
     }
 

@@ -21,9 +21,9 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="50dp"
                 android:background="@color/colorPrimary"
-                android:minHeight="?attr/actionBarSize"
+                android:minHeight="50dp"
                 android:theme="?attr/actionBarTheme" />
 
         </android.support.design.widget.AppBarLayout>
@@ -121,33 +121,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:text="Đỗ Hữu Nhật Nguyên"
-                android:textColor="@android:color/black"
-                android:textSize="16sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="220dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:text="@string/info_pass"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/txtMatKhau"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:text="1234567"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
 

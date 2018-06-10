@@ -125,7 +125,6 @@ public class InfoAccount extends AppCompatActivity implements NavigationView.OnN
     private void addControls() {
         txtSDT = findViewById(R.id.txtSDT);
         txtHoTen = findViewById(R.id.txtHoTen);
-        txtMatKhau = findViewById(R.id.txtMatKhau);
         txtNgaySinh = findViewById(R.id.txtNgaySinh);
         txtGioiTinh = findViewById(R.id.txtGioiTinh);
         btnChinhSua = findViewById(R.id.btnChinhSua);

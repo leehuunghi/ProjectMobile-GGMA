@@ -1,7 +1,9 @@
 package com.example.admin.foodn_test;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,13 +26,13 @@ public class ManageMenu extends AppCompatActivity {
     ImageButton imgThemMonAn;
 
     String[] tenMon = { "Món-1", "Món-2", "Món-3", "Món-4", "Món-5"};
-    String[] giaMon = { "Gía món","Gía món","Gía món","Gía món", "Gía món"};
+    String[] giaMon = { "Giá món","Giá món","Giá món","Giá món", "Giá món"};
 
     Integer[] thumbnails = { R.drawable.menu_thumbnail, R.drawable.menu_thumbnail,
             R.drawable.menu_thumbnail, R.drawable.menu_thumbnail,
             R.drawable.menu_thumbnail};
 
-    Integer[] tuyChonMon={R.drawable.ic_home_black_24dp};
+    Integer[] tuyChonMon={R.drawable.ic_more_vert_black_24dp};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,17 @@ public class ManageMenu extends AppCompatActivity {
         getSupportActionBar().setTitle("Quản lý menu");
         actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
     }//onCreate
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     private void addControls() {
         lvMonAn= (ListView) findViewById(R.id.lvMonAn);
@@ -118,6 +131,41 @@ public class ManageMenu extends AppCompatActivity {
         }
     }
 
+    public void showDialogDeleteFood() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ManageMenu.this);
+        builder.setTitle(R.string.delete_food);
+
+        //list of items
+        final String[] items = getResources().getStringArray(R.array.delete_store);
+        builder.setSingleChoiceItems(items, 0,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+        String positiveText = getString(android.R.string.ok);
+        builder.setPositiveButton(positiveText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+        String negativeText = getString(android.R.string.cancel);
+        builder.setNegativeButton(negativeText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // negative button logic
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        // display dialog
+        dialog.show();
+    }
+
     public void showMenu(View v)
     {
         PopupMenu popup = new PopupMenu(ManageMenu.this,v);
@@ -130,11 +178,10 @@ public class ManageMenu extends AppCompatActivity {
                 int id = menuItem.getItemId();
                 switch (id) {
                     case R.id.menuXoaMon:
-                        Intent d = new Intent(ManageMenu.this, ThongTinAppUpdate.class);
-                        startActivity(d);
+                        showDialogDeleteFood();
                         break;
                     case R.id.menuChinhSuaMon:
-                        Intent e = new Intent(ManageMenu.this, LoginActivity.class);
+                        Intent e = new Intent(ManageMenu.this, UpdateFood.class);
                         startActivity(e);
                         break;
                 }

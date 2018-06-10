@@ -13,9 +13,6 @@ import java.util.List;
 
 public class TwoFragment extends Fragment {
 
-    DATABASE database_records;
-    private List sections = new ArrayList();
-    private static int TYPE_SECTION_HEADER = 1;
     DetailStore storeDetailActivity;
 
     public TwoFragment() {

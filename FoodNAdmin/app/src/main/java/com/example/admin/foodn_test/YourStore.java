@@ -1,7 +1,9 @@
 package com.example.admin.foodn_test;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -38,15 +40,16 @@ public class YourStore extends AppCompatActivity implements
 
     String[] tenQuan = { "Quán-1", "Quán-2", "Quán-3", "Quán-4", "Quán-5"};
     String[] diaChi = { "Địa chỉ", "Địa chỉ", "Địa chỉ", "Địa chỉ", "Địa chỉ"};
-    String[] giaTien = { "Gía tiền","Gía tiền","Gía tiền","Gía tiền", "Gía tiền"};
 
     Integer[] thumbnails = { R.drawable.menu_thumbnail, R.drawable.menu_thumbnail,
             R.drawable.menu_thumbnail, R.drawable.menu_thumbnail,
             R.drawable.menu_thumbnail};
 
-    Integer[] tuyChon={R.drawable.ic_home_black_24dp};
+    Integer[] tuyChon={R.drawable.ic_more_vert_black_24dp};
 
     private DrawerLayout mDrawerLayout;
+
+    String Ten="";
 
 
     @Override
@@ -70,8 +73,8 @@ public class YourStore extends AppCompatActivity implements
                                 Intent a = new Intent(YourStore.this, YourStore.class);
                                 startActivity(a);
                                 break;
-                            case R.id.nav_ThongTin:
-                                Intent d = new Intent(YourStore.this, ThongTinAppUpdate.class);
+                            case R.id.nav_ThemQuan:
+                                Intent d = new Intent(YourStore.this, AddingStore.class);
                                 startActivity(d);
                                 break;
                             case R.id.nav_DangXuat:
@@ -92,7 +95,7 @@ public class YourStore extends AppCompatActivity implements
 
         android.support.v7.app.ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Cửa hàng của bạn");
+        getSupportActionBar().setTitle("Cửa hàng");
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
 
         mDrawerLayout.addDrawerListener(
@@ -128,29 +131,56 @@ public class YourStore extends AppCompatActivity implements
             }
         });
 
-
+        lvList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Ten=tenQuan[i];
+            }
+        });
 
         CustomIconLabelAdapter adapter = new CustomIconLabelAdapter(
                 this,
                 R.layout.list_store,
-                tenQuan,diaChi,giaTien,
+                tenQuan,diaChi,
                 thumbnails,tuyChon);
         // bind intrinsic ListView to custom adapter
         lvList.setAdapter(adapter);
 
-//        lvList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                imgTuyChon.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//
-//                        showMenu(view);
-//                    }
-//                });
-//        }
-//        });
+    }
 
+    public void showDialogDeleteStore() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(YourStore.this);
+        builder.setTitle(R.string.delete_store);
+
+        //list of items
+        final String[] items = getResources().getStringArray(R.array.delete_store);
+        builder.setSingleChoiceItems(items, 0,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+        String positiveText = getString(android.R.string.ok);
+        builder.setPositiveButton(positiveText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+        String negativeText = getString(android.R.string.cancel);
+        builder.setNegativeButton(negativeText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // negative button logic
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        // display dialog
+        dialog.show();
     }
 
 
@@ -166,15 +196,17 @@ public class YourStore extends AppCompatActivity implements
                 int id = menuItem.getItemId();
                 switch (id) {
                     case R.id.menuXemTruoc:
+                        Bundle bundle=new Bundle();
+                        bundle.putString("Ten",Ten);
                         Intent a = new Intent(YourStore.this, DetailStore.class);
+                        a.putExtra("myPackage",bundle);
                         startActivity(a);
                         break;
                     case R.id.menuXoa:
-                        Intent d = new Intent(YourStore.this, ThongTinAppUpdate.class);
-                        startActivity(d);
+                        showDialogDeleteStore();
                         break;
                     case R.id.menuChinhSua:
-                        Intent e = new Intent(YourStore.this, LoginActivity.class);
+                        Intent e = new Intent(YourStore.this, UpdateStore.class);
                         startActivity(e);
                         break;
                     case R.id.menuQuanLy:
@@ -208,20 +240,17 @@ public class YourStore extends AppCompatActivity implements
         Context context;
         String[] tenQuan;
         String[] diaChi;
-        String[] giaTien;
         Integer[] thumbnails;
         Integer[] tuyChon;
 
         public CustomIconLabelAdapter(Context context, int layoutToBeInflated,
                                       String[] tenQuan,
-                                              String[] diaChi,
-                                              String[] giaTien,
-                                              Integer[] thumbnails, Integer[] tuyChon) {
+                                      String[] diaChi,
+                                      Integer[] thumbnails, Integer[] tuyChon) {
             super(context, R.layout.list_store, tenQuan);
             this.context = context;
             this.thumbnails = thumbnails;
             this.tenQuan = tenQuan;
-            this.giaTien=giaTien;
             this.diaChi=diaChi;
             this.tuyChon=tuyChon;
         }
@@ -233,12 +262,10 @@ public class YourStore extends AppCompatActivity implements
             View row = inflater.inflate(R.layout.list_store, null);
             TextView tenQuanAn = (TextView) row.findViewById(R.id.txtTenQuan);
             TextView diaChiQuan = (TextView) row.findViewById(R.id.txtDiaChi);
-            TextView giaTienTB = (TextView) row.findViewById(R.id.txtGiaTien);
             ImageView imgQuanAn = (ImageView) row.findViewById(R.id.imgQuan);
             imgTuyChon= (ImageView) row.findViewById(R.id.imgTuyChon);
             tenQuanAn.setText(tenQuan[position]);
             diaChiQuan.setText(diaChi[position]);
-            giaTienTB.setText(giaTien[position]);
             imgQuanAn.setImageResource(thumbnails[position]);
             imgTuyChon.setImageResource(tuyChon[0]);
 

@@ -1,9 +1,13 @@
 package com.example.admin.foodn_test;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
@@ -17,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -28,6 +33,12 @@ public class SettingUpdate extends AppCompatActivity implements NavigationView.O
     TextView sugRadResult;
     TextView viewModeResult;
     private DrawerLayout mDrawerLayout;
+    String checkeditemVal;
+    String checkeditemVMVal ;
+    int checkedItemRad;
+    int checkedItemVM;
+    String tempRad;
+    String tempVM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,9 +116,50 @@ public class SettingUpdate extends AppCompatActivity implements NavigationView.O
                     }
                 }
         );
-        
         addControls();
+        btnCapNhatSetting.setEnabled(false);
+        readupRad();
+        readupVM();
         addEvents();
+        btnCapNhatSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                writeDownRad(sugRadResult.getText().toString());
+                writeDownVM(viewModeResult.getText().toString());
+                Toast.makeText(getBaseContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                btnCapNhatSetting.setEnabled(false);
+            }
+        });
+    }
+
+    public void readupRad() {
+        SharedPreferences getSettingRadius = this.getSharedPreferences("settingsRadius", Context.MODE_PRIVATE);
+        if ( (getSettingRadius != null) && (getSettingRadius.contains("sugRadRes")) ) {
+            String temp = getSettingRadius.getString("sugRadRes","5 km");
+            sugRadResult.setText(temp);
+        }
+    }
+
+    public void readupVM() {
+        SharedPreferences getSettingVM = this.getSharedPreferences("settingsVM", Context.MODE_PRIVATE);
+        if ( (getSettingVM != null) && (getSettingVM.contains("viewModeRes")) ) {
+            String temp = getSettingVM.getString("viewModeRes","Vệ tinh");
+            viewModeResult.setText(temp);
+        }
+    }
+
+    public void writeDownRad(String rad) {
+        SharedPreferences settingsRadius = this.getSharedPreferences("settingsRadius", Context.MODE_PRIVATE);
+        SharedPreferences.Editor myEditor = settingsRadius.edit();
+        myEditor.putString("sugRadRes", rad);
+        myEditor.commit();
+    }
+
+    public void writeDownVM(String vm) {
+        SharedPreferences settingsVM = this.getSharedPreferences("settingsVM", Context.MODE_PRIVATE);
+        SharedPreferences.Editor myEditor2 = settingsVM.edit();
+        myEditor2.putString("viewModeRes", vm);
+        myEditor2.commit();
     }
 
     @Override
@@ -148,12 +200,27 @@ public class SettingUpdate extends AppCompatActivity implements NavigationView.O
         AlertDialog.Builder builder = new AlertDialog.Builder(SettingUpdate.this);
         builder.setTitle(R.string.suggested_radius);
 
+        tempRad = sugRadResult.getText().toString();
+
+        if (sugRadResult.getText().equals("5 km")) checkedItemRad = 0;
+        if (sugRadResult.getText().equals("10 km")) checkedItemRad = 1;
+        if (sugRadResult.getText().equals("15 km")) checkedItemRad = 2;
+
         //list of items
         final String[] items = getResources().getStringArray(R.array.radius);
-        builder.setSingleChoiceItems(items, 0,
+        builder.setSingleChoiceItems(items, checkedItemRad,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            checkeditemVal = "5 km";
+                        }
+                        if (which == 1) {
+                            checkeditemVal = "10 km";
+                        }
+                        if (which == 2) {
+                            checkeditemVal = "15 km";
+                        }
                     }
                 });
 
@@ -162,8 +229,8 @@ public class SettingUpdate extends AppCompatActivity implements NavigationView.O
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-//                        String input = items[which].toString();
-//                        sugRadResult.setText(input);
+                        sugRadResult.setText(checkeditemVal);
+                        if (!tempRad.equals(checkeditemVal)) btnCapNhatSetting.setEnabled(true);
                     }
                 });
 
@@ -185,12 +252,23 @@ public class SettingUpdate extends AppCompatActivity implements NavigationView.O
         AlertDialog.Builder builder = new AlertDialog.Builder(SettingUpdate.this);
         builder.setTitle(R.string.view_mode);
 
+        tempVM = viewModeResult.getText().toString();
+
+        if (viewModeResult.getText().equals("Thường")) checkedItemVM = 0;
+        if (viewModeResult.getText().equals("Vệ tinh")) checkedItemVM = 1;
+
         //list of items
         final String[] items = getResources().getStringArray(R.array.view_mode);
-        builder.setSingleChoiceItems(items, 0,
+        builder.setSingleChoiceItems(items, checkedItemVM,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            checkeditemVMVal = "Thường";
+                        }
+                        if (which == 1) {
+                            checkeditemVMVal = "Vệ tinh";
+                        }
                     }
                 });
 
@@ -199,8 +277,8 @@ public class SettingUpdate extends AppCompatActivity implements NavigationView.O
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-//                        String input = items[which].toString();
-//                        sugRadResult.setText(input);
+                        viewModeResult.setText(checkeditemVMVal);
+                        if (!tempVM.equals(checkeditemVMVal)) btnCapNhatSetting.setEnabled(true);
                     }
                 });
 

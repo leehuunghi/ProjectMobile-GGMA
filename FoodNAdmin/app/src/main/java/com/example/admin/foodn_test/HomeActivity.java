@@ -112,18 +112,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     View mapView;
     ProgressDialog progressDialog;
 
-    EditText txtSpinner;
-    ImageButton imgDropDown;
-    ImageButton imgSearch;
-    ImageView mPicker;
-
-    ImageView imgRoute;
-    RelativeLayout relativeLay;
-
-    private DrawerLayout mDrawerLayout;
-
-    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
-
     static final String TAG = "HomeActivity";
 
     static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
@@ -140,6 +128,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+//        android.support.v7.app.ActionBar actionbar = getSupportActionBar();
+//        actionbar.setDisplayHomeAsUpEnabled(true);
+//        actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+//        getSupportActionBar().setTitle("Địa chỉ");
+
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Đang tải... Vui lòng đợi!");
         progressDialog.setCanceledOnTouchOutside(false);;
@@ -155,60 +148,15 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
         mapView = mapFragment.getView();
 
-        mDrawerLayout = findViewById(R.id.drawer_layout);
 
-        txtSpinner= findViewById(R.id.txtSpinner);
-
-        imgDropDown=findViewById(R.id.imgDropDown);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        android.support.v7.app.ActionBar actionbar = getSupportActionBar();
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
-
-
-        imgDropDown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
-
-
-
-
-        mDrawerLayout.addDrawerListener(
-                new DrawerLayout.DrawerListener() {
-                    @Override
-                    public void onDrawerSlide(View drawerView, float slideOffset) {
-                        // Respond when the drawer's position changes
-                    }
-
-                    @Override
-                    public void onDrawerOpened(View drawerView) {
-                        // Respond when the drawer is opened
-                    }
-
-                    @Override
-                    public void onDrawerClosed(View drawerView) {
-                        // Respond when the drawer is closed
-                    }
-
-                    @Override
-                    public void onDrawerStateChanged(int newState) {
-                        // Respond when the drawer motion state changes
-                    }
-                }
-        );
 
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+        switch (item.getItemId()){
             case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
+                onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -375,15 +323,4 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-
-    private Bitmap StringToBitMap(String hinhAnh) {
-        try {
-            byte[] encodeByte = Base64.decode(hinhAnh);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        } catch (Exception e) {
-            e.getMessage();
-            return null;
-        }
-    }
 }

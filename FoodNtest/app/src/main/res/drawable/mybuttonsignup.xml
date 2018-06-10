@@ -12,10 +12,16 @@
             <solid android:color="#00ca6d"/>
         </shape>
     </item>
-    <item>
+    <item android:state_enabled="true">
         <shape android:shape="rectangle"  >
             <corners android:radius="360dip" />
             <solid android:color="#00ca6d"/>
+        </shape>
+    </item>
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle"  >
+            <corners android:radius="360dip" />
+            <solid android:color="#999999"/>
         </shape>
     </item>
 </selector>

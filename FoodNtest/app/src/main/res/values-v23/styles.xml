@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
         <item name="titleTextColor">@color/appbarColor</item>
+        <item name="android:windowLightStatusBar">true</item>
         <item name="subtitleTextColor">@color/appbarColor</item>
     </style>
 </resources>
