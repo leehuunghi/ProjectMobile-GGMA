@@ -32,7 +32,7 @@ public class ManageMenu extends AppCompatActivity {
             R.drawable.menu_thumbnail, R.drawable.menu_thumbnail,
             R.drawable.menu_thumbnail};
 
-    Integer[] tuyChonMon={R.drawable.ic_home_black_24dp};
+    Integer[] tuyChonMon={R.drawable.ic_more_vert_black_24dp};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +69,17 @@ public class ManageMenu extends AppCompatActivity {
         getSupportActionBar().setTitle("Quản lý menu");
         actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
     }//onCreate
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     private void addControls() {
         lvMonAn= (ListView) findViewById(R.id.lvMonAn);

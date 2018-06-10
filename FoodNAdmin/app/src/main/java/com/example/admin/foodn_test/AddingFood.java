@@ -24,82 +24,23 @@ public class AddingFood extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adding_food);
 
-        txtTenMonThem=findViewById(R.id.txtTenMonThem);
-        txtGiaThem=findViewById(R.id.txtGiaThem);
-        txtDonViThem=findViewById(R.id.txtDonViThem);
-        txtNhomThem=findViewById(R.id.txtNhomThem);
-        mDrawerLayout=findViewById(R.id.drawer_layout);
-
-        NavigationView navigationView = findViewById(R.id.nav_view1);
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        // set item as selected to persist highlight
-                        menuItem.setChecked(true);
-                        // close drawer when item is tapped
-                        int id = menuItem.getItemId();
-                        switch (id) {
-                            case R.id.navQuanCuaBan:
-                                Intent a = new Intent(AddingFood.this, YourStore.class);
-                                startActivity(a);
-                                break;
-                            case R.id.nav_ThongTin:
-                                Intent d = new Intent(AddingFood.this, ThongTinApp.class);
-                                startActivity(d);
-                                break;
-                            case R.id.nav_DangXuat:
-                                Intent e = new Intent(AddingFood.this, LoginActivity.class);
-                                startActivity(e);
-                                break;
-                        }
-
-
-                        mDrawerLayout.closeDrawers();
-
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
-
-                        return true;
-                    }
-                });
-
+        txtTenMonThem = findViewById(R.id.txtTenMonThem);
+        txtGiaThem = findViewById(R.id.txtGiaThem);
+        txtDonViThem = findViewById(R.id.txtDonViThem);
+        txtNhomThem = findViewById(R.id.txtNhomThem);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
 
         android.support.v7.app.ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
-
-        mDrawerLayout.addDrawerListener(
-                new DrawerLayout.DrawerListener() {
-                    @Override
-                    public void onDrawerSlide(View drawerView, float slideOffset) {
-                        // Re
-                        // spond when the drawer's position changes
-                    }
-
-                    @Override
-                    public void onDrawerOpened(View drawerView) {
-                        // Respond when the drawer is opened
-                    }
-
-                    @Override
-                    public void onDrawerClosed(View drawerView) {
-                        // Respond when the drawer is closed
-                    }
-
-                    @Override
-                    public void onDrawerStateChanged(int newState) {
-                        // Respond when the drawer motion state changes
-                    }
-                }
-        );
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+        getSupportActionBar().setTitle("Thêm món ăn");
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+        switch (item.getItemId()){
             case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
+                onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);

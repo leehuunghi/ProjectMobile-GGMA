@@ -45,7 +45,7 @@ public class YourStore extends AppCompatActivity implements
             R.drawable.menu_thumbnail, R.drawable.menu_thumbnail,
             R.drawable.menu_thumbnail};
 
-    Integer[] tuyChon={R.drawable.ic_home_black_24dp};
+    Integer[] tuyChon={R.drawable.ic_more_vert_black_24dp};
 
     private DrawerLayout mDrawerLayout;
 
@@ -73,8 +73,8 @@ public class YourStore extends AppCompatActivity implements
                                 Intent a = new Intent(YourStore.this, YourStore.class);
                                 startActivity(a);
                                 break;
-                            case R.id.nav_ThongTin:
-                                Intent d = new Intent(YourStore.this, ThongTinAppUpdate.class);
+                            case R.id.nav_ThemQuan:
+                                Intent d = new Intent(YourStore.this, AddingStore.class);
                                 startActivity(d);
                                 break;
                             case R.id.nav_DangXuat:

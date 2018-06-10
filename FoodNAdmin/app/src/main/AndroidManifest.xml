@@ -59,14 +59,10 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".DATABASE" />
         <activity android:name=".CustomBaseAdapter" />
-        <activity android:name=".InfoAccount" />
-        <activity android:name=".InfoUpdate" />
         <activity android:name=".YourStore" />
         <activity android:name=".AddingStore" />
         <activity android:name=".ManageMenu" />
         <activity android:name=".AddingFood" />
-        <activity android:name=".ThongTinApp" />
-        <activity android:name=".ThongTinAppUpdate" />
         <activity android:name="com.example.admin.DetailStore" />
         <activity android:name=".DetailStore" />
         <activity android:name=".UpdateFood" />
