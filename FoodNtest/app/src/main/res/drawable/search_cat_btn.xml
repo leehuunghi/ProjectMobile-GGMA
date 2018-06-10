@@ -3,25 +3,19 @@
     <item android:state_pressed="true" >
         <shape android:shape="rectangle"  >
             <corners android:radius="360dip" />
-            <solid android:color="#00ae5e"/>
+            <solid android:color="#cccccc"/>
         </shape>
     </item>
     <item android:state_focused="true">
         <shape android:shape="rectangle"  >
             <corners android:radius="360dip" />
-            <solid android:color="#00ca6d"/>
+            <solid android:color="#ededed"/>
         </shape>
     </item>
-    <item android:state_enabled="true">
+    <item>
         <shape android:shape="rectangle"  >
             <corners android:radius="360dip" />
-            <solid android:color="#00ca6d"/>
-        </shape>
-    </item>
-    <item android:state_enabled="false">
-        <shape android:shape="rectangle"  >
-            <corners android:radius="360dip" />
-            <solid android:color="#999999"/>
+            <solid android:color="#ededed"/>
         </shape>
     </item>
 </selector>
