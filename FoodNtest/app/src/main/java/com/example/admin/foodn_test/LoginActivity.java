@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.admin.config.Configuaration;
+import com.example.admin.model.User;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -190,16 +191,14 @@ public class LoginActivity extends Activity {
                 HttpTransportSE httpTransportSE= new HttpTransportSE(Configuaration.SERVER_URL);
                 httpTransportSE.call(Configuaration.SOAP_ACTION_LOGIN, envelope);
 
-                SoapObject data= (SoapObject) envelope.bodyIn;
-                if(data.hasProperty("loginResult")){
-                    if(Boolean.parseBoolean(data.getPropertyAsString("loginResult"))) {
+                SoapObject so= (SoapObject) envelope.getResponse();
+
+                if(so.hasProperty("ID_User")){
                         flagLogin = true;
+                        GlobalVariable.MyUser = new User();
+                        GlobalVariable.MyUser.setId(Integer.parseInt(so.getPropertyAsString("ID_User")));
                         Intent homeAct = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(homeAct);
-                    }
-                    else{
-
-                    }
                 }
             }
             catch (Exception ex)

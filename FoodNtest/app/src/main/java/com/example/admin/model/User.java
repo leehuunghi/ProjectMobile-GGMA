@@ -5,6 +5,16 @@ package com.example.admin.model;
  */
 
 public class User {
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     private String hoten;
     private String sdt;
     private String matkhau;
