@@ -1,30 +1,32 @@
 package com.example.admin.foodn_test;
 
-import android.os.Bundle;
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StoreDetailActivity extends AppCompatActivity {
-
+public class DetailStore extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_store_detail);
+        setContentView(R.layout.activity_detail_store);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Quán ăn A");
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Intent intent=getIntent();
+        Bundle packageFromCaller= intent.getBundleExtra("myPackage");
+        String temp= packageFromCaller.getString("Ten");
+        getSupportActionBar().setTitle(temp);
+        android.support.v7.app.ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -44,9 +46,10 @@ public class StoreDetailActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new OneFragment(), "THÔNG TIN");
+        DetailStore.ViewPagerAdapter adapter = new DetailStore.ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new OneFragment(), "THÔNG TIN CHUNG");
         adapter.addFragment(new TwoFragment(), "MENU");
+        adapter.addFragment(new ThreeFragment(), "BÌNH LUẬN");
         viewPager.setAdapter(adapter);
     }
 

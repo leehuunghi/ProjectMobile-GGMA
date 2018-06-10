@@ -3,23 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
-    android:orientation="vertical"
-    tools:context=".AddingFood"
+    tools:context=".UpdateFood"
     android:id="@+id/drawer_layout">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="20dp">
+
         <TextView
-            android:id="@+id/textView18"
+            android:id="@+id/textViewb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tên món" />
 
         <EditText
-            android:id="@+id/txtTenMonThem"
+            android:id="@+id/txtTenMonUpdate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -36,13 +36,13 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView19"
+                    android:id="@+id/textViewa"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Giá" />
 
                 <EditText
-                    android:id="@+id/txtGiaThem"
+                    android:id="@+id/txtGiaUpdate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -55,13 +55,13 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView20"
+                    android:id="@+id/textViewc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Đơn vị" />
 
                 <EditText
-                    android:id="@+id/txtDonViThem"
+                    android:id="@+id/txtDonViUpdate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -70,20 +70,20 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textView21"
+            android:id="@+id/textViewd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Nhóm" />
 
         <EditText
-            android:id="@+id/txtNhomThem"
+            android:id="@+id/txtNhomUpdate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName" />
 
         <Button
-            android:id="@+id/btnThemMon"
+            android:id="@+id/btnUpdateFood"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -91,7 +91,7 @@
             android:background="@drawable/mybuttonsignup"
             android:paddingLeft="50dp"
             android:paddingRight="50dp"
-            android:text="Thêm"
+            android:text="Cập nhật"
             android:textColor="@color/colorPrimary" />
 
     </LinearLayout>
@@ -107,4 +107,5 @@
         app:itemIconTint="@color/drawer_item"
         app:itemTextColor="@color/drawer_item"
         app:itemBackground="@android:color/transparent"/>
+
 </android.support.v4.widget.DrawerLayout>
