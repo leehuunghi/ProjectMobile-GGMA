@@ -5,8 +5,8 @@ package com.example.admin.model;
  */
 
 public class Position {
-    private  double v;
-    private  double v1;
+    private double v;
+    private double v1;
     public double getV() {
         return v;
     }

@@ -12,6 +12,7 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ConfigurationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -61,6 +62,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.admin.AsynTask.TaskFindStoreBestNear;
 import com.example.admin.adapter.RecyclerViewAdapter;
 import com.example.admin.config.Configuaration;
 import com.example.admin.model.Position;
@@ -113,7 +115,6 @@ import javax.net.ssl.SSLPeerUnverifiedException;
 
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, LocationSource.OnLocationChangedListener, RecyclerViewAdapter.ItemClickListener, RecyclerViewAdapter.ClickButtonChiDuong, NavigationView.OnNavigationItemSelectedListener {
 
-    private GoogleMap mMap;
     View mapView;
     ProgressDialog progressDialog;
     RecyclerViewAdapter adapterRecycler;
@@ -140,7 +141,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ImageView imgMyLocation;
     private DrawerLayout mDrawerLayout;
 
-    Location locationCurrent=null;
     Location locationDes=null;
 
     private List<Marker> originMarkers = new ArrayList<>();
@@ -352,20 +352,19 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View view) {
                 relativeLayoutFind.setVisibility(View.INVISIBLE);
                 relativeLay.setVisibility(View.VISIBLE);
-                mMap.clear();
+                GlobalVariable.mMap.clear();
             }
         });
 
         imgFindRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                imgFindRoute.setVisibility(View.INVISIBLE);
-                imgSearchBack.setVisibility(View.VISIBLE);
+
                 if (listPoints.size() > 0) {
                     listPoints.clear();
-                    mMap.clear();
+                    GlobalVariable.mMap.clear();
                 }
-                LatLng latLng1=new LatLng(locationCurrent.getLatitude(), locationCurrent.getLongitude());
+                LatLng latLng1=new LatLng(GlobalVariable.myLocationDevide.getLatitude(), GlobalVariable.myLocationDevide.getLongitude());
                 //Save first point select
                 listPoints.add(latLng1);
 
@@ -388,14 +387,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     markerOptionsCurrent.icon(BitmapDescriptorFactory.fromResource(R.drawable.start_marker));
                     markerOptionsDes.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                 }
-                mMap.addMarker(markerOptionsCurrent);
-                mMap.addMarker(markerOptionsDes);
+                GlobalVariable.mMap.addMarker(markerOptionsCurrent);
+                GlobalVariable.mMap.addMarker(markerOptionsDes);
 
                 if (listPoints.size() == 2) {
                     //Create the URL to get request from first marker to second marker
-                    String url = getRequestUrl(listPoints.get(0), listPoints.get(1));
-                    TaskRequestDirections taskRequestDirections = new TaskRequestDirections();
-                    taskRequestDirections.execute(url);
+
                     moveCamera(currentLatLng,14);
                 }
             }
@@ -478,137 +475,19 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         imgSearchBack.setVisibility(View.INVISIBLE);
         relativeLay.setVisibility(View.INVISIBLE);
         currentLatLng = new LatLng(adapterRecycler.getItem(position).getListPoint().get(0).getV(), adapterRecycler.getItem(position).getListPoint().get(0).getV1());
-        mMap.clear();
-        mMap.addMarker(new MarkerOptions().position(currentLatLng).title(adapterRecycler.getItem(position).getTenCuaHang()).snippet(adapterRecycler.getItem(position).getDiaChi()));
+        GlobalVariable.mMap.clear();
+        GlobalVariable.mMap.addMarker(new MarkerOptions().position(currentLatLng).title(adapterRecycler.getItem(position).getTenCuaHang()).snippet(adapterRecycler.getItem(position).getDiaChi()));
+//        Direction direction = new Direction(currentLatLng, new LatLng(adapterRecycler.getItem(position).getListPoint().get(0).getV(),
+//                adapterRecycler.getItem(position).getListPoint().get(0).getV1()));
         txtEnd.setText(adapterRecycler.getItem(position).getTenCuaHang().toString());
         moveCamera(currentLatLng,15);
     }
 
-    public class TaskRequestDirections extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... strings) {
-            String responseString = "";
-            try {
-                responseString = requestDirection(strings[0]);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return  responseString;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            //Parse json here
-            TaskParser taskParser = new TaskParser();
-            taskParser.execute(s);
-        }
-    }
-
-    public class TaskParser extends AsyncTask<String, Void, List<List<HashMap<String, String>>> > {
-
-        @Override
-        protected List<List<HashMap<String, String>>> doInBackground(String... strings) {
-            JSONObject jsonObject = null;
-            List<List<HashMap<String, String>>> routes = null;
-            try {
-                jsonObject = new JSONObject(strings[0]);
-                DirectionsParser directionsParser = new DirectionsParser();
-                routes = directionsParser.parse(jsonObject);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return routes;
-        }
-
-        @Override
-        protected void onPostExecute(List<List<HashMap<String, String>>> lists) {
-            //Get list route and display it into the map
-
-            ArrayList points = null;
-
-            PolylineOptions polylineOptions = null;
-
-            for (List<HashMap<String, String>> path : lists) {
-                points = new ArrayList();
-                polylineOptions = new PolylineOptions();
-
-                for (HashMap<String, String> point : path) {
-                    double lat = Double.parseDouble(point.get("lat"));
-                    double lon = Double.parseDouble(point.get("lon"));
-
-                    points.add(new LatLng(lat,lon));
-                }
-
-                polylineOptions.addAll(points);
-                polylineOptions.width(8);
-                polylineOptions.color(Color.rgb(66, 132, 243));
-                polylineOptions.geodesic(true);
-            }
-
-            if (polylineOptions!=null) {
-                mMap.addPolyline(polylineOptions);
-            } else {
-                Toast.makeText(getApplicationContext(), "Direction not found!", Toast.LENGTH_SHORT).show();
-            }
-
-        }
-    }
-
-    private String requestDirection(String reqUrl) throws IOException {
-        String responseString = "";
-        InputStream inputStream = null;
-        HttpURLConnection httpURLConnection = null;
-        try{
-            URL url = new URL(reqUrl);
-            httpURLConnection = (HttpURLConnection) url.openConnection();
-            httpURLConnection.connect();
-
-            //Get the response result
-            inputStream = httpURLConnection.getInputStream();
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-            StringBuffer stringBuffer = new StringBuffer();
-            String line = "";
-            while ((line = bufferedReader.readLine()) != null) {
-                stringBuffer.append(line);
-            }
-
-            responseString = stringBuffer.toString();
-            bufferedReader.close();
-            inputStreamReader.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (inputStream != null) {
-                inputStream.close();
-            }
-            httpURLConnection.disconnect();
-        }
-        return responseString;
-    }
 
 
-    private String getRequestUrl(LatLng origin , LatLng dest) {
-        //Value of origin
-        String str_org = "origin=" + origin.latitude +","+origin.longitude;
-        //Value of destination
-        String str_dest = "destination=" + dest.latitude+","+dest.longitude;
-        //Set value enable the sensor
-        String sensor = "sensor=false";
-        //Mode for find direction
-        String mode = "mode=driving";
-        //Build the full param
-        String param = str_org +"&" + str_dest + "&" +sensor+"&" +mode;
-        //Output format
-        String output = "json";
-        //Create url to request
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + param;
-        return url;
-    }
+
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -622,7 +501,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(final GoogleMap googleMap) {
-        mMap = googleMap;
+        GlobalVariable.mMap=googleMap;
 
         googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
             @Override
@@ -653,24 +532,20 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         RecyclerView recyclerView = findViewById(R.id.recycleView);
         recyclerView.setLayoutManager(layoutManager);
-        adapterRecycler = new RecyclerViewAdapter(this, listStore);
+        adapterRecycler = new RecyclerViewAdapter(this, GlobalVariable.listStore);
         adapterRecycler.setClickListener(this);
         adapterRecycler.setmClickButtonChiDuong(this);
         recyclerView.setAdapter(adapterRecycler);
-        PositionBestNear positionBestNear = new PositionBestNear();
+        TaskFindStoreBestNear positionBestNear = new TaskFindStoreBestNear();
         positionBestNear.execute();
 
         if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
-            mMap.getUiSettings().setMyLocationButtonEnabled(false);
+            GlobalVariable.mMap.setMyLocationEnabled(true);
+            GlobalVariable.mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
         } else {
         }
-
-
-
-
 
         if (mapView != null &&
                 mapView.findViewById(Integer.parseInt("1")) != null) {
@@ -711,9 +586,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onLocationChanged(Location location) {
         LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
-        Marker mMarker = mMap.addMarker(new MarkerOptions().position(loc));
-        if (mMap != null) {
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
+        Marker mMarker = GlobalVariable.mMap.addMarker(new MarkerOptions().position(loc));
+        if (GlobalVariable.mMap != null) {
+            GlobalVariable.mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
         }
     }
 
@@ -736,7 +611,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
                             Location currentLocation = (Location) task.getResult();
-                            locationCurrent=currentLocation;
+                            GlobalVariable.myLocationDevide=currentLocation;
+
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
                                     DEFAULT_ZOOM);
                         } else {
@@ -749,7 +625,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     private void moveCamera(LatLng latLng, float zoom){
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+        GlobalVariable.mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
 
     private void getLocationPermission(){
@@ -800,70 +676,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         intentDetail.putExtras(bundle);
         startActivity(intentDetail);
     }
-    Position pos=null;
-    String tenCuaHang, diaChiCuaHang;
 
-    class PositionBestNear extends AsyncTask<String, Void, String>
-    {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
 
-        @Override
-        protected void onPostExecute(String s) {
-            for(int i=0; i<listStore.size();i++)
-            {
-                listStore.get(i).setMarker(mMap.addMarker(new MarkerOptions().position(new LatLng(listStore.get(i).getListPoint().get(0).getV(),listStore.get(i).getListPoint().get(0).getV1())).title(listStore.get(i).getTenCuaHang()).snippet(listStore.get(i).getDiaChi())));
-            }
-            super.onPostExecute(s);
-        }
 
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-        }
-        @Override
-        protected String doInBackground(String... strings) {
-            try {
-                SoapObject request = new SoapObject(Configuaration.NAME_SPACE,Configuaration.METHOD_GET_LIST_POSITION);
-                SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-                envelope.dotNet=true;
-                envelope.setOutputSoapObject(request);
-                HttpTransportSE httpTransportSE= new HttpTransportSE(Configuaration.SERVER_URL);
-                httpTransportSE.call(Configuaration.SOAP_ACTION_GET_LIST_POSITION, envelope);
-                SoapObject listSoapObject= (SoapObject) envelope.getResponse();
-                SoapObject so = null;
-                for (int i = 0; i < listSoapObject.getPropertyCount(); i++) {
-                    so = (SoapObject) listSoapObject.getProperty(i);
-                    Store store = new Store();
-                    pos= new Position(Double.parseDouble(so.getPropertyAsString("HoanhDo")),Double.parseDouble(so.getPropertyAsString("TungDo")));
-                    store.getListPoint().add(pos);
-                    so = (SoapObject) so.getProperty("CuaHang");
-                    store.setID(Integer.parseInt(so.getPropertyAsString("ID_CuaHang")));
-                    store.setTenCuaHang(so.getPropertyAsString("TenCuaHang"));
-                    store.setDiaChi(so.getPropertyAsString("DiaChi"));
-                    store.setHinhAnh(StringToBitMap(so.getPropertyAsString("HinhAnh")));
-                    listStore.add(store);
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.e("Lỗi", ex.toString());
-            }
-            return null;
-        }
-    }
-
-    private Bitmap StringToBitMap(String hinhAnh) {
-        try {
-            byte[] encodeByte = Base64.decode(hinhAnh);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        } catch (Exception e) {
-            e.getMessage();
-            return null;
-        }
-    }
 }
 
