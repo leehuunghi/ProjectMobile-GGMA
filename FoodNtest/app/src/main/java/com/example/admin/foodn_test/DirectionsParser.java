@@ -35,10 +35,6 @@ public class DirectionsParser {
                 jLegs = ((JSONObject) jRoutes.get(i)).getJSONArray("legs");
                 List path = new ArrayList<HashMap<String, String>>();
                 int d = ((int) ((JSONObject) ((JSONObject) jLegs.get(0)).get("distance")).get("value"));
-                if(d > Configuaration.Distance) {
-                    distance = 0;
-                    return null;
-                }
 
                 distance=d;
 

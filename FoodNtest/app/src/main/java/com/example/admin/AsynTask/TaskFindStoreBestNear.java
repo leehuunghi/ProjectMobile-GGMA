@@ -2,6 +2,7 @@ package com.example.admin.AsynTask;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -72,28 +73,43 @@ public class TaskFindStoreBestNear extends AsyncTask<Void, Store, Void>
         super.onPostExecute(aVoid);
         for(int i=0; i<GlobalVariable.listStore.size();i++)
         {
-//            Direction direction = new Direction(new LatLng(GlobalVariable.myLocationDevide.getLatitude(),GlobalVariable.myLocationDevide.getLongitude()),
-//                    new LatLng(GlobalVariable.listStore.get(i).getListPoint().get(0).getV(),
-//                            GlobalVariable.listStore.get(i).getListPoint().get(0).getV1()));
-//            direction.GetRequestData();
-//            while (direction.distance==-1);
-
             GlobalVariable.listStore.get(i).setMarker(GlobalVariable.mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(GlobalVariable.listStore.get(i).getListPoint().get(0).getV(),
                             GlobalVariable.listStore.get(i).getListPoint().get(0).getV1()))
                     .title(GlobalVariable.listStore.get(i).getTenCuaHang())
                     .snippet(GlobalVariable.listStore.get(i).getDiaChi())));
         }
-    }
 
-    Boolean InRadius(LatLng tam, LatLng store){
-        return true;
 
     }
+
+    public double CalculationByDistance(LatLng StartP, LatLng EndP) {
+        int Radius = 6371;// radius of earth in Km
+        double lat1 = StartP.latitude;
+        double lat2 = EndP.latitude;
+        double lon1 = StartP.longitude;
+        double lon2 = EndP.longitude;
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
+                * Math.sin(dLon / 2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+        double valueResult = Radius * c;
+        double meter = valueResult*1000;
+
+        return meter;
+    }
+
 
     @Override
     protected void onProgressUpdate(Store... values) {
         super.onProgressUpdate(values);
+        double distance = CalculationByDistance(new LatLng(GlobalVariable.myLocationDevide.getLatitude(),GlobalVariable.myLocationDevide.getLongitude()),
+                new LatLng(values[0].getListPoint().get(0).getV(),
+                        values[0].getListPoint().get(0).getV1()));
+        if( distance > GlobalVariable.radius) return;
         GlobalVariable.listStore.add(values[0]);
     }
 

@@ -20,4 +20,5 @@ public final class GlobalVariable {
     public static GoogleMap mMap;
     public static ArrayList<Direction> listDirection = new ArrayList<>();
     public static Location myLocationDevide;
+    public static int radius = 4000;
 }

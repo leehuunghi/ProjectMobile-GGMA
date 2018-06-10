@@ -79,6 +79,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -119,13 +120,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     ProgressDialog progressDialog;
     RecyclerViewAdapter adapterRecycler;
     ArrayList<Store> listStore = new ArrayList<>();
+    TaskFindStoreBestNear positionBestNear = new TaskFindStoreBestNear();
 
     ArrayList<LatLng> listPoints;
     LatLng currentLatLng;
 
     Spinner spinner;
     TextView txtSpinner;
-//    ImageButton imgDropDown;
     ImageButton imgSearch;
     EditText txtSearch;
 
@@ -134,7 +135,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     EditText txtStart;
     TextView txtEnd;
-//    ImageButton imgFindRoute;
     ImageButton imgSearchBack;
     RecyclerView recyclerView;
 
@@ -237,7 +237,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         txtSearch = findViewById(R.id.txtSearch);
         recyclerView = findViewById(R.id.recycleView);
         recyclerView.setVisibility(View.VISIBLE);
-        
+
         imgMyLocation = (ImageView) findViewById(R.id.imgMyLocation);
 
         txtSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -349,8 +349,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         txtStart = findViewById(R.id.txtStart);
         txtEnd=findViewById(R.id.txtEnd);
 
-//        imgFindRoute=findViewById(R.id.imgFindRoute);
-
         imgSearchBack=findViewById(R.id.imgSearchBack);
 
         imgSearchBack.setOnClickListener(new View.OnClickListener() {
@@ -361,48 +359,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 GlobalVariable.mMap.clear();
             }
         });
-
-//        imgFindRoute.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-
-//                if (listPoints.size() > 0) {
-//                    listPoints.clear();
-                    GlobalVariable.mMap.clear();
-//                }
-                LatLng latLng1=new LatLng(GlobalVariable.myLocationDevide.getLatitude(), GlobalVariable.myLocationDevide.getLongitude());
-//                //Save first point select
-//                listPoints.add(latLng1);
-//
-//                //có địa điểm thì lưu vô locationDes rồi thay cho 2 số này
-//                listPoints.add(currentLatLng);
-//
-//                //Create marker
-//                MarkerOptions markerOptionsCurrent = new MarkerOptions();
-//                markerOptionsCurrent.position(latLng1);
-//
-//                MarkerOptions markerOptionsDes = new MarkerOptions();
-//                markerOptionsDes.position(currentLatLng);
-//
-//
-//                if (listPoints.size() == 1) {
-//                    //Add first marker to the map
-//                    markerOptionsCurrent.icon(BitmapDescriptorFactory.fromResource(R.drawable.start_marker));
-//                } else {
-//                    //Add second marker to the map
-//                    markerOptionsCurrent.icon(BitmapDescriptorFactory.fromResource(R.drawable.start_marker));
-//                    markerOptionsDes.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-//                }
-                GlobalVariable.mMap.addMarker(markerOptionsCurrent);
-                GlobalVariable.mMap.addMarker(markerOptionsDes);
-//
-//                if (listPoints.size() == 2) {
-//                    //Create the URL to get request from first marker to second marker
-
-//                    moveCamera(currentLatLng,14);
-//                }
-//            }
-//        });
 
         mDrawerLayout.addDrawerListener(
                 new DrawerLayout.DrawerListener() {
@@ -477,7 +433,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onClickButtonChiDuong(RecyclerViewAdapter.ViewHolder view, int position) {
         relativeLayoutFind.setVisibility(View.VISIBLE);
-//        imgFindRoute.setVisibility(View.VISIBLE);
         imgSearchBack.setVisibility(View.VISIBLE);
         relativeLay.setVisibility(View.INVISIBLE);
         currentLatLng = new LatLng(adapterRecycler.getItem(position).getListPoint().get(0).getV(), adapterRecycler.getItem(position).getListPoint().get(0).getV1());
@@ -489,9 +444,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         moveCamera(currentLatLng,15);
                 if (listPoints.size() > 0) {
                     listPoints.clear();
-                    mMap.clear();
+                    GlobalVariable.mMap.clear();
                 }
-                LatLng latLng1=new LatLng(locationCurrent.getLatitude(), locationCurrent.getLongitude());
+                LatLng latLng1=new LatLng(GlobalVariable.myLocationDevide.getLatitude(), GlobalVariable.myLocationDevide.getLongitude());
                 //Save first point select
                 listPoints.add(latLng1);
 
@@ -514,14 +469,14 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     markerOptionsCurrent.icon(BitmapDescriptorFactory.fromResource(R.drawable.start_marker));
                     markerOptionsDes.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                 }
-                mMap.addMarker(markerOptionsCurrent);
-                mMap.addMarker(markerOptionsDes);
+        GlobalVariable.mMap.addMarker(markerOptionsCurrent);
+        GlobalVariable.mMap.addMarker(markerOptionsDes);
 
                 if (listPoints.size() == 2) {
                     //Create the URL to get request from first marker to second marker
-                    String url = getRequestUrl(listPoints.get(0), listPoints.get(1));
-                    TaskRequestDirections taskRequestDirections = new TaskRequestDirections();
-                    taskRequestDirections.execute(url);
+                    Direction direction = new Direction(listPoints.get(0), listPoints.get(1));
+                    direction.GetRequestData();
+
                     moveCamera(currentLatLng,14);
                 }
     }
@@ -551,19 +506,25 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onMapLoaded() {
                 if (progressDialog != null && progressDialog.isShowing()) {
                     progressDialog.dismiss();
+
+                    googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+
                 }
-                googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
             }
         });
+
+
 
 
         LocationManager mlocManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         boolean enabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-            if (!enabled) {
-                showDialogGPS();
-            }
+        if (!enabled) {
+            showDialogGPS();
+        }
 
         enabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
@@ -579,8 +540,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         adapterRecycler.setClickListener(this);
         adapterRecycler.setmClickButtonChiDuong(this);
         recyclerView.setAdapter(adapterRecycler);
-        TaskFindStoreBestNear positionBestNear = new TaskFindStoreBestNear();
-        positionBestNear.execute();
+
 
         if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -602,6 +562,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
             layoutParams.setMargins(0, 0, 200, 100);
         }
+
+        positionBestNear.execute();
 
     }
 
@@ -655,7 +617,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                         if (task.isSuccessful()) {
                             Location currentLocation = (Location) task.getResult();
                             GlobalVariable.myLocationDevide=currentLocation;
-
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
                                     DEFAULT_ZOOM);
                         } else {
@@ -663,6 +624,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
 
                 });
+
     }
 
 
