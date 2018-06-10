@@ -6,16 +6,16 @@ package com.example.admin.config;
 
 public class Configuaration {
 <<<<<<< HEAD
-    public static String SERVER_URL="http://192.168.0.47/foodn/WebServiceFoodN.asmx";
+    public static String SERVER_URL="http://192.168.88.243/foodn/WebServiceFoodN.asmx";
 =======
-    public static String SERVER_URL="http://192.168.88.159/foodn/WebServiceFoodN.asmx";
->>>>>>> 1631cb58ff060175555f5e7557dc3bc3169db871
+    public static String SERVER_URL="http://192.168.88.246/foodn/WebServiceFoodN.asmx";
+>>>>>>> 6190906b9ebd7a500a1dbd549dbdcb91ca68a77b
     public static String NAME_SPACE="http://tempuri.org/";
     public static String METHOD_SIGN_UP="signUp";
     public static String METHOD_LOGIN = "login";
     public static String METHOD_GET_LIST_POSITION = "GetListPointStore";
     public static String METHOD_GET_STORE_BY_ID = "GetStoreByID";
-    public static String PARAMETER_ID="ID";
+    public static String PARAMETER_ID="id";
     public static String PARAMETER_SDT="username";
     public static String PARAMETER_hoten="displayName";
     public static String PARAMETER_matKhau="password";
@@ -24,5 +24,5 @@ public class Configuaration {
     public static String SOAP_ACTION_GET_LIST_POSITION=NAME_SPACE+METHOD_GET_LIST_POSITION;
     public static String SOAP_ACTION_GET_STORE_BY_ID=NAME_SPACE+METHOD_GET_STORE_BY_ID;
     public static Integer SpaceLimit = 3;
-
+    public static Integer Distance = 4000;
 }
