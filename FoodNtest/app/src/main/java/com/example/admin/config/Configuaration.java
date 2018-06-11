@@ -20,5 +20,4 @@ public class Configuaration {
     public static String SOAP_ACTION_GET_LIST_POSITION=NAME_SPACE+METHOD_GET_LIST_POSITION;
     public static String SOAP_ACTION_GET_STORE_BY_ID=NAME_SPACE+METHOD_GET_STORE_BY_ID;
     public static Integer SpaceLimit = 3;
-
 }

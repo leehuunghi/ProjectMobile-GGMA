@@ -27,6 +27,7 @@ public class Store {
     private Bitmap hinhAnh;
     private String sdtCuaHang;
     private Marker marker;
+    private ArrayList<Position> listPoint = new ArrayList<>();
 
     public Marker getMarker() {
         return marker;
@@ -44,7 +45,6 @@ public class Store {
         this.listPoint = listPoint;
     }
 
-    private ArrayList<Position> listPoint = new ArrayList<>();
 
     public String getTenCuaHang() {
         return tenCuaHang;

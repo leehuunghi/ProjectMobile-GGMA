@@ -1,5 +1,8 @@
 package com.example.admin.foodn_test;
 
+import android.util.Log;
+
+import com.example.admin.config.Configuaration;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -11,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class DirectionsParser {
+    public int distance = -1;
+
     /**
      * Returns a list of lists containing latitude and longitude from a JSONObject
      */
@@ -29,6 +34,9 @@ public class DirectionsParser {
             for (int i = 0; i < jRoutes.length(); i++) {
                 jLegs = ((JSONObject) jRoutes.get(i)).getJSONArray("legs");
                 List path = new ArrayList<HashMap<String, String>>();
+                int d = ((int) ((JSONObject) ((JSONObject) jLegs.get(0)).get("distance")).get("value"));
+
+                distance=d;
 
                 //Loop for all legs
                 for (int j = 0; j < jLegs.length(); j++) {
