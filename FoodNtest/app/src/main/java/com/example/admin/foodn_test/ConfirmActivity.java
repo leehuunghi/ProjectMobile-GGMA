@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toolbar;
 
+import com.example.admin.foodn_test.R;
+
 public class ConfirmActivity extends AppCompatActivity {
 
     android.support.v7.widget.Toolbar toolbar;

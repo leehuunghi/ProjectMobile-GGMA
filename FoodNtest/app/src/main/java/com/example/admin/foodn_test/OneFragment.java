@@ -1,10 +1,13 @@
 package com.example.admin.foodn_test;
 
+import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -28,6 +31,7 @@ public class OneFragment extends Fragment implements FragmentCallBack {
     }
 
     TextView txtAddess, txtPrice;
+    ImageButton location;
     public OneFragment() {
         // Required empty public constructor
     }
@@ -44,6 +48,17 @@ public class OneFragment extends Fragment implements FragmentCallBack {
         RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.fragment_one, container, false);
         txtAddess = layout.findViewById(R.id.address);
         txtPrice= layout.findViewById(R.id.price);
+        location = layout.findViewById(R.id.btnPositon);
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), StoreMapActivity.class);
+                Bundle add = new Bundle();
+                add.putString("add", txtAddess.getText().toString());
+                intent.putExtras(add);
+                startActivity(intent);
+            }
+        });
         return layout;
     }
 
