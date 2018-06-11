@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 
 import com.example.admin.config.Configuaration;
 import com.example.admin.model.Position;
@@ -33,6 +35,8 @@ public class StoreDetailActivity extends AppCompatActivity {
     OneFragment oneFragment;
     TwoFragment twoFragment;
     ThreeFragment threeFragment;
+    ImageButton fav;
+    ImageButton unfav;
     Store store = new Store();
     int ID;
     class GetInfo extends AsyncTask<String, Void, String>{
@@ -89,6 +93,24 @@ public class StoreDetailActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         GetInfo getInfo = new GetInfo();
         getInfo.execute();
+
+        fav = findViewById(R.id.fav);
+        unfav = findViewById(R.id.unfav);
+        fav.setVisibility(View.INVISIBLE);
+        unfav.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                fav.setVisibility(View.VISIBLE);
+                unfav.setVisibility(View.INVISIBLE);
+            }
+        });
+        fav.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                fav.setVisibility(View.INVISIBLE);
+                unfav.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     private Bitmap StringToBitMap(String hinhAnh) {

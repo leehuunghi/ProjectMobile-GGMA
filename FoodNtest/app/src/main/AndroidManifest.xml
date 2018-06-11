@@ -15,7 +15,7 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -88,13 +88,17 @@
             android:name=".InfoUpdate"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".Setting" />
-        <activity android:name=".SettingUpdate"
+        <activity
+            android:name=".SettingUpdate"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".FavoriteActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".DATABASE_FAV" />
         <activity android:name=".CustomFavAdapter" />
+        <activity
+            android:name=".StoreMapActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>
