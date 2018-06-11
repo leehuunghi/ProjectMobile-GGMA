@@ -10,13 +10,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.admin.model.Product;
+
 import java.util.List;
 
 public class CustomBaseAdapter extends BaseAdapter {
     Context context;
     int layoutToBeInflated;
-    List<DATABASE.DbRecord> dbList;
-    public CustomBaseAdapter(StoreDetailActivity context, List<DATABASE.DbRecord>
+    List<Product> dbList;
+    public CustomBaseAdapter(StoreDetailActivity context, List<Product>
             databaseList, int resource) {
         this.context = context;
         this.dbList = databaseList;
@@ -27,7 +29,7 @@ public class CustomBaseAdapter extends BaseAdapter {
         return dbList.size();
     }
     @Override
-    public DATABASE.DbRecord getItem(int position) {
+    public Product getItem(int position) {
         return dbList.get(position);
     }
 
@@ -64,10 +66,10 @@ public class CustomBaseAdapter extends BaseAdapter {
             holder = (MyViewHolder) row.getTag();
         }
 // enter(or restore) data that goes in this frame (from database 'position')
-        DATABASE.DbRecord dbRec = getItem(position);
-        holder.textview1.setText(dbRec.text1);
-        holder.textview2.setText(dbRec.text2);
-        holder.imageview1.setImageResource(dbRec.img1);
+        Product dbRec = (Product) getItem(position);
+        holder.textview1.setText(dbRec.getName());
+        holder.textview2.setText(dbRec.getPrice());
+        holder.imageview1.setImageBitmap(dbRec.getImage());
         // EXTRA: individual listeners go here - if you need only a single
 // listener for the entire row, put it into ActivityMain.
 // This is a CLICK listener on top of the right icon (imageview2)
@@ -76,12 +78,12 @@ public class CustomBaseAdapter extends BaseAdapter {
         row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context,
-                        "ROW CLICKED - " + position, 1).show();
+
             }
         });
         return row;
     }// getView
+
     // A humble POJO holding references to GUI widgets that are part of rows
 // shown by the list. They have already been made and their IDs are known,
 // therefore there is no need to issue 'findViewById' calls again.

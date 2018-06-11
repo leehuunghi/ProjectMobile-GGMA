@@ -49,8 +49,6 @@ public class TaskFindStoreBestNear extends AsyncTask<Void, Store, Void>
 
                 Position pos = new Position(Double.parseDouble(so.getPropertyAsString("HoanhDo")), Double.parseDouble(so.getPropertyAsString("TungDo")));
                 //so sánh khoảng cách cửa hàng với vị trí theo bán kính cho phép
-
-
                 Store store = new Store();
                 store.getListPoint().add(pos);
                 so = (SoapObject) so.getProperty("CuaHang");

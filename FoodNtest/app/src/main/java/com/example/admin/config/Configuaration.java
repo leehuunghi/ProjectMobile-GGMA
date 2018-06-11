@@ -5,8 +5,9 @@ package com.example.admin.config;
  */
 
 public class Configuaration {
-    public static String SERVER_URL="http://192.168.1.15/foodn/WebServiceFoodN.asmx";
+    public static String SERVER_URL="http://192.168.88.242/foodn/WebServiceFoodN.asmx";
     public static String NAME_SPACE="http://tempuri.org/";
+    public static String METHOD_GET_LIST_FOOD_STORE = "GetListFoodStore";
     public static String METHOD_SIGN_UP="signUp";
     public static String METHOD_LOGIN = "login";
     public static String METHOD_GET_LIST_POSITION = "GetListPointStore";
@@ -19,5 +20,6 @@ public class Configuaration {
     public static String SOAP_ACTION_LOGIN=NAME_SPACE+METHOD_LOGIN;
     public static String SOAP_ACTION_GET_LIST_POSITION=NAME_SPACE+METHOD_GET_LIST_POSITION;
     public static String SOAP_ACTION_GET_STORE_BY_ID=NAME_SPACE+METHOD_GET_STORE_BY_ID;
+    public static String SOAP_ACTION_GET_FOOD_BY_IDSTORE=NAME_SPACE+METHOD_GET_LIST_FOOD_STORE;
     public static Integer SpaceLimit = 3;
 }

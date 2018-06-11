@@ -112,6 +112,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import javax.microedition.khronos.opengles.GL;
 import javax.net.ssl.SSLPeerUnverifiedException;
 
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, LocationSource.OnLocationChangedListener, RecyclerViewAdapter.ItemClickListener, RecyclerViewAdapter.ClickButtonChiDuong, NavigationView.OnNavigationItemSelectedListener {
@@ -236,7 +237,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         txtSpinner = findViewById(R.id.txtSpinner);
         txtSearch = findViewById(R.id.txtSearch);
         recyclerView = findViewById(R.id.recycleView);
-        recyclerView.setVisibility(View.VISIBLE);
 
         imgMyLocation = (ImageView) findViewById(R.id.imgMyLocation);
 
@@ -253,7 +253,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             }
         });
-
         txtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -264,11 +263,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return false;
             }
         });
-
         imgMyLocation.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            getDeviceLocation();
+            moveCamera(new LatLng(GlobalVariable.myLocationDevide.getLatitude(), GlobalVariable.myLocationDevide.getLongitude()),
+                    DEFAULT_ZOOM);
         }
         });
 
@@ -433,59 +432,51 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onClickButtonChiDuong(RecyclerViewAdapter.ViewHolder view, int position) {
         relativeLayoutFind.setVisibility(View.VISIBLE);
+//        imgFindRoute.setVisibility(View.VISIBLE);
         imgSearchBack.setVisibility(View.VISIBLE);
         relativeLay.setVisibility(View.INVISIBLE);
         currentLatLng = new LatLng(adapterRecycler.getItem(position).getListPoint().get(0).getV(), adapterRecycler.getItem(position).getListPoint().get(0).getV1());
         GlobalVariable.mMap.clear();
         GlobalVariable.mMap.addMarker(new MarkerOptions().position(currentLatLng).title(adapterRecycler.getItem(position).getTenCuaHang()).snippet(adapterRecycler.getItem(position).getDiaChi()));
-//        Direction direction = new Direction(currentLatLng, new LatLng(adapterRecycler.getItem(position).getListPoint().get(0).getV(),
-//                adapterRecycler.getItem(position).getListPoint().get(0).getV1()));
         txtEnd.setText(adapterRecycler.getItem(position).getTenCuaHang().toString());
         moveCamera(currentLatLng,15);
-                if (listPoints.size() > 0) {
-                    listPoints.clear();
-                    GlobalVariable.mMap.clear();
-                }
-                LatLng latLng1=new LatLng(GlobalVariable.myLocationDevide.getLatitude(), GlobalVariable.myLocationDevide.getLongitude());
-                //Save first point select
-                listPoints.add(latLng1);
+        if (listPoints.size() > 0) {
+            listPoints.clear();
+            GlobalVariable.mMap.clear();
+        }
+        LatLng latLng1=new LatLng(GlobalVariable.myLocationDevide.getLatitude(), GlobalVariable.myLocationDevide.getLongitude());
+        //Save first point select
+        listPoints.add(latLng1);
 
-                //có địa điểm thì lưu vô locationDes rồi thay cho 2 số này
-                listPoints.add(currentLatLng);
+        //có địa điểm thì lưu vô locationDes rồi thay cho 2 số này
+        listPoints.add(currentLatLng);
 
-                //Create marker
-                MarkerOptions markerOptionsCurrent = new MarkerOptions();
-                markerOptionsCurrent.position(latLng1);
+        //Create marker
+        MarkerOptions markerOptionsCurrent = new MarkerOptions();
+        markerOptionsCurrent.position(latLng1);
 
-                MarkerOptions markerOptionsDes = new MarkerOptions();
-                markerOptionsDes.position(currentLatLng);
+        MarkerOptions markerOptionsDes = new MarkerOptions();
+        markerOptionsDes.position(currentLatLng);
 
 
-                if (listPoints.size() == 1) {
-                    //Add first marker to the map
-                    markerOptionsCurrent.icon(BitmapDescriptorFactory.fromResource(R.drawable.start_marker));
-                } else {
-                    //Add second marker to the map
-                    markerOptionsCurrent.icon(BitmapDescriptorFactory.fromResource(R.drawable.start_marker));
-                    markerOptionsDes.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                }
+        if (listPoints.size() == 1) {
+            //Add first marker to the map
+            markerOptionsCurrent.icon(BitmapDescriptorFactory.fromResource(R.drawable.start_marker));
+        } else {
+            //Add second marker to the map
+            markerOptionsCurrent.icon(BitmapDescriptorFactory.fromResource(R.drawable.start_marker));
+            markerOptionsDes.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        }
         GlobalVariable.mMap.addMarker(markerOptionsCurrent);
         GlobalVariable.mMap.addMarker(markerOptionsDes);
 
-                if (listPoints.size() == 2) {
-                    //Create the URL to get request from first marker to second marker
-                    Direction direction = new Direction(listPoints.get(0), listPoints.get(1));
-                    direction.GetRequestData();
-
-                    moveCamera(currentLatLng,14);
-                }
+        if (listPoints.size() == 2) {
+            //Create the URL to get request from first marker to second marker
+            Direction direction = new Direction(listPoints.get(0), listPoints.get(1));
+            direction.taskRequestDirections.execute(direction.getRequestUrl());
+            moveCamera(currentLatLng,14);
+        }
     }
-
-
-
-
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -507,9 +498,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (progressDialog != null && progressDialog.isShowing()) {
                     progressDialog.dismiss();
 
+                    GlobalVariable.mMap.clear();
                     googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-
+                    recyclerView.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -540,7 +531,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         adapterRecycler.setClickListener(this);
         adapterRecycler.setmClickButtonChiDuong(this);
         recyclerView.setAdapter(adapterRecycler);
-
+        recyclerView.setVisibility(View.INVISIBLE);
 
         if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -562,6 +553,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
             layoutParams.setMargins(0, 0, 200, 100);
         }
+
 
         positionBestNear.execute();
 
@@ -616,7 +608,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
                             Location currentLocation = (Location) task.getResult();
-                            GlobalVariable.myLocationDevide=currentLocation;
+                            GlobalVariable.myLocationDevide=currentLocation; CircleOptions circleOptions = new CircleOptions();
+                            circleOptions.center(new LatLng(GlobalVariable.myLocationDevide.getLatitude(),GlobalVariable.myLocationDevide.getLongitude()));
+                            circleOptions.radius(GlobalVariable.radius);
+                            circleOptions.fillColor(Color.GRAY);
+                            GlobalVariable.mMap.addCircle(circleOptions);
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
                                     DEFAULT_ZOOM);
                         } else {

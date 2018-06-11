@@ -214,9 +214,12 @@ public class SettingUpdate extends AppCompatActivity implements NavigationView.O
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
                             checkeditemVal = "5 km";
+                            GlobalVariable.radius=5000;
+
                         }
                         if (which == 1) {
                             checkeditemVal = "10 km";
+                            GlobalVariable.radius=10000;
                         }
                         if (which == 2) {
                             checkeditemVal = "15 km";

@@ -41,7 +41,6 @@ public class StoreDetailActivity extends AppCompatActivity {
             super.onPostExecute(s);
             getSupportActionBar().setTitle(store.getTenCuaHang());
             oneFragment.setTxtAddess(store.getDiaChi());
-
         }
 
         @Override
@@ -117,6 +116,7 @@ public class StoreDetailActivity extends AppCompatActivity {
         oneFragment = new OneFragment();
         twoFragment = new TwoFragment();
         threeFragment = new ThreeFragment();
+        twoFragment.setIDStore(ID);
         adapter.addFragment(oneFragment, "THÔNG TIN");
         adapter.addFragment(twoFragment, "MENU");
         adapter.addFragment(threeFragment, "BÌNH LUẬN");

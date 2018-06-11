@@ -31,6 +31,7 @@ public class Direction {
     private String duration;
     private PolylineOptions polylineOptions;
 
+    TaskRequestDirections taskRequestDirections;
     public LatLng getOrigin() {
         return origin;
     }
@@ -60,19 +61,9 @@ public class Direction {
         distance=-1;
         this.origin = a;
         this.dest = b;
+        taskRequestDirections = new TaskRequestDirections();
     };
 
-
-    public void GetRequestData(){
-        TaskRequestDirections taskRequestDirections = new TaskRequestDirections();
-        try {
-            taskRequestDirections.execute(getRequestUrl()).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-    }
 
     public String getRequestUrl() {
         //Value of origin
@@ -111,13 +102,7 @@ public class Direction {
             super.onPostExecute(s);
             //Parse json here
             TaskParser taskParser = new TaskParser();
-            try {
-                taskParser.execute(s).get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
+            taskParser.execute(s);
         }
 
         private String requestDirection(String reqUrl) throws IOException {
@@ -197,6 +182,8 @@ public class Direction {
                 polylineOptions.color(Color.rgb(66, 132, 243));
                 polylineOptions.geodesic(true);
             }
+
+            GlobalVariable.mMap.addPolyline(polylineOptions);
         }
     }
 }
