@@ -11,6 +11,7 @@ public class Configuaration {
     public static String METHOD_SIGN_UP="signUp";
     public static String METHOD_LOGIN = "login";
     public static String METHOD_WRITE_FAV = "WriteFav";
+    public static String METHOD_SEARCH_NAME = "SearchName";
     public static String METHOD_REMOVE_FAV = "RemoveFav";
     public static String METHOD_CHECK_FAV = "CheckFav";
     public static String METHOD_GET_LIST_FAV_STORE = "GetListFavStore";
@@ -45,6 +46,7 @@ public class Configuaration {
     public static String SOAP_ACTION_GET_STORE_BY_ID=NAME_SPACE+METHOD_GET_STORE_BY_ID;
     public static String SOAP_ACTION_GET_FOOD_BY_IDSTORE=NAME_SPACE+METHOD_GET_LIST_FOOD_STORE;
     public static String SOAP_ACTION_WRITE_FAV=NAME_SPACE+METHOD_WRITE_FAV;
+    public static String SOAP_ACTION_SEARCH_BY_NAME=NAME_SPACE+METHOD_SEARCH_NAME;
     public static String SOAP_ACTION_REMOVE_FAV=NAME_SPACE+METHOD_REMOVE_FAV;
     public static String SOAP_ACTION_CHECK_FAV=NAME_SPACE+METHOD_CHECK_FAV;
     public static String SOAP_ACTION_GET_LIST_FAV_STORE=NAME_SPACE+METHOD_GET_LIST_FAV_STORE;

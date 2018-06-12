@@ -4,6 +4,6 @@
     <!--<color name="colorPrimaryDark">#757575</color>-->
     <color name="colorPrimaryDark">#ffffff</color>
     <color name="colorAccent">#ff3c00</color>
-    <color name="colorRadius">#05ff3c00</color>
+    <color name="colorRadius">#25ff3c00</color>
     <color name="appbarColor">#000000</color>
 </resources>

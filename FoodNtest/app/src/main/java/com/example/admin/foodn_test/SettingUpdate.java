@@ -224,6 +224,7 @@ public class SettingUpdate extends AppCompatActivity implements NavigationView.O
                         }
                         if (which == 2) {
                             checkeditemVal = "15 km";
+                            GlobalVariable.radius=15000;
                         }
                     }
                 });

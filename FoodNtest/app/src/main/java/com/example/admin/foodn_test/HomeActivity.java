@@ -122,7 +122,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     ProgressDialog progressDialog;
     RecyclerViewAdapter adapterRecycler;
     ArrayList<Store> listStore = new ArrayList<>();
-    TaskFindStoreBestNear positionBestNear = new TaskFindStoreBestNear();
+    TaskFindStoreBestNear positionBestNear;
 
     ArrayList<LatLng> listPoints;
     LatLng currentLatLng;
@@ -139,7 +139,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     TextView txtEnd;
     ImageButton imgSearchBack;
     RecyclerView recyclerView;
-
+    CircleOptions circleOptions = new CircleOptions();
     TextView accName;
     ImageView accAva;
 
@@ -147,6 +147,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private DrawerLayout mDrawerLayout;
 
     Location locationDes=null;
+    boolean flag = true;
 
     private List<Marker> originMarkers = new ArrayList<>();
     private List<Marker> destinationMarkers = new ArrayList<>();
@@ -173,6 +174,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        flag= true;
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Đang tải... Vui lòng đợi!");
         progressDialog.setCanceledOnTouchOutside(false);
@@ -303,9 +305,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 //        imgDropDown=findViewById(R.id.imgDropDown);
 
         List<String> list = new ArrayList<>();
+        list.add("Gần bạn");
         list.add("Quán ăn");
-        list.add("Món");
-        list.add("Loại món");
         list.add("Địa chỉ");
 
         final ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item,list);
@@ -320,7 +321,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 String temp2 = temp.toLowerCase();
                 String hint = "Tìm kiếm theo " + temp2;
                 txtSearch.setHint(hint);
-//                txtSpinner.setSelection(txtSpinner.length());
+                GlobalVariable.typeSearch = i;
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -358,7 +359,18 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View view) {
                 relativeLayoutFind.setVisibility(View.INVISIBLE);
                 relativeLay.setVisibility(View.VISIBLE);
-                GlobalVariable.mMap.clear();
+            }
+        });
+
+        imgSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GlobalVariable.listStore.clear();
+                adapter.notifyDataSetChanged();
+                positionBestNear = new TaskFindStoreBestNear();
+                positionBestNear.setTextSearch(txtSearch.getText().toString());
+                positionBestNear.execute();
+                recyclerView.setVisibility(View.VISIBLE);
             }
         });
 
@@ -501,7 +513,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (progressDialog != null && progressDialog.isShowing()) {
                     progressDialog.dismiss();
 
-                    GlobalVariable.mMap.clear();
                     googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                     recyclerView.setVisibility(View.VISIBLE);
 
@@ -560,9 +571,24 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
 
-        positionBestNear.execute();
+        if(flag){
+            flag=true;
+            positionBestNear = new TaskFindStoreBestNear();
+            positionBestNear.execute();
         imgMyLocation.setVisibility(View.VISIBLE);
+        }
+        else DrawRecyler();
 
+    }
+
+    private void DrawRecyler() {
+        for (int i=0;i<GlobalVariable.listStore.size();i++) {
+            GlobalVariable.mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(GlobalVariable.listStore.get(i).getListPoint().get(0).getV(),
+                            GlobalVariable.listStore.get(i).getListPoint().get(0).getV1()))
+                    .title(GlobalVariable.listStore.get(i).getTenCuaHang())
+                    .snippet(GlobalVariable.listStore.get(i).getDiaChi()));
+        }
     }
 
     private void showDialogGPS() {
@@ -614,10 +640,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
                             Location currentLocation = (Location) task.getResult();
-                            GlobalVariable.myLocationDevide=currentLocation; CircleOptions circleOptions = new CircleOptions();
+                            GlobalVariable.myLocationDevide=currentLocation;
+
                             circleOptions.center(new LatLng(GlobalVariable.myLocationDevide.getLatitude(),GlobalVariable.myLocationDevide.getLongitude()));
                             circleOptions.radius(GlobalVariable.radius);
-                            circleOptions.fillColor(Color.GRAY);
+                            circleOptions.fillColor(getResources().getColor(R.color.colorRadius));
+                            circleOptions.strokeWidth(1);
                             GlobalVariable.mMap.addCircle(circleOptions);
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
                                     DEFAULT_ZOOM);

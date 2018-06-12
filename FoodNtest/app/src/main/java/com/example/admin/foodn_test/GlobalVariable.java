@@ -21,4 +21,5 @@ public final class GlobalVariable {
     public static ArrayList<Direction> listDirection = new ArrayList<>();
     public static Location myLocationDevide;
     public static int radius = 4000;
+    public static int typeSearch = 0;
 }
