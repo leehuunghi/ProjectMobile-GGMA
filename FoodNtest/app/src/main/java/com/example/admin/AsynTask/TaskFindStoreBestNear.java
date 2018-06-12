@@ -30,25 +30,57 @@ import java.util.List;
 public class TaskFindStoreBestNear extends AsyncTask<Void, Store, Void>
 {
 
+    String methodName;
+    String textSearch;
+    String soapMethod;
+
+    public void setTextSearch(String textSearch) {
+        this.textSearch = textSearch;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+
+    }
+
     public TaskFindStoreBestNear() {
+        methodName = Configuaration.METHOD_GET_LIST_POSITION;
+        soapMethod =Configuaration.SOAP_ACTION_GET_LIST_POSITION;
+        switch (GlobalVariable.typeSearch)
+        {
+            case 1:
+                methodName = Configuaration.METHOD_SEARCH_NAME;
+                soapMethod =Configuaration.SOAP_ACTION_SEARCH_BY_NAME;
+                break;
+            case 2:
+                methodName = Configuaration.METHOD_SEARCH_NAME;
+                soapMethod =Configuaration.SOAP_ACTION_SEARCH_BY_NAME;
+                break;
+            case 0:
+                methodName = Configuaration.METHOD_GET_LIST_POSITION;
+                soapMethod =Configuaration.SOAP_ACTION_GET_LIST_POSITION;
+                break;
+        }
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
         try {
-            SoapObject request = new SoapObject(Configuaration.NAME_SPACE,Configuaration.METHOD_GET_LIST_POSITION);
+            SoapObject request = new SoapObject(Configuaration.NAME_SPACE, this.methodName);
+            if(GlobalVariable.typeSearch!= 0 )
+                request.addProperty("text", textSearch);
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet=true;
             envelope.setOutputSoapObject(request);
             HttpTransportSE httpTransportSE= new HttpTransportSE(Configuaration.SERVER_URL);
-            httpTransportSE.call(Configuaration.SOAP_ACTION_GET_LIST_POSITION, envelope);
+            httpTransportSE.call(soapMethod, envelope);
             SoapObject listSoapObject= (SoapObject) envelope.getResponse();
             SoapObject so = null;
             for (int i = 0; i < listSoapObject.getPropertyCount(); i++) {
                 so = (SoapObject) listSoapObject.getProperty(i);
 
                 Position pos = new Position(Double.parseDouble(so.getPropertyAsString("HoanhDo")), Double.parseDouble(so.getPropertyAsString("TungDo")));
-                //so sánh khoảng cách cửa hàng với vị trí theo bán kính cho phép
                 Store store = new Store();
                 store.getListPoint().add(pos);
                 so = (SoapObject) so.getProperty("CuaHang");
@@ -69,6 +101,8 @@ public class TaskFindStoreBestNear extends AsyncTask<Void, Store, Void>
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
+
+        GlobalVariable.mMap.clear();
         for(int i=0; i<GlobalVariable.listStore.size();i++)
         {
             GlobalVariable.listStore.get(i).setMarker(GlobalVariable.mMap.addMarker(new MarkerOptions()
@@ -77,8 +111,6 @@ public class TaskFindStoreBestNear extends AsyncTask<Void, Store, Void>
                     .title(GlobalVariable.listStore.get(i).getTenCuaHang())
                     .snippet(GlobalVariable.listStore.get(i).getDiaChi())));
         }
-
-
     }
 
     public double CalculationByDistance(LatLng StartP, LatLng EndP) {
@@ -107,7 +139,7 @@ public class TaskFindStoreBestNear extends AsyncTask<Void, Store, Void>
         double distance = CalculationByDistance(new LatLng(GlobalVariable.myLocationDevide.getLatitude(),GlobalVariable.myLocationDevide.getLongitude()),
                 new LatLng(values[0].getListPoint().get(0).getV(),
                         values[0].getListPoint().get(0).getV1()));
-        if( distance > GlobalVariable.radius) return;
+        if( distance > GlobalVariable.radius && GlobalVariable.typeSearch ==0) return;
         GlobalVariable.listStore.add(values[0]);
     }
 
