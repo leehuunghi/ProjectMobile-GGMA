@@ -5,8 +5,16 @@ package com.example.admin.config;
  */
 
 public class Configuaration {
-    public static String SERVER_URL="http://192.168.1.2/foodn/WebServiceFoodN.asmx";
+    public static String SERVER_URL="http://192.168.1.227/foodn/WebServiceFoodN.asmx";
     public static String NAME_SPACE="http://tempuri.org/";
+
+    public static String METHOD_ALL_STORE="GetAllStore";
+    public static String SOAP_ACTION_ALL_STORE=NAME_SPACE+METHOD_ALL_STORE;
+
+    public static String METHOD_STORE_ID="GetStoreByID";
+    public static String SOAP_ACTION_STORE_ID=NAME_SPACE+METHOD_STORE_ID;
+    public static String PARAMETER_ID="id";
+
     public static String METHOD_SIGN_UP="signUp";
     public static String METHOD_LOGIN = "login";
     public static String METHOD_GET_LIST_POSITION = "GetListPointStore";

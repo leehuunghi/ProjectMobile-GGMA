@@ -11,13 +11,33 @@ import java.util.ArrayList;
  */
 
 public class Store {
+    public Integer getID() {
+        return ID;
+    }
+
+    public void setID(Integer ID) {
+        this.ID = ID;
+    }
+
+    private Integer ID;
     private String tenCuaHang;
     private String diaChi;
     private String gioMoCua;
     private String gioDongCua;
     private Bitmap hinhAnh;
     private String sdtCuaHang;
+    private Float tbDanhGia;
+
     private Marker marker;
+    private ArrayList<Position> listPoint = new ArrayList<>();
+
+    public Float getTbDanhGia() {
+        return tbDanhGia;
+    }
+
+    public void setTbDanhGia(Float tbDanhGia) {
+        this.tbDanhGia = tbDanhGia;
+    }
 
     public Marker getMarker() {
         return marker;
@@ -35,7 +55,6 @@ public class Store {
         this.listPoint = listPoint;
     }
 
-    private ArrayList<Position> listPoint = new ArrayList<>();
 
     public String getTenCuaHang() {
         return tenCuaHang;

@@ -22,7 +22,8 @@
             android:id="@+id/txtTenQuan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="" />
+            android:text=""
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/txtDiaChi"
@@ -85,7 +86,7 @@
                 android:maxWidth="15dp"
                 android:scaleType="fitCenter"
                 android:tint="#ffbb00"
-                app:srcCompat="@drawable/ratehalf" />
+                app:srcCompat="@drawable/ratefull" />
 
             <ImageView
                 android:id="@+id/rating5"
@@ -118,6 +119,9 @@
         android:id="@+id/imgTuyChon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp" />
 
 </LinearLayout>

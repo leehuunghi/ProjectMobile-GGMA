@@ -81,6 +81,53 @@
             android:ems="10"
             android:inputType="textPersonName" />
 
+        <TextView
+            android:id="@+id/textView22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hình ảnh món" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/imgFood"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_vertical|fill_horizontal"
+                app:srcCompat="@drawable/menu_thumbnail" />
+
+            <ImageButton
+                android:id="@+id/btnAddFood"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="bottom|end"
+                android:layout_weight="1"
+                android:background="@drawable/btn_position"
+                android:elevation="5dp"
+                android:tint="#ffffff"
+                app:srcCompat="@drawable/ic_add_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/btnEditFood"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="bottom|end"
+                android:layout_weight="1"
+                android:background="@drawable/btn_position"
+                android:elevation="5dp"
+                android:tint="#ffffff"
+                app:srcCompat="@drawable/ic_mode_edit_black_24dp" />
+        </FrameLayout>
+
         <Button
             android:id="@+id/btnThemMon"
             android:layout_width="wrap_content"
