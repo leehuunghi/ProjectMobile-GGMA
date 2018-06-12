@@ -91,25 +91,6 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/txtRetype"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_retype"
-                android:imeActionId="6"
-                android:imeActionLabel="@string/action_sign_in_short"
-                android:imeOptions="actionUnspecified"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textSize="14sp" />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
                 android:id="@+id/txtDob"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -140,6 +121,7 @@
                 android:text="@string/gender" />
 
             <RadioGroup
+                android:id="@+id/radioGendSu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">

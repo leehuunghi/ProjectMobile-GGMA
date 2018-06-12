@@ -59,7 +59,7 @@
                 app:cardCornerRadius="75dp">
 
                 <ImageView
-                    android:id="@+id/imageView1"
+                    android:id="@+id/imgAva"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:layout_alignParentTop="true"
@@ -92,7 +92,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:text="0126 599 1264"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
 
@@ -120,7 +119,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:text="Đỗ Hữu Nhật Nguyên"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
 
@@ -147,7 +145,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:text="13/11/1997"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -173,7 +170,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:text="Nam"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
         </LinearLayout>

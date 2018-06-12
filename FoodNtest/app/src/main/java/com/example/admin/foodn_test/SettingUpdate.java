@@ -69,8 +69,9 @@ public class SettingUpdate extends AppCompatActivity implements NavigationView.O
         }
         View headerview = navigationView.getHeaderView(0);
         TextView accName = (TextView) headerview.findViewById(R.id.accName);
-        accName.setText("Tên tài khoản");
+        accName.setText(GlobalVariable.MyUser.getHoten());
         ImageView accAva = headerview.findViewById(R.id.accAva);
+        accAva.setImageBitmap(GlobalVariable.MyUser.getAva());
         accAva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

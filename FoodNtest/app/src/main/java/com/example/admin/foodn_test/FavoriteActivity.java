@@ -2,6 +2,9 @@ package com.example.admin.foodn_test;
 
 import android.content.ClipData;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -9,18 +12,33 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.admin.config.Configuaration;
+import com.example.admin.model.Product;
+import com.example.admin.model.Store;
+
+import org.kobjects.base64.Base64;
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FavoriteActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener, CustomFavAdapter.ItemClickListener {
 
+    List<Store> storeList =  new ArrayList<>();
+    CustomFavAdapter adapter;
     DATABASE_FAV database_records;
     private DrawerLayout mDrawerLayout;
 
@@ -53,8 +71,9 @@ public class FavoriteActivity extends AppCompatActivity implements
         }
         View headerview = navigationView.getHeaderView(0);
         TextView accName = (TextView) headerview.findViewById(R.id.accName);
-        accName.setText("Tên tài khoản");
+        accName.setText(GlobalVariable.MyUser.getHoten());
         ImageView accAva = headerview.findViewById(R.id.accAva);
+        accAva.setImageBitmap(GlobalVariable.MyUser.getAva());
         accAva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,6 +93,7 @@ public class FavoriteActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
         android.support.v7.app.ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setTitle("Quán ăn yêu thích");
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
 
         mDrawerLayout.addDrawerListener(
@@ -101,16 +121,74 @@ public class FavoriteActivity extends AppCompatActivity implements
         );
 
         ////create an instance of our fake database: {[text1, text2, icon]}
-        List database = new DATABASE_FAV().dbList;
-        CustomFavAdapter adapter = new CustomFavAdapter(this,
-                database,
-                R.layout.fav_list_gui_row
-        );
+        GetInfoStore getInfoStore = new GetInfoStore();
+        adapter = new CustomFavAdapter(FavoriteActivity.this, storeList, R.layout.fav_list_gui_row);
+        adapter.setmClickListener(this);
         listview.setAdapter(adapter);
-
-
+        getInfoStore.execute();
 
     }//onCreate
+
+    @Override
+    public void onItemClick(View view, int position) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("ID",adapter.getItem(position).getID());
+        Intent intentDetail = new Intent(FavoriteActivity.this, StoreDetailActivity.class);
+        intentDetail.putExtras(bundle);
+        startActivity(intentDetail);
+    }
+
+    class GetInfoStore extends AsyncTask<String, Void, String> {
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                SoapObject request = new SoapObject(Configuaration.NAME_SPACE,Configuaration.METHOD_GET_LIST_FAV_STORE);
+                request.addProperty(Configuaration.PARAMETER_IDUserF, GlobalVariable.MyUser.getId());
+
+                SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+                envelope.dotNet=true;
+                envelope.setOutputSoapObject(request);
+                HttpTransportSE httpTransportSE= new HttpTransportSE(Configuaration.SERVER_URL);
+                httpTransportSE.call(Configuaration.SOAP_ACTION_GET_LIST_FAV_STORE, envelope);
+                SoapObject listSoapObject= (SoapObject) envelope.getResponse();
+                SoapObject so = null;
+                for (int i = 0; i < listSoapObject.getPropertyCount(); i++) {
+                    so = (SoapObject) listSoapObject.getProperty(i);
+                    Store store = new Store();
+                    so = (SoapObject) so.getProperty("CuaHang");
+
+                    store.setID(Integer.parseInt(so.getPropertyAsString("ID_CuaHang")));
+                    store.setTenCuaHang(so.getPropertyAsString("TenCuaHang"));
+                    store.setDiaChi(so.getPropertyAsString("DiaChi"));
+                    store.setHinhAnh(StringToBitMap(so.getPropertyAsString("HinhAnh")));
+                    storeList.add(store);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Log.e("Lỗi", ex.toString());
+            }
+            return null;
+        }
+
+        private Bitmap StringToBitMap(String hinhAnh) {
+            try {
+                byte[] encodeByte = Base64.decode(hinhAnh);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+                return bitmap;
+            } catch (Exception e) {
+                e.getMessage();
+                return null;
+            }
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -146,5 +224,13 @@ public class FavoriteActivity extends AppCompatActivity implements
                 break;
         }
         return false;
+    }
+
+    @Override
+    public void onRestart()
+    {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
     }
 }

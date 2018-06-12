@@ -1,5 +1,7 @@
 package com.example.admin.model;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Windows 10 on 5/3/2018.
  */
@@ -18,6 +20,25 @@ public class User {
     private String hoten;
     private String sdt;
     private String matkhau;
+    private String ngaysinh;
+    private Bitmap ava;
+    private String gioitinh;
+
+    public String getNgaysinh() {
+        return ngaysinh;
+    }
+
+    public void setNgaysinh(String ngaysinh) {
+        this.ngaysinh = ngaysinh;
+    }
+
+    public Bitmap getAva() {
+        return ava;
+    }
+
+    public void setAva(Bitmap ava) {
+        this.ava = ava;
+    }
 
     public String getHoten() {
         return hoten;
@@ -41,5 +62,13 @@ public class User {
 
     public void setMatkhau(String matkhau) {
         this.matkhau = matkhau;
+    }
+
+    public String getGioitinh() {
+        return gioitinh;
+    }
+
+    public void setGioitinh(String gioitinh) {
+        this.gioitinh = gioitinh;
     }
 }

@@ -14,9 +14,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import javax.microedition.khronos.opengles.GL;
+
 public class InfoAccount extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     TextView txtSDT, txtHoTen, txtMatKhau, txtNgaySinh, txtGioiTinh;
+    ImageView imgAva;
     Button btnChinhSua;
     private DrawerLayout mDrawerLayout;
 
@@ -52,8 +55,9 @@ public class InfoAccount extends AppCompatActivity implements NavigationView.OnN
         }
         View headerview = navigationView.getHeaderView(0);
         TextView accName = (TextView) headerview.findViewById(R.id.accName);
-        accName.setText("Tên tài khoản");
+        accName.setText(GlobalVariable.MyUser.getHoten());
         ImageView accAva = headerview.findViewById(R.id.accAva);
+        accAva.setImageBitmap(GlobalVariable.MyUser.getAva());
         accAva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,6 +72,12 @@ public class InfoAccount extends AppCompatActivity implements NavigationView.OnN
                 startActivity(a);
             }
         });
+
+        imgAva.setImageBitmap(GlobalVariable.MyUser.getAva());
+        txtSDT.setText(GlobalVariable.MyUser.getSdt());
+        txtHoTen.setText(GlobalVariable.MyUser.getHoten());
+        txtNgaySinh.setText(GlobalVariable.MyUser.getNgaysinh());
+        txtGioiTinh.setText(GlobalVariable.MyUser.getGioitinh());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -103,6 +113,13 @@ public class InfoAccount extends AppCompatActivity implements NavigationView.OnN
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -123,6 +140,7 @@ public class InfoAccount extends AppCompatActivity implements NavigationView.OnN
     }
 
     private void addControls() {
+        imgAva = findViewById(R.id.imgAva);
         txtSDT = findViewById(R.id.txtSDT);
         txtHoTen = findViewById(R.id.txtHoTen);
         txtNgaySinh = findViewById(R.id.txtNgaySinh);

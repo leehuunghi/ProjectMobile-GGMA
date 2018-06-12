@@ -67,6 +67,7 @@ import com.example.admin.adapter.RecyclerViewAdapter;
 import com.example.admin.config.Configuaration;
 import com.example.admin.model.Position;
 import com.example.admin.model.Store;
+import com.example.admin.model.User;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -139,6 +140,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     ImageButton imgSearchBack;
     RecyclerView recyclerView;
 
+    TextView accName;
+    ImageView accAva;
+
     private ImageView imgMyLocation;
     private DrawerLayout mDrawerLayout;
 
@@ -209,8 +213,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         View headerview = navigationView.getHeaderView(0);
         TextView accName = (TextView) headerview.findViewById(R.id.accName);
-        accName.setText("Tên tài khoản");
+        accName.setText(GlobalVariable.MyUser.getHoten());
         ImageView accAva = headerview.findViewById(R.id.accAva);
+        accAva.setImageBitmap(GlobalVariable.MyUser.getAva());
         accAva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -231,8 +236,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         android.support.v7.app.ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
-
-
 
         txtSpinner = findViewById(R.id.txtSpinner);
         txtSearch = findViewById(R.id.txtSearch);
@@ -501,6 +504,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     GlobalVariable.mMap.clear();
                     googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                     recyclerView.setVisibility(View.VISIBLE);
+
+
                 }
 
             }
@@ -556,6 +561,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         positionBestNear.execute();
+        imgMyLocation.setVisibility(View.VISIBLE);
 
     }
 
@@ -623,8 +629,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-
-
     private void moveCamera(LatLng latLng, float zoom){
         GlobalVariable.mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
@@ -669,6 +673,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
     }
+
     @Override
     public void onItemClick(View view, int position) {
         Bundle bundle = new Bundle();

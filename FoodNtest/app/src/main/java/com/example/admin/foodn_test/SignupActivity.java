@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.admin.config.Configuaration;
@@ -21,7 +23,9 @@ import org.ksoap2.transport.HttpTransportSE;;
 public class SignupActivity extends AppCompatActivity {
 
     android.support.v7.widget.Toolbar toolbar;
-    EditText txtSdt ,txtHoTen, txtPass, txtRetype, txtDob;
+    RadioGroup radioGender;
+    RadioButton tempBtn;
+    EditText txtSdt ,txtHoTen, txtPass, txtDob;
     ProgressDialog progressDialog;
 
     @Override
@@ -39,6 +43,10 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 progressDialog.show();
+
+                int selectedId = radioGender.getCheckedRadioButtonId();
+                tempBtn = (RadioButton) findViewById(selectedId);
+
                 SignUpAccount signUpAccount = new SignUpAccount();
                 signUpAccount.execute();
             }
@@ -49,10 +57,11 @@ public class SignupActivity extends AppCompatActivity {
         txtSdt = findViewById(R.id.txtSdt);
         txtHoTen = findViewById(R.id.txtHoten);
         txtPass = findViewById(R.id.txtPass);
-        //dob nữa
+        txtDob = findViewById(R.id.txtDob);
+        radioGender = findViewById(R.id.radioGendSu);
         progressDialog = new ProgressDialog(SignupActivity.this);
         progressDialog.setTitle("Thông báo");
-        progressDialog.setMessage("Đang đăng ký, m đợi chút ko được hả?");
+        progressDialog.setMessage("Đang đăng ký. Vui lòng đợi");
         progressDialog.setCanceledOnTouchOutside(true);
     }
 
@@ -96,6 +105,8 @@ public class SignupActivity extends AppCompatActivity {
                 request.addProperty(Configuaration.PARAMETER_SDT, txtSdt.getText().toString());
                 request.addProperty(Configuaration.PARAMETER_hoten, txtHoTen.getText().toString());
                 request.addProperty(Configuaration.PARAMETER_matKhau, txtPass.getText().toString());
+                request.addProperty(Configuaration.PARAMETER_gioiTinh, tempBtn.getText().toString());
+                request.addProperty(Configuaration.PARAMETER_ngaySinh, txtDob.getText().toString());
 
                 SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
                 envelope.dotNet=true;
@@ -109,7 +120,7 @@ public class SignupActivity extends AppCompatActivity {
                     if(Boolean.parseBoolean(data.getPropertyAsString("signUpResult")))
                     {
                         flagAccess=true;
-                        Intent confirmAct = new Intent(SignupActivity.this, ConfirmActivity.class);
+                        Intent confirmAct = new Intent(SignupActivity.this, LoginActivity.class);
                         startActivity(confirmAct);
                     }
                 }

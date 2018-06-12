@@ -1,5 +1,6 @@
 package com.example.admin.foodn_test;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -18,6 +19,7 @@ import android.widget.ImageButton;
 
 import com.example.admin.config.Configuaration;
 import com.example.admin.model.Position;
+import com.example.admin.model.Product;
 import com.example.admin.model.Store;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -45,6 +47,7 @@ public class StoreDetailActivity extends AppCompatActivity {
             super.onPostExecute(s);
             getSupportActionBar().setTitle(store.getTenCuaHang());
             oneFragment.setTxtAddess(store.getDiaChi());
+            oneFragment.setImg(store.getHinhAnh());
         }
 
         @Override
@@ -73,6 +76,43 @@ public class StoreDetailActivity extends AppCompatActivity {
         }
     }
 
+    class CheckFav extends AsyncTask<String, Void, String>{
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                SoapObject request = new SoapObject(Configuaration.NAME_SPACE,Configuaration.METHOD_CHECK_FAV);
+                request.addProperty(Configuaration.PARAMETER_IDUser, GlobalVariable.MyUser.getId());
+                request.addProperty(Configuaration.PARAMETER_IDFStore, ID);
+
+                SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+                envelope.dotNet=true;
+                envelope.setOutputSoapObject(request);
+                HttpTransportSE httpTransportSE= new HttpTransportSE(Configuaration.SERVER_URL);
+                httpTransportSE.call(Configuaration.SOAP_ACTION_CHECK_FAV, envelope);
+
+                SoapObject data= (SoapObject) envelope.bodyIn;
+                if(data.hasProperty("CheckFavResult")){
+                    if(Boolean.parseBoolean(data.getPropertyAsString("CheckFavResult")))
+                    {
+                        fav.setVisibility(View.VISIBLE);
+                        unfav.setVisibility(View.INVISIBLE);
+                    }
+                    else
+                    {
+                        fav.setVisibility(View.INVISIBLE);
+                        unfav.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.e("Lỗi", ex.toString());
+            }
+            return null;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +128,8 @@ public class StoreDetailActivity extends AppCompatActivity {
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
+        threeFragment.getID();
+
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         GetInfo getInfo = new GetInfo();
@@ -95,12 +137,15 @@ public class StoreDetailActivity extends AppCompatActivity {
 
         fav = findViewById(R.id.fav);
         unfav = findViewById(R.id.unfav);
-        fav.setVisibility(View.INVISIBLE);
+        CheckFav checkFav = new CheckFav();
+        checkFav.execute();
         unfav.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 fav.setVisibility(View.VISIBLE);
                 unfav.setVisibility(View.INVISIBLE);
+                GetFavInfo getFavInfo = new GetFavInfo();
+                getFavInfo.execute();
             }
         });
         fav.setOnClickListener(new View.OnClickListener(){
@@ -108,6 +153,8 @@ public class StoreDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 fav.setVisibility(View.INVISIBLE);
                 unfav.setVisibility(View.VISIBLE);
+                RemoveFavInfo removeFavInfo = new RemoveFavInfo();
+                removeFavInfo.execute();
             }
         });
     }
@@ -119,6 +166,52 @@ public class StoreDetailActivity extends AppCompatActivity {
             return bitmap;
         } catch (Exception e) {
             e.getMessage();
+            return null;
+        }
+    }
+
+    class GetFavInfo extends AsyncTask<String, Void, String>{
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                SoapObject request = new SoapObject(Configuaration.NAME_SPACE,Configuaration.METHOD_WRITE_FAV);
+                request.addProperty(Configuaration.PARAMETER_IDUser, GlobalVariable.MyUser.getId());
+                request.addProperty(Configuaration.PARAMETER_IDFStore, ID);
+
+                SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+                envelope.dotNet=true;
+                envelope.setOutputSoapObject(request);
+                HttpTransportSE httpTransportSE= new HttpTransportSE(Configuaration.SERVER_URL);
+                httpTransportSE.call(Configuaration.SOAP_ACTION_WRITE_FAV, envelope);
+            }
+            catch (Exception ex)
+            {
+                Log.e("Lỗi", ex.toString());
+            }
+            return null;
+        }
+    }
+
+    class RemoveFavInfo extends AsyncTask<String, Void, String>{
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                SoapObject request = new SoapObject(Configuaration.NAME_SPACE,Configuaration.METHOD_REMOVE_FAV);
+                request.addProperty(Configuaration.PARAMETER_IDUser, GlobalVariable.MyUser.getId());
+                request.addProperty(Configuaration.PARAMETER_IDFStore, ID);
+
+                SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+                envelope.dotNet=true;
+                envelope.setOutputSoapObject(request);
+                HttpTransportSE httpTransportSE= new HttpTransportSE(Configuaration.SERVER_URL);
+                httpTransportSE.call(Configuaration.SOAP_ACTION_REMOVE_FAV, envelope);
+            }
+            catch (Exception ex)
+            {
+                Log.e("Lỗi", ex.toString());
+            }
             return null;
         }
     }
@@ -139,6 +232,7 @@ public class StoreDetailActivity extends AppCompatActivity {
         twoFragment = new TwoFragment();
         threeFragment = new ThreeFragment();
         twoFragment.setIDStore(ID);
+        threeFragment.getID();
         adapter.addFragment(oneFragment, "THÔNG TIN");
         adapter.addFragment(twoFragment, "MENU");
         adapter.addFragment(threeFragment, "BÌNH LUẬN");

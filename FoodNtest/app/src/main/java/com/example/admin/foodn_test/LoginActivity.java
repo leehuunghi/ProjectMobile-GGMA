@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -22,6 +24,7 @@ import android.widget.Toast;
 import com.example.admin.config.Configuaration;
 import com.example.admin.model.User;
 
+import org.kobjects.base64.Base64;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -197,6 +200,12 @@ public class LoginActivity extends Activity {
                         flagLogin = true;
                         GlobalVariable.MyUser = new User();
                         GlobalVariable.MyUser.setId(Integer.parseInt(so.getPropertyAsString("ID_User")));
+                        GlobalVariable.MyUser.setHoten(so.getPropertyAsString("HoTen"));
+                        GlobalVariable.MyUser.setSdt(so.getPropertyAsString("SDT_User"));
+                        GlobalVariable.MyUser.setMatkhau(so.getPropertyAsString("MatKhau"));
+                        GlobalVariable.MyUser.setNgaysinh(so.getPropertyAsString("NgaySinh"));
+                        GlobalVariable.MyUser.setGioitinh(so.getPropertyAsString("GioiTinh"));
+                        GlobalVariable.MyUser.setAva(StringToBitMap(so.getPropertyAsString("Avatar")));
                         Intent homeAct = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(homeAct);
                 }
@@ -205,6 +214,17 @@ public class LoginActivity extends Activity {
             {
                 Log.e("Lỗi", ex.toString());
             }
+            return null;
+        }
+    }
+
+    private Bitmap StringToBitMap(String hinhAnh) {
+        try {
+            byte[] encodeByte = Base64.decode(hinhAnh);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch (Exception e) {
+            e.getMessage();
             return null;
         }
     }
